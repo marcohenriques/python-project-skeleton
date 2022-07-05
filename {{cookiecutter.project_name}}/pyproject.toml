@@ -1,0 +1,66 @@
+[tool.black]
+target-version = ["py36", "py37", "py38"]
+line-length = 99
+
+[tool.poetry]
+name = "{{cookiecutter.package_name}}"
+version = "0.1.0"
+description = "{{cookiecutter.project_short_description}}"
+authors = ["{{cookiecutter.full_name}} <{{cookiecutter.email}}>"]
+readme = "README.md"
+repository = ""
+keywords = []
+
+{%- if cookiecutter.command_line_interface|lower != 'none' %}
+[tool.poetry.scripts]
+{{cookiecutter.package_name}} = "{{cookiecutter.package_name}}.cli:main"
+{%- endif %}
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
+[tool.poetry.dependencies]
+python = "^{{cookiecutter.python_version}}"
+PyYAML = "*"
+{%- if cookiecutter.command_line_interface|lower == 'click' %}
+click = "*"
+{%- endif %}
+
+[tool.poetry.dev-dependencies]
+# Formaters
+black = "*"
+isort = "*"
+# Linters
+flake8 = "*"
+mypy = "*"
+pylint = "*" # for pyreverse
+wemake-python-styleguide = "*"
+# Packages vulnerabilities scan
+safety = "*"
+# Pre-commit
+pre-commit = "*"
+# Testing
+pytest = "*"
+pytest-cov = "*"
+pytest-randomly = "*" # random shuffle tests
+xdoctest = "*"
+# Documentation
+markdown-include = "*"
+mkdocs = "*"
+mkdocs-material = "*"
+mkdocstrings = "*"
+mkdocs-awesome-pages-plugin = "*"
+pygments = "*"
+pymdown-extensions = "*"
+{% if cookiecutter.notebooks_support == "yes" %}
+# Jupyter otebooks
+jupyter = "*"
+nbautoexport = "*"
+nbqa = "*"
+jupyter-contrib-nbextensions = "*"
+{%- endif %}
+# Other tools
+rope = "*" # Rename variables
+pipdeptree = "*"
+toml = "*"

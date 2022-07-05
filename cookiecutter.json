@@ -1,0 +1,36 @@
+{
+  "full_name": "user",
+  "email": "usert@domain.com",
+  "project_name": "my_project",
+  "package_name": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
+  "project_short_description": "Python Boilerplate contains all the boilerplate you need to create a Python package.",
+  "python_version": [
+    "3.10",
+    "3.9",
+    "3.8",
+    "3.7",
+    "3.6"
+  ],
+  "python_version_management": [
+    "pyenv",
+    "conda"
+  ],
+  "data_science_structure": [
+    "no",
+    "yes"
+  ],
+  "notebooks_support": [
+    "yes",
+    "no"
+  ],
+  "docs_tool": [
+    "none",
+    "mkdocs",
+    "sphinx"
+  ],
+  "command_line_interface": [
+    "none",
+    "Click",
+    "Argparse"
+  ]
+}

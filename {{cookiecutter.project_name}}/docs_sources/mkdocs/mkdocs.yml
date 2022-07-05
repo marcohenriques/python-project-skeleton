@@ -1,0 +1,48 @@
+site_name: {{cookiecutter.project_name}}
+site_description: {{cookiecutter.project_short_description}}
+site_author: {{cookiecutter.full_name}}
+
+#repo_url: https://__REPO_URI__
+#edit_uri: https://__REPO_URI__/__BRANCH__/docs
+
+theme:
+  name: material
+  favicon: images/favicon.ico
+  logo: images/logo.png
+  static_templates:
+    - 404.html
+  feature:
+    tabs: true
+  palette:
+    primary: cyan
+  hljs_languages:
+    - yaml
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - smarty
+  - extra
+  - admonition
+  - codehilite
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji
+  - pymdownx.keys
+  - pymdownx.magiclink
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tabbed
+  - markdown_include.include:
+      base_path: .
+
+plugins:
+  - search
+  - mkdocstrings
+  - awesome-pages
+
+# check https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin/#combine-custom-navigation--file-structure
+# for how to configuring page titles and their order
+nav:
+  - ...
