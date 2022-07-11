@@ -50,6 +50,8 @@ def meters_to_feet(meters: int) -> float:
 
         >>> meters_to_feet(1)
         3.281
+        >>> meters_to_feet("1")
+        3.281
     """
     try:
         value_meters = float(meters)

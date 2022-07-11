@@ -63,7 +63,7 @@ Run code static analysis (_flake8_,  _mypy_ and _safety_):
 make check
 ```
 
-{% if cookiecutter.docs_tool != "none" -%}
+{% if cookiecutter.docs_tool == "y" -%}
 Build and open/serve the documentation:
 
 ```make

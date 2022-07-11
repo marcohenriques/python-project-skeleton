@@ -6,7 +6,7 @@ watchdog
 {% if cookiecutter.docs_tool == "sphinx" -%}
 Sphinx
 rstcheck
-{%- elif cookiecutter.docs_tool == "mkdocs" -%}
+{%- elif cookiecutter.docs_tool == "y" -%}
 pygments
 pymdown-extensions
 mkdocs-material

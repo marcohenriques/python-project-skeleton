@@ -1,33 +1,111 @@
 """Sample integration test module using pytest-describe and expecter."""
-from click.testing import CliRunner
+from pathlib import Path
 
-from {{cookiecutter.package_name}}.cli import main
+from typer.testing import CliRunner
 
-
-def test_when_integer(runner: CliRunner):
-    command_result = runner.invoke(main, ["option1", "42"])
-
-    assert command_result.exit_code == 0
-    assert command_result.output.split("\n")[1] == "12.800975312404754"
-    assert len(command_result.output.split("\n")) == 4
+from  {{cookiecutter.package_name}} import __version__
+from  {{cookiecutter.package_name}}.cli import app
 
 
-def test_when_invalid_feet_value(runner: CliRunner):
-    command_result = runner.invoke(main, ["option1", "foobar"])
-
-    assert command_result.exit_code == 0
-    assert len(command_result.output.split("\n")) == 3
+runner = CliRunner()
 
 
-def test_when_too_bg_feet_value(runner: CliRunner):
-    command_result = runner.invoke(main, ["option1", "1000"])
+def test_app_help() -> None:
+    cli_result = runner.invoke(app, [])
+    assert cli_result.exit_code == 0
+    assert "Usage: cookiemonster [OPTIONS] COMMAND [ARGS]..." in cli_result.stdout
 
-    assert command_result.exit_code == 1
+
+def test_app_version() -> None:
+    cli_result = runner.invoke(
+        app,
+        ["--version", "simple-commands", "exit", "-vvvv", "--some-int", "3", "my_env_var_name"],
+    )
+    assert cli_result.exit_code == 0
+    assert __version__ in cli_result.stdout
 
 
-def test_with_home_directory(runner: CliRunner):
-    command_result = runner.invoke(main, ["--home-directory=~", "option1", "foobar"])
+def test_app_simple_command() -> None:
+    cli_result = runner.invoke(
+        app,
+        ["simple-command", "exit", "-vvvv", "--some-int", "3", "my_env_var_name"],
+    )
+    assert cli_result.exit_code == 0
+    assert "some_field is 'exit'. Exiting with no error..." in cli_result.stdout
 
-    assert command_result.exit_code == 0
-    assert command_result.output.split("\n")[0] == "My home directory is: ~"
-    assert len(command_result.output.split("\n")) == 3
+    cli_result = runner.invoke(app, ["fake-command"])
+    assert cli_result.exit_code == 2
+    assert "Error: No such command 'fake-command'." in cli_result.stdout
+
+
+def test_app_fake_command() -> None:
+    cli_result = runner.invoke(app, ["fake-command"])
+    assert cli_result.exit_code == 2
+    assert "Error: No such command 'fake-command'." in cli_result.stdout
+
+
+def test_app_lands_reigns_command() -> None:
+    cli_result = runner.invoke(app, ["lands", "reigns", "destroy", "some"])
+    assert cli_result.exit_code == 0
+    assert "Destroying reign: some" in cli_result.stdout
+
+    cli_result = runner.invoke(app, ["lands", "reigns", "conquer", "some"])
+    assert cli_result.exit_code == 0
+    assert "Conquering reign: some" in cli_result.stdout
+
+
+def test_app_lands_towns_command() -> None:
+    cli_result = runner.invoke(app, ["lands", "towns", "burn", "some"])
+    assert cli_result.exit_code == 0
+    assert "Burning town: some" in cli_result.stdout
+
+    cli_result = runner.invoke(app, ["lands", "towns", "found", "some"])
+    assert cli_result.exit_code == 0
+    assert "Founding town: some" in cli_result.stdout
+
+
+def test_app_file_read_command(content_file: Path) -> None:
+    cli_result = runner.invoke(app, ["files", "read", "--filename", str(content_file)])
+    assert cli_result.exit_code == 0
+    assert "my content" in cli_result.stdout
+
+
+def test_app_file_write_command(tmp_path: Path) -> None:  # noqa: WPS218
+    write_file_path = tmp_path / "write_file.txt"
+    append_file_path = tmp_path / "append_file.txt"
+
+    cli_result = runner.invoke(
+        app,
+        [
+            "files",
+            "write",
+            "my content",
+            "--filename",
+            str(write_file_path),
+            "--filename-append",
+            str(append_file_path),
+        ],
+    )
+    assert cli_result.exit_code == 0
+
+    cli_result = runner.invoke(
+        app,
+        [
+            "files",
+            "write",
+            "new content",
+            "--filename",
+            str(write_file_path),
+            "--filename-append",
+            str(append_file_path),
+        ],
+    )
+    assert cli_result.exit_code == 0
+
+    cli_result_write = runner.invoke(app, ["files", "read", "--filename", str(write_file_path)])
+    assert "my content" not in cli_result_write.stdout
+    assert "new content" in cli_result_write.stdout
+
+    cli_result_append = runner.invoke(app, ["files", "read", "--filename", str(append_file_path)])
+    assert "my content" in cli_result_append.stdout
+    assert "new content" in cli_result_append.stdout

@@ -41,7 +41,6 @@ TOOLS_FIRST_INSTALLED := $(VIRTUAL_ENV)/.tools_first_installed
 install: $(DEPENDENCIES) $(TOOLS_FIRST_INSTALLED) .cache
 
 $(DEPENDENCIES): $(VIRTUAL_ENV)
-	@ poetry config virtualenvs.in-project true
 	poetry install
 	@ touch $@
 	@ $(MAKE) gen-req
@@ -78,8 +77,8 @@ $(VIRTUAL_ENV): ## Create python environment
 .PHONY: gen-req
 gen-req:  ## Generate requirements files from poetry
 	@ echo "$(ECHO_COLOUR)Updating requirements files$(NC)"
-	@ poetry export -f requirements.txt --without-hashes > requirements.txt
-	@ poetry export -f requirements.txt --without-hashes --dev > requirements-dev.txt
+	@ poetry export -f requirements.txt --without-hashes -o requirements.txt
+	@ poetry export -f requirements.txt --without-hashes --dev  -o requirements-dev.txt
 	@ poetry run scripts/req_fixer requirements.txt requirements-dev.txt
 
 
@@ -149,7 +148,7 @@ build-docs: install ## Generate Sphinx documentation locally
 
 docs: build-docs ## Open the documentation
 	scripts/open docs/_build/html/index.html
-{%- elif cookiecutter.docs_tool == "mkdocs" -%}
+{%- elif cookiecutter.docs_tool == "y" -%}
 MKDOCS_INDEX := site/index.html
 
 .PHONY: build-docs
@@ -229,7 +228,7 @@ clean-all: clean
 all: install
 
 .PHONY: ci
-ci: format check test {%- if cookiecutter.docs_tool != "none" %} build-docs{% endif %} ## Run all tasks that determine CI status
+ci: format check test {%- if cookiecutter.docs_tool == "y" %} build-docs{% endif %} ## Run all tasks that determine CI status
 
 .PHONY: run
 run: install ## Start the program

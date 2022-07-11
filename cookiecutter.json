@@ -1,6 +1,6 @@
 {
   "full_name": "user",
-  "email": "usert@domain.com",
+  "email": "user@domain.com",
   "project_name": "my_project",
   "package_name": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
   "project_short_description": "Python Boilerplate contains all the boilerplate you need to create a Python package.",
@@ -24,13 +24,11 @@
     "no"
   ],
   "docs_tool": [
-    "none",
-    "mkdocs",
-    "sphinx"
+    "y",
+    "n"
   ],
   "command_line_interface": [
-    "none",
-    "Click",
-    "Argparse"
+    "y",
+    "n"
   ]
 }

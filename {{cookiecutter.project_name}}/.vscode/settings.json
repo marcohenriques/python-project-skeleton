@@ -1,6 +1,5 @@
 {
-    "python.venvPath": "${workspaceFolder}/.venv",
-    "python.pythonPath": "${workspaceFolder}/.venv/bin/python3",
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python3",
     "python.terminal.activateEnvironment": true,
     // Linters
     "python.linting.enabled": true,

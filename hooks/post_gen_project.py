@@ -38,24 +38,26 @@ DS_DIRS = [
 NB_DIRS = [
     "notebooks/",
 ]
-CLICK_FILES = ["tests/test_cli.py"]
-CLI_FILES = ["{{cookiecutter.package_name}}/cli.py"]
+CLI_FILES = ["tests/test_cli.py"]
+CLI_DIRS = ["{{cookiecutter.package_name}}/cli/"]
 
 
 def move_docs_files(docs_tool, docs_files, docs_sources):
-    if docs_tool == "none":
+    if docs_tool == "n":
         return
 
     root = os.getcwd()
     docs = "docs"
 
+    docs_tool_name = "mkdocs"
+
     # logger.info("Initializing docs for %s", docs_tool)
     if not os.path.exists(docs):
         os.mkdir(docs)
 
-    for item in docs_files[docs_tool]:
+    for item in docs_files[docs_tool_name]:
         dst, name = (root, item[1:]) if item.startswith("/") else (docs, item)
-        src_path = os.path.join(docs_sources, docs_tool, name)
+        src_path = os.path.join(docs_sources, docs_tool_name, name)
         dst_path = os.path.join(dst, name)
 
         # logger.info("Moving %s to %s.", src_path, dst_path)
@@ -64,7 +66,7 @@ def move_docs_files(docs_tool, docs_files, docs_sources):
 
         os.rename(src_path, dst_path)
     
-    if docs_tool == "mkdocs":
+    if docs_tool == "y":
         # Create symbolic links to readme, changelog and contributing
         os.symlink("../README.md", "docs/index.md")
         os.symlink("../../CHANGELOG.md", "docs/about/changelog.md")
@@ -96,12 +98,10 @@ def process_notebooks(processQ):
 
 
 def process_cli(cli_tool):
-    if cli_tool != "Click":
-        for file in CLICK_FILES:
-            os.remove(file)
-    if cli_tool == "none":
+    if cli_tool != "n":
         for file in CLI_FILES:
             os.remove(file)
+        remove_temp_folders(CLI_DIRS)
 
 
 if __name__ == "__main__":
