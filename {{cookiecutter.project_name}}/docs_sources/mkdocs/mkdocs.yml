@@ -1,3 +1,4 @@
+# check https://squidfunk.github.io/mkdocs-material/reference/ for more cool stuff
 site_name: {{cookiecutter.project_name}}
 site_description: {{cookiecutter.project_short_description}}
 site_author: {{cookiecutter.full_name}}
@@ -33,16 +34,17 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.tasklist:
       custom_checkbox: true
-  - pymdownx.tabbed
-  - markdown_include.include:
+  - pymdownx.tabbed:
+      alternate_style: true
+  - mdx_include:
       base_path: .
+
 
 plugins:
   - search
   - mkdocstrings
-  - awesome-pages
 
-# check https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin/#combine-custom-navigation--file-structure
-# for how to configuring page titles and their order
+
 nav:
-  - ...
+  - Start: index.md
+  - Reference: reference/my_project.md

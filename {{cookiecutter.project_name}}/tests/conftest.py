@@ -13,4 +13,3 @@ def content_file(tmp_path: Path) -> Generator[Path, None, None]:
     path = directory / "my_file.txt"
     path.write_text("my content")
     yield path
-

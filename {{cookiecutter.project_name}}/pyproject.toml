@@ -50,11 +50,10 @@ pytest-clarity = "*"
 pytest-randomly = "*" # random shuffle tests
 xdoctest = "*"
 # Documentation
-markdown-include = "*"
+mdx_include = "*"
 mkdocs = "*"
 mkdocs-material = "*"
-mkdocstrings = "*"
-mkdocs-awesome-pages-plugin = "*"
+mkdocstrings = {extras = ["python"], version = "*"}
 pygments = "*"
 pymdown-extensions = "*"
 {% if cookiecutter.notebooks_support == "yes" %}
