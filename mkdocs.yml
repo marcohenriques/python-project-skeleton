@@ -1,0 +1,49 @@
+# check https://squidfunk.github.io/mkdocs-material/reference/ for more cool stuff
+site_name: python-project-skeleton
+site_description: A cookiecutter template for python packages.
+site_author: "Marco Henriques <marco.martins.henriques@gmail.com>"
+
+#repo_url: https://__REPO_URI__
+#edit_uri: https://__REPO_URI__/__BRANCH__/docs
+
+theme:
+  name: material
+  favicon: images/favicon.ico
+  logo: images/logo.png
+  static_templates:
+    - 404.html
+  feature:
+    tabs: true
+  palette:
+    primary: cyan
+  hljs_languages:
+    - yaml
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - smarty
+  - extra
+  - admonition
+  - codehilite
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji
+  - pymdownx.keys
+  - pymdownx.magiclink
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - mdx_include:
+      base_path: .
+
+
+plugins:
+  - search
+  - mkdocstrings
+
+
+nav:
+  - Start: index.md
