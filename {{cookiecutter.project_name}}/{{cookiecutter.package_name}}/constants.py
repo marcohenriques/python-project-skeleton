@@ -1,11 +1,29 @@
-import os
+from enum import Enum
 
 
-PACKAGE_DIR = "/".join(__file__.split("/")[:-1])
-CONFIGS_DIR = "configs"
-ENVIRONMENT = os.getenv("APP_ENV", "dev")
+class StrEnum(str, Enum):
+    """String enum with __str__ and __repr__ from `str`."""
 
-LOGGING_CONFIG_FILENAME = "logging_config.yaml"
-LOGGING_CONFIG_PATH = os.path.join(PACKAGE_DIR, CONFIGS_DIR, ENVIRONMENT, LOGGING_CONFIG_FILENAME)
+    def __str__(self) -> str:
+        """String representation.
 
-METER_TO_FOOT_SCALE = 3.281
+        Returns:
+            str: string representation
+        """
+        return str.__str__(self)  # noqa: WPS609
+
+    def __repr__(self) -> str:
+        """Object representation.
+
+        Returns:
+            str: object representation
+        """
+        return str.__repr__(self)  # noqa: WPS609
+
+
+class Environment(StrEnum):
+    """Enum for app environment."""
+
+    LOCAL = "LOCAL"
+    DEV = "DEV"
+    PROD = "PROD"

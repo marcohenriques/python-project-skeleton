@@ -24,7 +24,7 @@ CONFIG := $(wildcard *.py)
 MODULES := $(wildcard $(PACKAGE)/*.py)
 
 # Virtual environment paths
-VIRTUAL_ENV ?= .venv
+VIRTUAL_ENV_NAME ?= .venv
 
 # SYSTEM DEPENDENCIES #########################################################
 
@@ -34,13 +34,13 @@ doctor:  ## Confirm system dependencies are available
 
 # PROJECT DEPENDENCIES ########################################################
 
-DEPENDENCIES := $(VIRTUAL_ENV)/.poetry-$(shell scripts/checksum pyproject.toml poetry.lock)
-TOOLS_FIRST_INSTALLED := $(VIRTUAL_ENV)/.tools_first_installed
+DEPENDENCIES := $(VIRTUAL_ENV_NAME)/.poetry-$(shell scripts/checksum pyproject.toml poetry.lock)
+TOOLS_FIRST_INSTALLED := $(VIRTUAL_ENV_NAME)/.tools_first_installed
 
 .PHONY: install
 install: $(DEPENDENCIES) $(TOOLS_FIRST_INSTALLED) .cache
 
-$(DEPENDENCIES): $(VIRTUAL_ENV)
+$(DEPENDENCIES): $(VIRTUAL_ENV_NAME)
 	poetry install
 	@ touch $@
 	@ $(MAKE) gen-req
@@ -61,17 +61,18 @@ $(TOOLS_FIRST_INSTALLED):
 	@ mkdir -p .cache
 
 {% if cookiecutter.python_version_management == "pyenv" -%}
-$(VIRTUAL_ENV): ## Create python environment
+$(VIRTUAL_ENV_NAME): ## Create python environment
 	$(MAKE) doctor
 	@ echo "$(ECHO_COLOUR)Initializing pyenv$(NC)"
 	$(eval PYENV_LATEST_VERSION=$(shell pyenv install --list | grep " $(PYTHON_VERSION)\.[0-9]*$$" | tail -1))
 	@ echo "$(ECHO_COLOUR)Installing python version $(PYENV_LATEST_VERSION)...$(NC)"
 	pyenv install -s $(PYENV_LATEST_VERSION)
 	pyenv local $(PYENV_LATEST_VERSION)
+	poetry env use -- $(shell pyenv which python)
 {%- elif cookiecutter.python_version_management == "conda" -%}
-$(VIRTUAL_ENV): ## Create python environment
+$(VIRTUAL_ENV_NAME): ## Create python environment
 	$(MAKE) doctor
-	conda create -y -p $(VIRTUAL_ENV) python=$(PYTHON_VERSION)
+	conda create -y -p $(VIRTUAL_ENV_NAME) python=$(PYTHON_VERSION)
 {%- endif %}
 
 .PHONY: gen-req
@@ -202,7 +203,7 @@ clean: .clean-build .clean-docs .clean-test .clean-install ## Delete all generat
 
 .PHONY: clean-all
 clean-all: clean
-	rm -rf $(VIRTUAL_ENV)
+	rm -rf $(VIRTUAL_ENV_NAME)
 
 .PHONY: .clean-install
 .clean-install:
@@ -238,5 +239,4 @@ run: install ## Start the program
 .PHONY: jupyter
 jupyter: install ## Launch an Jupyter notebook session
 	poetry run jupyter notebook --notebook-dir=notebooks
-
 {% endif -%}

@@ -65,7 +65,7 @@ def move_docs_files(docs_tool, docs_files, docs_sources):
             os.unlink(dst_path)
 
         os.rename(src_path, dst_path)
-    
+
     if docs_tool == "y":
         # Create symbolic links to readme, changelog and contributing
         os.symlink("../README.md", "docs/index.md")
@@ -98,7 +98,7 @@ def process_notebooks(processQ):
 
 
 def process_cli(cli_tool):
-    if cli_tool != "n":
+    if cli_tool != "y":
         for file in CLI_FILES:
             os.remove(file)
         remove_temp_folders(CLI_DIRS)

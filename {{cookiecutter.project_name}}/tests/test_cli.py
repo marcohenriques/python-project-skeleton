@@ -3,8 +3,8 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
-from  {{cookiecutter.package_name}} import __version__
-from  {{cookiecutter.package_name}}.cli import app
+from {{cookiecutter.package_name}} import __version__
+from {{cookiecutter.package_name}}.cli import app
 
 
 runner = CliRunner()
@@ -13,7 +13,7 @@ runner = CliRunner()
 def test_app_help() -> None:
     cli_result = runner.invoke(app, [])
     assert cli_result.exit_code == 0
-    assert "Usage: cookiemonster [OPTIONS] COMMAND [ARGS]..." in cli_result.stdout
+    assert "Usage: {{cookiecutter.package_name}} [OPTIONS] COMMAND [ARGS]..." in cli_result.stdout
 
 
 def test_app_version() -> None:

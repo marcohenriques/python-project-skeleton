@@ -7,6 +7,7 @@ import typer
 
 from {{cookiecutter.package_name}} import __version__
 from {{cookiecutter.package_name}}.cli import files, lands, users
+from {{cookiecutter.package_name}}.settings import settings
 
 
 class LogLevel(str, Enum):
@@ -23,7 +24,7 @@ class LogLevel(str, Enum):
 
 
 app = typer.Typer(
-    name="cookiemonster",
+    name="{{cookiecutter.package_name}}",
     no_args_is_help=True,
     short_help="my short help",
     help="My help",
@@ -102,6 +103,10 @@ def my_simple_command(  # noqa: WPS211, WPS213
         Abort: if `some_field` is empty
         Exit: if `some_field` is "exit"
     """
+    typer.echo("settings.ENV: {0}".format(settings.ENV))
+    typer.echo("settings.PACKAGE_DIR: {0}".format(settings.PACKAGE_DIR))
+    typer.echo("settings.LOGGING_CONFIG_PATH: {0}".format(settings.LOGGING_CONFIG_PATH))
+
     # Customize message with color and bold
     style_message = typer.style("Cool message", fg=typer.colors.GREEN, bold=True)
     typer.echo(style_message)

@@ -15,7 +15,7 @@ license = ""
 homepage = ""
 documentation = ""
 # packages = [
-#     { include = "cookiemonster", from = "src" }
+#     { include = "{{cookiecutter.package_name}}", from = "src" }
 # ]
 # include = [
 #     { path = "tests", format = "sdist" }
@@ -27,6 +27,7 @@ documentation = ""
 [tool.poetry.dependencies]
 python = "^{{cookiecutter.python_version}}"
 PyYAML = "*"
+pydantic = "^1.9.1"
 {%- if cookiecutter.command_line_interface|lower == 'y' %}
 typer = {extras = ["all"], version = "^0.5.0"}
 {%- endif %}
@@ -84,6 +85,9 @@ lines_after_imports = 2
 line_length = 99
 
 [tool.mypy]
+plugins = [
+  "pydantic.mypy",
+]
 cache_dir = ".cache/mypy/"
 ignore_missing_imports = true
 no_implicit_optional = true
@@ -104,7 +108,7 @@ disallow_untyped_defs = false
 disallow_incomplete_defs = false
 
 [tool.pytest.ini_options]
-testpaths = ["tests", "cookiemonster"]
+testpaths = ["tests", "{{cookiecutter.package_name}}"]
 addopts = [
     "--strict",
     "-vv",

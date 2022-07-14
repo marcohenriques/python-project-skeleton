@@ -3,10 +3,11 @@
 import logging
 import os
 from logging.config import dictConfig
+from pathlib import Path
 
 import yaml
 
-from {{cookiecutter.package_name}}.constants import LOGGING_CONFIG_PATH
+from {{cookiecutter.package_name}}.settings import settings
 
 
 LOG = logging.getLogger(__name__)
@@ -15,14 +16,14 @@ ENV_VAR_LOG_FILE = "LOG_CFG"
 
 
 def setup_logging(
-    default_path: str = LOGGING_CONFIG_PATH,
+    default_path: Path = settings.LOGGING_CONFIG_PATH,
     default_level: int = DEFAULT_LOGGING_LEVEL,
     env_key: str = ENV_VAR_LOG_FILE,
 ) -> None:
     """Setup the logging.
 
     Args:
-        default_path (str): Path to configuration logging file.
+        default_path (Path): Path to configuration logging file.
             Defaults to LOGGING_CONFIG_PATH.
         default_level (int): Default logging level in case no config file found.
             Defaults to DEFAULT_LOGGING_LEVEL.
@@ -32,7 +33,7 @@ def setup_logging(
     path = default_path
     env_value = os.getenv(env_key, None)
     if env_value:
-        path = env_value
+        path = Path(env_value)
     if os.path.exists(path):
         with open(path, "rt") as config_file:
             try:
