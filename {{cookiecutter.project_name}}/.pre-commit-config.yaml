@@ -116,14 +116,6 @@ repos:
         entry: poetry run nbqa mypy
         types: [file]
         files: \.(ipynb)$
-      - id: nbautoexport
-        name: Exporting notebooks to scripts
-        description: "export notebooks to a script (or other format)"
-        language: system
-        entry: poetry run nbautoexport
-        pass_filenames: false
-        files: notebooks/.*\.(ipynb)$
-        args: [export, notebooks/]
 {% endif %}
       # - id: pytest
       #   name: pytest

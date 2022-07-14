@@ -29,7 +29,6 @@ Additional, the first time it runs, it will also:
 
 {% if cookiecutter.notebooks_support == "yes" -%}
 * install _ipython kernel_ named `{{ cookiecutter.package_name }}`
-* install _nbautoexport_ to automatically export notebook to scripts when saving
 {%- endif %}
 * initialise git
 * install _pre-commit_ in git hooks (this will run the hooks when you commit/push your changes)

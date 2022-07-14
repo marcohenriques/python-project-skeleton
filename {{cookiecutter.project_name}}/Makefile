@@ -1,3 +1,5 @@
+SHELL:=/usr/bin/env bash
+
 # HELP ########################################################################
 .DEFAULT_GOAL := help
 
@@ -49,8 +51,6 @@ $(TOOLS_FIRST_INSTALLED):
 	{% if cookiecutter.notebooks_support == "yes" -%}
 	@ echo "$(ECHO_COLOUR)Creating ipython kernel$(NC)"
 	@ poetry run python -m ipykernel install --sys-prefix --name {{ cookiecutter.package_name }}
-	@ echo "$(ECHO_COLOUR)Installing nbautoexport$(NC)"
-	@ poetry run nbautoexport install
 	{%- endif %}
 	git init
 	@ poetry run pre-commit install
@@ -79,7 +79,7 @@ $(VIRTUAL_ENV_NAME): ## Create python environment
 gen-req:  ## Generate requirements files from poetry
 	@ echo "$(ECHO_COLOUR)Updating requirements files$(NC)"
 	@ poetry export -f requirements.txt --without-hashes -o requirements.txt
-	@ poetry export -f requirements.txt --without-hashes --dev  -o requirements-dev.txt
+	@ poetry export -f requirements.txt --without-hashes --with dev -o requirements-dev.txt
 	@ poetry run scripts/req_fixer requirements.txt requirements-dev.txt
 
 
@@ -93,6 +93,8 @@ format:  ## Run formatters
 
 .PHONY: check
 check:  ## Run linters, and static code analysis
+	poetry check
+	poetry run pip check
 	poetry run safety check -r requirements.txt
 	@ echo
 	poetry run mypy --install-types --non-interactive $(PACKAGES)
@@ -109,10 +111,8 @@ pre-commit:  ## Run pre-commit on all files
 RANDOM_SEED ?= $(shell date +%s)
 FAILURES := .cache/v/cache/lastfailed
 
-PYTEST_OPTIONS := -v --randomly-seed=$(RANDOM_SEED)
-ifndef DISABLE_COVERAGE
-PYTEST_OPTIONS += --cov=$(PACKAGE)
-endif
+PYTEST_OPTIONS := -v --cov=$(PACKAGE) --randomly-seed=$(RANDOM_SEED)
+
 ifdef EXTRA_ARG
 PYTEST_OPTIONS += $(EXTRA_ARG)
 endif
@@ -169,22 +169,12 @@ docs: build-docs ## Serve the documentation (localhost:8000)
 # BUILD #######################################################################
 
 DIST_FILES := dist/*.tar.gz dist/*.whl
-EXE_FILES := dist/$(PROJECT).*
 
 .PHONY: dist
 dist: install $(DIST_FILES)
 $(DIST_FILES): $(MODULES) pyproject.toml
 	rm -f $(DIST_FILES)
 	poetry build
-
-# .PHONY: exe
-# exe: install $(EXE_FILES)
-# $(EXE_FILES): $(MODULES) $(PROJECT).spec
-# 	# For framework/shared support: https://github.com/yyuu/pyenv/wiki
-# 	poetry run pyinstaller $(PROJECT).spec --noconfirm --clean
-
-# $(PROJECT).spec:
-# 	poetry run pyi-makespec $(PACKAGE)/__main__.py --onefile --windowed --name=$(PROJECT)
 
 
 # RELEASE #####################################################################
@@ -230,10 +220,6 @@ all: install
 
 .PHONY: ci
 ci: format check test {%- if cookiecutter.docs_tool == "y" %} build-docs{% endif %} ## Run all tasks that determine CI status
-
-.PHONY: run
-run: install ## Start the program
-	poetry run python $(PACKAGE)/__main__.py
 
 {% if cookiecutter.notebooks_support == "yes" -%}
 .PHONY: jupyter
