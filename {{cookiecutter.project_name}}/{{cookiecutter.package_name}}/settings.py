@@ -1,7 +1,7 @@
-import os
 from pathlib import Path
+from typing import Any, Dict, Optional
 
-from pydantic import BaseSettings, DirectoryPath, FilePath
+from pydantic import BaseSettings, DirectoryPath, FilePath, validator
 
 from {{cookiecutter.package_name}}.constants import Environment
 
@@ -18,22 +18,41 @@ class AppSettings(BaseSettings):
     an error if the value is not valid.
 
     Check https://pydantic-docs.helpmanual.io/usage/settings/ for more info.
+
+    Args:
+        ENV (Environment): environment to use.
+        PACKAGE_DIR (DirectoryPath): directory where the package is located.
+        LOGGING_CONFIG (Optional[FilePath]): path to the logging configuration file.
     """
 
     ENV: Environment = Environment.DEV
     PACKAGE_DIR: DirectoryPath = Path(__file__).parent
-    LOGGING_CONFIG_PATH: FilePath = (
-        Path(__file__).parent
-        / "configs"
-        / os.getenv(f"{APP_ENV_PREFIX}ENV", Environment.DEV)
-        / "logging_config.yaml"
-    )
+    LOGGING_CONFIG_PATH: Optional[FilePath] = None
 
     class Config(object):  # noqa: WPS431
         """Config for Pydantic."""
 
         env_prefix = APP_ENV_PREFIX
         case_sensitive = True
+
+    @validator("LOGGING_CONFIG_PATH")
+    def default_logging_config_path(
+        cls,  # noqa: N805
+        logging_config_path: Optional[FilePath],
+        values: Dict[str, Any],  # noqa: WPS110
+    ) -> Optional[FilePath]:
+        """Get the default logging config path if not provided.
+
+        Args:
+            value (Optional[FilePath]): LOGGING_CONFIG_PATH value
+            values (Dict[str, Any]): previous provided class values
+
+        Returns:
+            Optional[FilePath]: the default logging config path
+        """
+        if logging_config_path is None and "ENV" in values:
+            return Path(__file__).parent / "configs" / values["ENV"] / "logging_config.yaml"
+        return logging_config_path
 
 
 settings = AppSettings()

@@ -22,8 +22,7 @@ NC=\033[0m # No Color
 
 # Project paths
 PACKAGES := $(PACKAGE) tests
-CONFIG := $(wildcard *.py)
-MODULES := $(wildcard $(PACKAGE)/*.py)
+MODULES := $(wildcard $(PACKAGE)/**/*.py)
 
 # Virtual environment paths
 VIRTUAL_ENV_NAME ?= .venv
@@ -43,7 +42,7 @@ TOOLS_FIRST_INSTALLED := $(VIRTUAL_ENV_NAME)/.tools_first_installed
 install: $(DEPENDENCIES) $(TOOLS_FIRST_INSTALLED) .cache
 
 $(DEPENDENCIES): $(VIRTUAL_ENV_NAME)
-	poetry install
+	poetry install --with dev,docs,jupyter,tests
 	@ touch $@
 	@ $(MAKE) gen-req
 
@@ -79,7 +78,7 @@ $(VIRTUAL_ENV_NAME): ## Create python environment
 gen-req:  ## Generate requirements files from poetry
 	@ echo "$(ECHO_COLOUR)Updating requirements files$(NC)"
 	@ poetry export -f requirements.txt --without-hashes -o requirements.txt
-	@ poetry export -f requirements.txt --without-hashes --with dev -o requirements-dev.txt
+	@ poetry export -f requirements.txt --without-hashes --with dev,docs,jupyter,tests -o requirements-dev.txt
 	@ poetry run scripts/req_fixer requirements.txt requirements-dev.txt
 
 
@@ -93,12 +92,13 @@ format:  ## Run formatters
 
 .PHONY: check
 check:  ## Run linters, and static code analysis
+	@ echo "$(ECHO_COLOUR)Checking packages$(NC)"
 	poetry check
 	poetry run pip check
 	poetry run safety check -r requirements.txt
-	@ echo
+	@ echo "$(ECHO_COLOUR)Running mypy$(NC)"
 	poetry run mypy --install-types --non-interactive $(PACKAGES)
-	@ echo
+	@ echo "$(ECHO_COLOUR)Running flake8$(NC)"
 	poetry run flake8 $(PACKAGES)
 
 .PHONY: pre-commit
