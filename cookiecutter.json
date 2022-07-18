@@ -19,6 +19,10 @@
     "no",
     "yes"
   ],
+  "use_docker": [
+    "y",
+    "n"
+  ],
   "notebooks_support": [
     "yes",
     "no"

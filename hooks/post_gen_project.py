@@ -40,6 +40,9 @@ NB_DIRS = [
 ]
 CLI_FILES = ["tests/test_cli.py"]
 CLI_DIRS = ["{{cookiecutter.package_name}}/cli/"]
+DOCKER_DIRS = ["docker/"]
+DOCKER_INCLUDE = ["Dockerfile"]
+DOCKER_EXCLUDE = ["Dockerfile_poetry"]
 
 
 def move_docs_files(docs_tool, docs_files, docs_sources):
@@ -103,6 +106,17 @@ def process_cli(cli_tool):
             os.remove(file)
         remove_temp_folders(CLI_DIRS)
 
+def process_docker(use_docker) -> None:
+    """
+    Remove the Dockerfile and Dockerfile.test if the user doesn't want to use Docker.
+    """
+    if use_docker == "n":
+        for file in DOCKER_INCLUDE:
+            os.remove(file)
+    for file in DOCKER_EXCLUDE:
+        os.remove(file)
+    remove_temp_folders(DOCKER_DIRS)
+
 
 if __name__ == "__main__":
     move_docs_files("{{cookiecutter.docs_tool}}", DOCS_FILES_BY_TOOL, DOCS_SOURCES)
@@ -111,3 +125,4 @@ if __name__ == "__main__":
     process_datascience_env("{{cookiecutter.data_science_structure}}")
     process_notebooks("{{cookiecutter.notebooks_support}}")
     process_cli("{{cookiecutter.command_line_interface}}")
+    process_docker("{{cookiecutter.use_docker}}")
