@@ -26,10 +26,10 @@ DOCS_FILES_BY_TOOL = {
     ],
 }
 DS_DIRS = [
-    "{{cookiecutter.package_name}}/data/",
-    "{{cookiecutter.package_name}}/features/",
-    "{{cookiecutter.package_name}}/models/",
-    "{{cookiecutter.package_name}}/visualization/",
+    "src/{{cookiecutter.package_name}}/data/",
+    "src/{{cookiecutter.package_name}}/features/",
+    "src/{{cookiecutter.package_name}}/models/",
+    "src/{{cookiecutter.package_name}}/visualization/",
     "data/",
     "models/",
     "references/",
@@ -39,7 +39,7 @@ NB_DIRS = [
     "notebooks/",
 ]
 CLI_FILES = ["tests/test_cli.py"]
-CLI_DIRS = ["{{cookiecutter.package_name}}/cli/"]
+CLI_DIRS = ["src/{{cookiecutter.package_name}}/cli/"]
 DOCKER_DIRS = ["docker/"]
 DOCKER_INCLUDE = ["Dockerfile"]
 DOCKER_EXCLUDE = ["Dockerfile_poetry"]

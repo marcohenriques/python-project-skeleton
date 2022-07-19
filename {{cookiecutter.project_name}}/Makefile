@@ -1,5 +1,3 @@
-SHELL:=/usr/bin/env bash
-
 # HELP ########################################################################
 .DEFAULT_GOAL := help
 
@@ -13,7 +11,7 @@ help:
 
 # Project settings
 PROJECT := {{cookiecutter.project_name}}
-PACKAGE := {{cookiecutter.package_name}}
+PACKAGE := src
 PYTHON_VERSION={{ cookiecutter.python_version }}
 
 # Style makefile outputs

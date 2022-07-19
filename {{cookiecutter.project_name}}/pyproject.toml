@@ -14,12 +14,12 @@ maintainers = []
 license = ""
 homepage = ""
 documentation = ""
-# packages = [
-#     { include = "{{cookiecutter.package_name}}", from = "src" }
-# ]
-# include = [
-#     { path = "tests", format = "sdist" }
-# ]
+packages = [
+    { include = "{{cookiecutter.package_name}}", from = "src" }
+]
+include = [
+    { path = "tests", format = "sdist" }
+]
 {% if cookiecutter.command_line_interface|lower == 'y' %}
 [tool.poetry.scripts]
 {{cookiecutter.package_name}} = "{{cookiecutter.package_name}}.cli.main:app"
@@ -117,7 +117,7 @@ disallow_untyped_decorators = false
 
 
 [tool.pytest.ini_options]
-testpaths = ["tests", "{{cookiecutter.package_name}}"]
+testpaths = ["tests", "src"]
 addopts = [
     "--strict",
     "-vv",
