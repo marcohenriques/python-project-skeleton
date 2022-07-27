@@ -30,7 +30,7 @@ Additional, the first time it runs, it will also:
 {% if cookiecutter.notebooks_support == "yes" -%}
 * install _ipython kernel_ named `{{ cookiecutter.package_name }}`
 {%- endif %}
-* initialise git
+* initialize git
 * install _pre-commit_ in git hooks (this will run the hooks when you commit/push your changes)
 * setup a default git message template for commits
 
@@ -44,7 +44,7 @@ Run the tests:
 make test
 ```
 
-Read full converage report:
+Read full coverage report:
 
 ```make
 make read-coverage
@@ -83,7 +83,7 @@ make clean
 ```
 
 {% if cookiecutter.notebooks_support == "yes" %}
-Open jupyter notebooks on notebooks diretory (using configs in `notebooks/profile_default`):
+Open jupyter notebooks on notebooks directory (using configs in `notebooks/profile_default`):
 
 ```make
 make jupyter
@@ -100,11 +100,11 @@ make ci
 
 ## Logging
 
-For logging, we're using a centralised file (`logging_config.yaml`), under `{{ cookiecutter.package_name }}/configs/<your_environment>` (where _your\_environment_ is defined by the env var `APP_ENV`, defaults to **dev**). In this file, you can define your log _formatters_, _filters_, _handlers_ and your _root_ and specific loggers (including from other packages). To better understand how to configure it, you can check the [logging-cookbook](https://docs.python.org/3/howto/logging-cookbook.html).
+For logging, we're using a centralized file (`logging_config.yaml`), under `{{ cookiecutter.package_name }}/configs/<your_environment>` (where _your\_environment_ is defined by the env var `APP_ENV`, defaults to **dev**). In this file, you can define your log _formatters_, _filters_, _handlers_ and your _root_ and specific loggers (including from other packages). To better understand how to configure it, you can check the [logging-cookbook](https://docs.python.org/3/howto/logging-cookbook.html).
 
 ### Custom logging objects
 
-We can define custom logging object to be used on our configurations file. To defined these object, the implementation should be in the `{{ cookiecutter.package_name }}/logging_setup.py` file to be properly loaded.
+We can define custom logging object to be used on our configurations file. To defined these object, the implementation should be in the `src/{{ cookiecutter.package_name }}/logging_setup.py` file to be properly loaded.
 
 #### Handlers
 
@@ -220,43 +220,96 @@ For version control, consider follow the [git-flow](https://nvie.com/posts/a-suc
 Also try to follow the pre-installed git message template:
 
 ```
-# run `git config commit.template .gitmessage` to set this template as default
-# [<tag>] (If applied, this commit will...) <subject> (Max 72 char)
-# |<----   Preferably using up to 50 chars   --->|<------------------->|
-# Example:
-# [feat] Implement automated commit messages
+# A properly formed Git commit subject line should always be able to
+# complete the following sentence:
+#     * If applied, this commit <will your subject line here>
 
-
-# (Optional) Explain why this change is being made
-# |<----   Try To Limit Each Line to a Maximum Of 72 Characters   ---->|
-
-# (Optional) Provide links or keys to any relevant tickets, articles or other resources
-# Example: JIRA issue #23
-
-# --- COMMIT END ---
-# Tag can be
-#    feat     (new feature)
-#    fix      (bug fix)
-#    refactor (refactoring code)
-#    style    (formatting, missing semi colons, etc; no code change)
-#    doc      (changes to documentation)
-#    test     (adding or refactoring tests; no production code change)
-#    version  (version bump/new release; no production code change)
-#    deps     (app dependencies updates)
-#    dbg      (Changes in debugging code/frameworks; no production code change)
-#    hack     (Temporary fix to make things move forward; please avoid it)
-#    WIP      (Work In Progress; for intermediate commits to keep patches reasonably sized)
-#    defaults (changes default options)
-#    configs  (changes in project configurations)
+# ** Example template:
+# [type](optional scope): [subject]
+# |<----   Preferably using up to 50 chars   --->|<--- max 72 chars -->|
 #
-# Note: Multiple tags can be combined, e.g. [fix][deps] Fix issue X with new dependency version
-# --------------------
-# Remember to:
-#   * Capitalize the subject line
-#   * Use the imperative mood in the subject line
-#   * Do not end the subject line with a period
-#   * Separate subject from body with a blank line
-#   * Use the body to explain what and why vs. how
-#   * Can use multiple lines with "-" or "*" for bullet points in body
-# --------------------
+# [optional body]
+#
+# [optional footer]
+
+# ** Example message:
+# fix(parser): include correct price for shop X
+#
+# Use `price2` field to populate output `price` field.
+#
+# Shop X sometimes comes with empty `price` field, but with `price2`
+# instead, now we pick `price2` whenever `price` field comes empty.
+#
+# Resolve: JIRA-1234
+
+# ** Type
+# Must be one of the following:
+# * build - Build related changes
+# * chore - Build process or auxiliary tool changes
+# * docs - Documentation only changes
+# * feat - A new feature
+# * fix - A bug fix
+# * perf - A code change that improves performance
+# * refactor - A code change that neither fixes a bug or adds a feature
+# * revert - Reverting things
+# * style - Markup, white-space, formatting, missing semi-colons...
+# * test - Adding missing tests
+
+# ** Subject
+# The subject contains a succinct description of the change:
+# * Use the imperative, present tense: "change" not "changed" nor "changes"
+# * No dot (.) at the end.
+
+# ** Scope
+# A scope may be provided to a commit’s type, to provide additional contextual information
+# and is contained within parenthesis, e.g., feat(parser): add ability to parse arrays.
+
+# ** Body
+# Just as in the subject, use the imperative, present tense: "change" not "changed" nor "changes".
+# The body should include the motivation for the change and contrast this with previous behavior.
+
+# ** Footer
+# Provide links or keys to any relevant tickets, articles or other resources.
+
+# ** Rules
+# The 7 rules of a great commit message
+#    1. Separate subject from body with a blank line
+#    2. Limit the subject line to 50 characters
+#    3. Summary in present tense. Not capitalized
+#    4. Do not end the subject line with a period
+#    5. Use the imperative mood in the subject line
+#    6. Wrap the body at 72 characters
+#    7. Use the body to explain what and why vs. how
+```
+
+## IDE settings
+
+### VS Code
+
+To automatically leverage the linters and formatters from your vscode, you can add these configs to your
+project `settings.json`:
+
+```json
+{
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python3",
+    "python.terminal.activateEnvironment": true,
+    // Linters
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Path": "${workspaceFolder}/.venv/bin/flake8",
+    "python.linting.flake8Args": [],
+    "python.linting.mypyEnabled": true,
+    "python.linting.mypyPath": "${workspaceFolder}/.venv/bin/mypy",
+    "python.linting.mypyArgs": [],
+    // Formatters
+    "python.formatting.provider": "black",
+    "python.formatting.blackPath": "${workspaceFolder}/.venv/bin/black",
+    "python.formatting.blackArgs": [],
+    "python.sortImports.path": "${workspaceFolder}/.venv/bin/isort",
+    "python.sortImports.args": [],
+    // Tests
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestPath": "${workspaceFolder}/.venv/bin/pytest",
+    "python.testing.pytestArgs": [],
+}
 ```

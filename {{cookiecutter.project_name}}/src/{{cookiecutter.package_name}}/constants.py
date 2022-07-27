@@ -24,6 +24,6 @@ class StrEnum(str, Enum):
 class Environment(StrEnum):
     """Enum for app environment."""
 
-    LOCAL = "LOCAL"
-    DEV = "DEV"
-    PROD = "PROD"
+    LOCAL = "local"
+    DEV = "dev"
+    PROD = "prod"

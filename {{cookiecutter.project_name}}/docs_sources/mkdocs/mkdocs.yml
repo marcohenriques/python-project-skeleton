@@ -47,4 +47,4 @@ plugins:
 
 nav:
   - Start: index.md
-  - Reference: reference/my_project.md
+  - Reference: reference/{{cookiecutter.package_name}}.md

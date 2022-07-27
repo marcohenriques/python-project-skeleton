@@ -44,7 +44,7 @@ class AppSettings(BaseSettings):
         """Get the default logging config path if not provided.
 
         Args:
-            value (Optional[FilePath]): LOGGING_CONFIG_PATH value
+            logging_config_path (Optional[FilePath]): LOGGING_CONFIG_PATH value
             values (Dict[str, Any]): previous provided class values
 
         Returns:

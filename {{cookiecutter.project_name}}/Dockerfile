@@ -54,7 +54,6 @@ CMD ["python"]
 FROM python-base as development
 
 COPY requirements-dev.txt /
-RUN apt-get install -y --no-install-recommends build-essential gcc
 RUN pip install -r /requirements-dev.txt
 
 # Instead of copying the whole project, we could mount a volume to current directory:
