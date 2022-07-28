@@ -8,31 +8,26 @@
     "3.10",
     "3.9",
     "3.8",
-    "3.7",
-    "3.6"
-  ],
-  "python_version_management": [
-    "pyenv",
-    "conda"
+    "3.7"
   ],
   "data_science_structure": [
     "no",
     "yes"
   ],
   "use_docker": [
-    "y",
-    "n"
+    "yes",
+    "no"
   ],
   "notebooks_support": [
     "yes",
     "no"
   ],
   "docs_tool": [
-    "y",
-    "n"
+    "yes",
+    "no"
   ],
   "command_line_interface": [
-    "y",
-    "n"
+    "yes",
+    "no"
   ]
 }

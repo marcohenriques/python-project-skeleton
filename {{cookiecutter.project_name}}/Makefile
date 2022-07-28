@@ -44,21 +44,23 @@ install: $(DEPENDENCIES) $(TOOLS_FIRST_INSTALLED) .cache
 install-tests: $(VIRTUAL_ENV_NAME)/bin/pytest
 $(VIRTUAL_ENV_NAME)/bin/pytest:
 	poetry install --with tests --no-root
-
+{% if cookiecutter.docs_tool == "yes" %}
 install-docs: $(VIRTUAL_ENV_NAME)/bin/mkdocs
 $(VIRTUAL_ENV_NAME)/bin/mkdocs:
 	poetry install --with docs --no-root
-
+{% endif %}{% if cookiecutter.notebooks_support == "yes" %}
+install-jupyter: $(VIRTUAL_ENV_NAME)/bin/jupyter
+$(VIRTUAL_ENV_NAME)/bin/jupyter:
+	poetry install --with jupyter --no-root
+	@ echo "$(ECHO_COLOUR)Creating ipython kernel$(NC)"
+	@ poetry run python -m ipykernel install --sys-prefix --name {{ cookiecutter.package_name }}
+{% endif %}
 $(DEPENDENCIES): $(VIRTUAL_ENV_NAME)
 	poetry install
 	@ touch $@
 	@ $(MAKE) gen-req
 
 $(TOOLS_FIRST_INSTALLED):
-	{% if cookiecutter.notebooks_support == "yes" -%}
-	@ echo "$(ECHO_COLOUR)Creating ipython kernel$(NC)"
-	@ poetry run python -m ipykernel install --sys-prefix --name {{ cookiecutter.package_name }}
-	{% endif -%}
 	git init  # remove after first install
 	@ poetry run pre-commit install
 	@ poetry run git config commit.template .gitmessage
@@ -67,7 +69,6 @@ $(TOOLS_FIRST_INSTALLED):
 .cache:
 	@ mkdir -p .cache
 
-{% if cookiecutter.python_version_management == "pyenv" -%}
 $(VIRTUAL_ENV_NAME): .python-version  ## Create python environment
 	$(MAKE) doctor
 	poetry env use -- $(shell pyenv which python)
@@ -78,11 +79,6 @@ $(VIRTUAL_ENV_NAME): .python-version  ## Create python environment
 	@ echo "$(ECHO_COLOUR)Installing python version $(PYENV_LATEST_VERSION)...$(NC)"
 	pyenv install -s $(PYENV_LATEST_VERSION)
 	pyenv local $(PYENV_LATEST_VERSION)
-{%- elif cookiecutter.python_version_management == "conda" -%}
-$(VIRTUAL_ENV_NAME): ## Create python environment
-	$(MAKE) doctor
-	conda create -y -p $(VIRTUAL_ENV_NAME) python=$(PYTHON_VERSION)
-{%- endif %}
 
 .PHONY: gen-req
 gen-req:  ## Generate requirements files from poetry
@@ -100,16 +96,26 @@ format:  ## Run formatters
 	poetry run black $(PACKAGES)
 	@ echo
 
-.PHONY: check
-check:  ## Run linters, and static code analysis
+.PHONY: check-packages
+check-packages: requirements.txt  ## Run package check
 	@ echo "$(ECHO_COLOUR)Checking packages$(NC)"
 	poetry check
 	poetry run pip check
-	poetry run safety check -r requirements.txt
+	poetry run safety check --full-report -r requirements.txt
+	@ echo "$(ECHO_COLOUR)Removing requirements.txt$(NC)"
+	@ rm requirements.txt
+
+.PHONY: lint
+lint:  ## Run linters (mypy, flake8, shellcheck)
 	@ echo "$(ECHO_COLOUR)Running mypy$(NC)"
 	poetry run mypy --install-types --non-interactive $(PACKAGES)
 	@ echo "$(ECHO_COLOUR)Running flake8$(NC)"
 	poetry run flake8 $(PACKAGES)
+	@ echo "$(ECHO_COLOUR)Running shellcheck$(NC)"
+	poetry run shellcheck $(shell find . -not -path '*/.*' -regex '.*\.sh$$')
+
+.PHONY: check
+check: check-packages lint  ## Run linters, and static code analysis
 
 .PHONY: pre-commit
 pre-commit:  ## Run pre-commit on all files
@@ -159,7 +165,7 @@ build-docs: install ## Generate Sphinx documentation locally
 
 docs: build-docs ## Open the documentation
 	scripts/open docs/_build/html/index.html
-{%- elif cookiecutter.docs_tool == "y" -%}
+{%- elif cookiecutter.docs_tool == "yes" -%}
 MKDOCS_INDEX := site/index.html
 
 .PHONY: build-docs
@@ -229,10 +235,10 @@ clean-all: clean
 all: install
 
 .PHONY: ci
-ci: format check test {%- if cookiecutter.docs_tool == "y" %} build-docs{% endif %} ## Run all tasks that determine CI status
+ci: format check test {%- if cookiecutter.docs_tool == "yes" %} build-docs{% endif %} ## Run all tasks that determine CI status
 
 {% if cookiecutter.notebooks_support == "yes" -%}
 .PHONY: jupyter
-jupyter: install ## Launch an Jupyter notebook session
+jupyter: install-jupyter ## Launch an Jupyter notebook session
 	poetry run jupyter notebook --notebook-dir=notebooks
 {% endif -%}

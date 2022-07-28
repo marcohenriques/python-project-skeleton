@@ -9,5 +9,5 @@
 
 ## Requirements
 
-* {{cookiecutter.python_version_management.capitalize()}}
+* Pyenv
 * Poetry

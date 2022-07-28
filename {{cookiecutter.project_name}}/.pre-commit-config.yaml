@@ -85,10 +85,16 @@ repos:
             scripts/|
             notebooks/
           )
+      - id: shellcheck
+        name: Running shellcheck
+        stages: [commit]
+        entry: poetry run shellcheck
+        language: python
+        types: [shell]
 {% if cookiecutter.notebooks_support == "yes" %}
       - id: nbqa-isort
         name: Running isort on notebooks
-        description: "isort formating for jupyter notebooks"
+        description: "isort formatting for jupyter notebooks"
         language: system
         entry: poetry run nbqa isort
         args: [--nbqa-mutate]
@@ -96,7 +102,7 @@ repos:
         files: \.(ipynb)$
       - id: nbqa-black
         name: Running black on notebooks
-        description: "black formating for jupyter notebooks"
+        description: "black formatting for jupyter notebooks"
         language: system
         entry: poetry run nbqa black
         args: [--nbqa-mutate]

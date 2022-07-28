@@ -5,16 +5,20 @@
 ### Requirements
 
 * Make:
-    * macOS: `$ xcode-select --install`
+    * MacOS: `$ xcode-select --install`
     * Linux: [https://www.gnu.org/software/make](https://www.gnu.org/software/make)
-    * Windows: [https://mingw.org/download/installer](https://mingw.org/download/installer)
-* Python: (`pyenv` or `conda`)
-* Poetry: [https://poetry.eustace.io/docs/#installation](https://poetry.eustace.io/docs/#installation)
+* [Pyenv](https://github.com/pyenv/pyenv)
+* [Poetry](https://poetry.eustace.io/docs/#installation) (version ~1.2.0b3)
 
 To confirm these system dependencies are configured correctly:
 
 ```bash
 ./scripts/verchew
+```
+
+In Linux, make sure you have all required Python dependencies instaled:
+```shell
+sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev liblzma-dev tk-dev
 ```
 
 ### Installation
@@ -27,9 +31,6 @@ make install
 
 Additional, the first time it runs, it will also:
 
-{% if cookiecutter.notebooks_support == "yes" -%}
-* install _ipython kernel_ named `{{ cookiecutter.package_name }}`
-{%- endif %}
 * initialize git
 * install _pre-commit_ in git hooks (this will run the hooks when you commit/push your changes)
 * setup a default git message template for commits
@@ -43,6 +44,7 @@ Run the tests:
 ```make
 make test
 ```
+(the first time it runs will also install the `tests` dependency group)
 
 Read full coverage report:
 
@@ -62,12 +64,13 @@ Run code static analysis (_flake8_,  _mypy_ and _safety_):
 make check
 ```
 
-{% if cookiecutter.docs_tool == "y" -%}
+{% if cookiecutter.docs_tool == "yes" -%}
 Build and open/serve the documentation:
 
 ```make
 make docs
 ```
+(the first time it runs will also install the `docs` dependency group)
 
 {% endif -%}
 Run all _pre-commit_ hooks for all files:
@@ -88,6 +91,8 @@ Open jupyter notebooks on notebooks directory (using configs in `notebooks/profi
 ```make
 make jupyter
 ```
+(the first time it runs will also install the `jupyter` dependency group, and register an ipython kernel with the name
+of the project)
 
 {% endif -%}
 ### Continuous Integration

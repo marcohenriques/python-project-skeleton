@@ -46,7 +46,7 @@ DOCKER_EXCLUDE = ["Dockerfile_poetry"]
 
 
 def move_docs_files(docs_tool, docs_files, docs_sources):
-    if docs_tool == "n":
+    if docs_tool == "no":
         return
 
     root = os.getcwd()
@@ -69,12 +69,6 @@ def move_docs_files(docs_tool, docs_files, docs_sources):
 
         os.rename(src_path, dst_path)
 
-    if docs_tool == "y":
-        # Create symbolic links to readme, changelog and contributing
-        os.symlink("../README.md", "docs/index.md")
-        os.symlink("../../CHANGELOG.md", "docs/about/changelog.md")
-        os.symlink("../../CONTRIBUTING.md", "docs/about/contributing.md")
-
 
 def rename_gitignore():
     os.rename(GITIGNORE_TEMP_NAME, ".gitignore")
@@ -86,8 +80,8 @@ def remove_temp_folders(temp_folders):
         shutil.rmtree(folder)
 
 
-def process_datascience_env(processQ):
-    if processQ == "no":
+def process_datascience_env(data_science_structure):
+    if data_science_structure == "no":
         os.remove("Makefile_DS")
         remove_temp_folders(DS_DIRS)
     else:
@@ -100,8 +94,8 @@ def process_notebooks(processQ):
         remove_temp_folders(NB_DIRS)
 
 
-def process_cli(cli_tool):
-    if cli_tool != "y":
+def process_cli(command_line_interface):
+    if command_line_interface != "yes":
         for file in CLI_FILES:
             os.remove(file)
         remove_temp_folders(CLI_DIRS)
@@ -110,7 +104,7 @@ def process_docker(use_docker) -> None:
     """
     Remove the Dockerfile and Dockerfile.test if the user doesn't want to use Docker.
     """
-    if use_docker == "n":
+    if use_docker == "no":
         for file in DOCKER_INCLUDE:
             os.remove(file)
     for file in DOCKER_EXCLUDE:
