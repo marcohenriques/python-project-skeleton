@@ -62,7 +62,7 @@ $(DEPENDENCIES): $(VIRTUAL_ENV_NAME)
 
 $(TOOLS_FIRST_INSTALLED):
 	git init  # remove after first install
-	@ poetry run pre-commit install
+	@ poetry run pre-commit install -t pre-commit -t pre-push
 	@ poetry run git config commit.template .gitmessage
 	@ touch $@ # This will create a file named `.tools_first_installed` inside venv folder
 
@@ -238,7 +238,10 @@ all: install
 ci: format check test {%- if cookiecutter.docs_tool == "yes" %} build-docs{% endif %} ## Run all tasks that determine CI status
 
 {% if cookiecutter.notebooks_support == "yes" -%}
+notebooks:
+	mkdir -p notebooks
+
 .PHONY: jupyter
-jupyter: install-jupyter ## Launch an Jupyter notebook session
+jupyter: install-jupyter notebooks ## Launch an Jupyter notebook session
 	poetry run jupyter notebook --notebook-dir=notebooks
 {% endif -%}

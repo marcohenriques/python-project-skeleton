@@ -35,9 +35,6 @@ DS_DIRS = [
     "references/",
     "reports/",
 ]
-NB_DIRS = [
-    "notebooks/",
-]
 CLI_FILES = ["tests/test_cli.py"]
 CLI_DIRS = ["src/{{cookiecutter.package_name}}/cli/"]
 DOCKER_DIRS = ["docker/"]
@@ -89,11 +86,6 @@ def process_datascience_env(data_science_structure):
         print("on progress")
 
 
-def process_notebooks(processQ):
-    if processQ == "no":
-        remove_temp_folders(NB_DIRS)
-
-
 def process_cli(command_line_interface):
     if command_line_interface != "yes":
         for file in CLI_FILES:
@@ -117,6 +109,5 @@ if __name__ == "__main__":
     remove_temp_folders(ALL_TEMP_FOLDERS)
     rename_gitignore()
     process_datascience_env("{{cookiecutter.data_science_structure}}")
-    process_notebooks("{{cookiecutter.notebooks_support}}")
     process_cli("{{cookiecutter.command_line_interface}}")
     process_docker("{{cookiecutter.use_docker}}")
