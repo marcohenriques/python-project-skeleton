@@ -86,7 +86,7 @@ make clean
 ```
 
 {% if cookiecutter.notebooks_support == "yes" %}
-Open jupyter notebooks on notebooks directory (using configs in `notebooks/profile_default`):
+Open jupyter notebooks on notebooks directory:
 
 ```make
 make jupyter
