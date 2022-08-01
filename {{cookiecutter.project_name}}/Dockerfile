@@ -1,4 +1,3 @@
-# Dockerfile
 # Uses multi-stage builds requiring Docker 17.05 or higher
 # See https://docs.docker.com/develop/develop-images/multistage-build/
 
@@ -18,6 +17,9 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_DEFAULT_TIMEOUT=100
 
 WORKDIR /app
+
+# Add our app code to python path:
+ENV PYTHONPATH="/app/src"
 
 RUN apt-get update && apt-get upgrade -y \
     && apt-get install --no-install-recommends -y \
@@ -40,9 +42,6 @@ FROM python-base as production
 
 COPY . .
 
-# Add our app code to python path:
-ENV PYTHONPATH="/app/src"
-
 # Running as non-root user:
 USER web
 
@@ -58,9 +57,6 @@ RUN pip install -r /requirements-dev.txt
 
 # Instead of copying the whole project, we could mount a volume to current directory:
 # COPY . .
-
-# Add our app code to python path:
-ENV PYTHONPATH="/app/src"
 
 # Running as non-root user:
 USER web

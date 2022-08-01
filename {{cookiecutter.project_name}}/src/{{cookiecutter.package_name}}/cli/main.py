@@ -131,3 +131,7 @@ def my_simple_command(  # noqa: WPS211, WPS213
     typer.echo(f"some_uuid date: {some_uuid} (version {some_uuid.version})")
     typer.echo(f"Verbose level is {verbose}")
     typer.echo(f"log_level {log_level}")
+
+
+if __name__ == "__main__":
+    app()

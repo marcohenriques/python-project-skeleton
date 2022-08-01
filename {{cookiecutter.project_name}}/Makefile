@@ -112,7 +112,8 @@ lint:  ## Run linters (mypy, flake8, shellcheck)
 	@ echo "$(ECHO_COLOUR)Running flake8$(NC)"
 	poetry run flake8 $(PACKAGES)
 	@ echo "$(ECHO_COLOUR)Running shellcheck$(NC)"
-	poetry run shellcheck $(shell find . -not -path '*/.*' -regex '.*\.sh$$')
+	@ $(eval sh_files := $(shell find . -not -path '*/.*' -regex '.*\.sh$$'))
+	$(if $(sh_files),poetry run shellcheck $(sh_files), echo "$(ECHO_COLOUR)No shell files found$(NC)")
 
 .PHONY: check
 check: check-packages lint  ## Run linters, and static code analysis
