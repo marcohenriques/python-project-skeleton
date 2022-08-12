@@ -92,9 +92,10 @@ gen-req:  ## Generate requirements files from poetry
 
 .PHONY: format
 format:  ## Run formatters
+	@ echo "$(ECHO_COLOUR)##### Running isort #####$(NC)"
 	poetry run isort $(PACKAGES)
+	@ echo "$(ECHO_COLOUR)##### Running black #####$(NC)"
 	poetry run black $(PACKAGES)
-	@ echo
 
 .PHONY: check-packages
 check-packages: requirements.txt  ## Run package check
@@ -105,15 +106,21 @@ check-packages: requirements.txt  ## Run package check
 	@ echo "$(ECHO_COLOUR)Removing requirements.txt$(NC)"
 	@ rm requirements.txt
 
-.PHONY: lint
-lint:  ## Run linters (mypy, flake8, shellcheck)
-	@ echo "$(ECHO_COLOUR)Running mypy$(NC)"
+mypy:
+	@ echo "$(ECHO_COLOUR)##### Running mypy #####$(NC)"
 	poetry run mypy --install-types --non-interactive $(PACKAGES)
-	@ echo "$(ECHO_COLOUR)Running flake8$(NC)"
+
+flake:
+	@ echo "$(ECHO_COLOUR)##### Running flake8 #####$(NC)"
 	poetry run flake8 $(PACKAGES)
-	@ echo "$(ECHO_COLOUR)Running shellcheck$(NC)"
+
+shellcheck:
+	@ echo "$(ECHO_COLOUR)##### Running shellcheck #####$(NC)"
 	@ $(eval sh_files := $(shell find . -not -path '*/.*' -regex '.*\.sh$$'))
-	$(if $(sh_files),poetry run shellcheck $(sh_files), echo "$(ECHO_COLOUR)No shell files found$(NC)")
+	$(if $(sh_files),poetry run shellcheck $(sh_files), @ echo "No shell files found")
+
+.PHONY: lint
+lint: mypy flake shellcheck  ## Run linters (mypy, flake8, shellcheck)
 
 .PHONY: check
 check: check-packages lint  ## Run linters, and static code analysis
