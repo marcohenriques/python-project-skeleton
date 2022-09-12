@@ -1,0 +1,79 @@
+name: Run app linters and tests
+
+on:
+  workflow_call:
+    inputs:
+      run-test:
+        required: false
+        type: string
+        default: "true"
+
+# cancel in progress workflow:
+# https://docs.github.com/en/actions/using-jobs/using-concurrency#example-using-a-fallback-value
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  PACKAGES: src tests
+
+jobs:
+  build:
+    if: inputs.run-test == 'true'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+
+    - name: Get full Python version
+      id: full-python-version
+      run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
+
+    - name: Install and configure Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: 1.2.0b3
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+        installer-parallel: true
+
+    - name: Set up cache
+      uses: actions/cache@v2
+      id: cache
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Ensure cache is healthy
+      if: steps.cache.outputs.cache-hit == 'true'
+      run: timeout 10s poetry run pip --version || rm -rf .venv
+
+    - name: Install dependencies
+      run: |
+        poetry run pip install -U pip
+        poetry install --with dev,tests
+
+    - name: Run package checks
+      run: |
+        make check-packages
+
+    - name: Run Linters
+      run: |
+        make lint
+
+    - name: Run tests
+      run: |
+        make test
+
+  tests-end-check:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    if: always()
+    steps:
+    - name: Finished echo
+      run: |
+        echo "CI test workflow finished with result '${{ needs.build.result}}'"
