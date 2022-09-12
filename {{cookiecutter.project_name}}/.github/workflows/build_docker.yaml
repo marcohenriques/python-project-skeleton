@@ -1,0 +1,83 @@
+name: Build and push docker image
+
+on:
+  workflow_call:
+    inputs:
+      image-name:
+        required: true
+        type: string
+      image-tag:
+        required: true
+        type: string
+      push-image:
+        required: false
+        type: string
+        default: "false"
+      github-ecr-role-arn:
+        required: true
+        type: string
+
+env:
+  IMAGE_NAME: ${{ inputs.image-name}}
+  IMAGE_TAG: ${{ inputs.image-tag}}
+
+jobs:
+  build:
+    name: Build image
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.2.0b3
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+
+      - name: Build image
+        run: |
+          set -eux
+          DOCKER_IMAGE_NAME=${IMAGE_NAME} DOCKER_IMAGE_TAG=${IMAGE_TAG} make build-docker
+
+      - name: Configure AWS credentials
+        if: inputs.push-image == 'true'
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ inputs.github-ecr-role-arn}}
+          aws-region: eu-west-1
+
+      - name: Login to Amazon ECR
+        if: inputs.push-image == 'true'
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Push image to Amazon ECR
+        if: inputs.push-image == 'true'
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          set -eux
+
+          # If tag already exists in ECR, there's no point in building or pushing image.
+          EXISTING_TAGS=$(aws ecr describe-images --repository "${IMAGE_NAME}" --query "imageDetails[].imageTags[0]" --output yaml)
+          if ! echo "${EXISTING_TAGS}" | grep -q "${IMAGE_TAG}"; then
+            docker tag "${IMAGE_NAME}":"${IMAGE_TAG}" \
+              "${ECR_REGISTRY}"/"${IMAGE_NAME}":"${IMAGE_TAG}"
+            docker push "${ECR_REGISTRY}"/"${IMAGE_NAME}":"${IMAGE_TAG}"
+
+            # Tagging with latest to be used in airflow
+            docker tag "${IMAGE_NAME}":"${IMAGE_TAG}" \
+              "${ECR_REGISTRY}"/"${IMAGE_NAME}":latest
+            docker push "${ECR_REGISTRY}"/"${IMAGE_NAME}":latest
+          fi
