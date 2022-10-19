@@ -9,33 +9,29 @@ on:
   workflow_dispatch:
 
 env:
-  BASE_IMAGE_NAME: da/dataqa-logs
-  BASE_ECR_ROLE_PREFIX: da-dataqa-logs
+  BASE_IMAGE_NAME: {{cookiecutter.project_name}}
 
 jobs:
   setup-env:
     runs-on: ubuntu-latest
     outputs:
-      image-name: ${{ steps.setup-docker-image-vars.outputs.image-name }}
-      image-tag: ${{ steps.setup-docker-image-vars.outputs.image-tag }}
-      push-image: ${{ steps.setup-docker-image-vars.outputs.push-image }}
-      github-ecr-role-arn: ${{ steps.setup-docker-image-vars.outputs.github-ecr-role-arn }}
-      run-test-flag: ${{ steps.setup-run-test-vars.outputs.run-test-flag }}
+      image-name: {% raw %}${{ steps.setup-docker-image-vars.outputs.image-name }}{% endraw %}
+      image-tag: {% raw %}${{ steps.setup-docker-image-vars.outputs.image-tag }}{% endraw %}
+      push-image: {% raw %}${{ steps.setup-docker-image-vars.outputs.push-image }}{% endraw %}
+      run-test-flag: {% raw %}${{ steps.setup-run-test-vars.outputs.run-test-flag }}{% endraw %}
     steps:
       - id: setup-docker-image-vars
         name: Setup docker image vars
         run: |
           set -eux
 
-          if [[ ${{ github.event_name }} == "workflow_dispatch" ]]; then
+          if [[ {% raw %}${{ github.event_name }}{% endraw %} == "workflow_dispatch" ]]; then
               IMAGE_NAME=$BASE_IMAGE_NAME-dev
-              ECR_ROLE_PREFIX=$BASE_ECR_ROLE_PREFIX-dev
           else
               IMAGE_NAME=$BASE_IMAGE_NAME
-              ECR_ROLE_PREFIX=$BASE_ECR_ROLE_PREFIX
           fi
 
-          if [[ ${{ github.event_name }} == "workflow_dispatch" || (${{ github.event_name }} == "push" && ${{ github.ref }} == "refs/heads/master") ]]; then
+          if [[ {% raw %}${{ github.event_name }}{% endraw %} == "workflow_dispatch" || ({% raw %}${{ github.event_name }}{% endraw %} == "push" && {% raw %}${{ github.ref }}{% endraw %} == "refs/heads/master") ]]; then
               PUSH_IMAGE=true
           else
               PUSH_IMAGE=false
@@ -45,15 +41,12 @@ jobs:
           echo "::set-output name=image-tag::$GITHUB_SHA"
           echo "::set-output name=push-image::$PUSH_IMAGE"
 
-          GITHUB_ECR_ROLE=arn:aws:iam::099080067198:role/$ECR_ROLE_PREFIX-github-actions
-          echo "::set-output name=github-ecr-role-arn::$GITHUB_ECR_ROLE"
-
       - id: setup-run-test-vars
         name: Setup run test vars
         run: |
           set -eux
 
-          if [[ ${{ github.event_name }} == "push" && ${{ github.ref }} == "refs/heads/master" ]]; then
+          if [[ {% raw %}${{ github.event_name }}{% endraw %} == "push" && {% raw %}${{ github.ref }}{% endraw %} == "refs/heads/master" ]]; then
               RUN_TESTS=false
           else
               RUN_TESTS=true
@@ -64,7 +57,7 @@ jobs:
     uses: ./.github/workflows/ci_tests.yaml
     needs: setup-env
     with:
-      run-test: ${{needs.setup-env.outputs.run-test-flag}}
+      run-test: {% raw %}${{ needs.setup-env.outputs.run-test-flag}}{% endraw %}
 
   build-docker:
     uses: ./.github/workflows/build_docker.yaml
@@ -72,7 +65,6 @@ jobs:
       - setup-env
       - run-ci-tests
     with:
-      image-name: ${{needs.setup-env.outputs.image-name}}
-      image-tag: ${{needs.setup-env.outputs.image-tag}}
-      push-image: ${{needs.setup-env.outputs.push-image}}
-      github-ecr-role-arn: ${{needs.setup-env.outputs.github-ecr-role-arn}}
+      image-name: {% raw %}${{ needs.setup-env.outputs.image-name}}{% endraw %}
+      image-tag: {% raw %}${{ needs.setup-env.outputs.image-tag}}{% endraw %}
+      push-image: {% raw %}${{ needs.setup-env.outputs.push-image}}{% endraw %}

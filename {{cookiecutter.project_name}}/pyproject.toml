@@ -4,7 +4,7 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry]
 name = "{{cookiecutter.package_name}}"
-version = "0.1.0"
+version = "0.0.1"
 description = "{{cookiecutter.project_short_description}}"
 authors = ["{{cookiecutter.full_name}} <{{cookiecutter.email}}>"]
 readme = "README.md"
@@ -20,7 +20,7 @@ packages = [
 include = [
     { path = "tests", format = "sdist" }
 ]
-{% if cookiecutter.command_line_interface|lower == 'yes' %}
+{% if cookiecutter.include_cli|lower == 'yes' %}
 [tool.poetry.scripts]
 {{cookiecutter.package_name}} = "{{cookiecutter.package_name}}.cli.main:app"
 {% endif %}
@@ -33,7 +33,7 @@ include = [
 python = "^{{cookiecutter.python_version}}"
 pyyaml = "^6.0"
 pydantic = "^1.9.1"
-{%- if cookiecutter.command_line_interface|lower == 'yes' %}
+{%- if cookiecutter.include_cli|lower == 'yes' %}
 typer = {extras = ["all"], version = "^0.6.0"}
 {%- endif %}
 
@@ -55,7 +55,8 @@ pytest-cov = "^3.0.0"
 pytest-clarity = "^1.0.1"
 pytest-randomly = "^3.12.0" # random shuffle tests
 xdoctest = "^1.0.1"
-{% if cookiecutter.docs_tool == "yes" %}
+pytest-env = "^0.6.2"
+{% if cookiecutter.include_docs == "yes" %}
 [tool.poetry.group.docs]
 optional = true
 [tool.poetry.group.docs.dependencies]
@@ -76,9 +77,17 @@ jupyter-contrib-nbextensions = "^0.5.1"
 ### TOOLS CONFIG ###
 ####################
 
+[tool.semantic_release]
+branch = "main"
+version_toml = "pyproject.toml:tool.poetry.version"
+version_variable = "src/{{ cookiecutter.project_name }}/__init__.py:__version__"
+upload_to_repository = false  # TODO: set to true if you want to upload to pypi
+upload_to_release = false  # upload to github release
+
+
 [tool.black]
 target-version = ["py39", "py310"]
-line-length = 99
+line-length = 100
 ipynb = false
 
 
@@ -86,7 +95,7 @@ ipynb = false
 profile = "black"
 combine_as_imports = true
 lines_after_imports = 2
-line_length = 99
+line_length = 100
 
 
 [tool.mypy]
