@@ -1,6 +1,7 @@
 {
   "full_name": "user",
   "email": "user@domain.com",
+  "github_username_or_organization": "",
   "project_name": "my_project",
   "package_name": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
   "project_short_description": "Python Boilerplate contains all the boilerplate you need to create a Python package.",
@@ -9,11 +10,7 @@
     "3.9",
     "3.8"
   ],
-  "data_science_structure": [
-    "no",
-    "yes"
-  ],
-  "use_docker": [
+  "include_docker": [
     "yes",
     "no"
   ],
@@ -21,11 +18,11 @@
     "yes",
     "no"
   ],
-  "docs_tool": [
+  "include_docs": [
     "yes",
     "no"
   ],
-  "command_line_interface": [
+  "include_cli": [
     "yes",
     "no"
   ]

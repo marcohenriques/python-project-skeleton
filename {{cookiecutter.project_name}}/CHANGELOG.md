@@ -1,5 +1,3 @@
 # Changelog
 
-## 0.0.0 (YYYY-MM-DD)
-
- - TBD
+<!--next-version-placeholder-->

@@ -22,6 +22,6 @@
     // Vertical lines num characters
     "editor.rulers": [
         80,
-        99
+        100
     ],
 }

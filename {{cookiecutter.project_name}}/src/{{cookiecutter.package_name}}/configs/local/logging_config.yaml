@@ -1,0 +1,24 @@
+version: 1
+disable_existing_loggers: false
+
+formatters:
+  standard:
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: standard
+    stream: ext://sys.stdout
+
+root:
+  level: NOTSET # if set, this will be the default logging level for all packages not cover in loggers section
+  handlers: [console]
+  propagate: no
+
+loggers:
+  {{ cookiecutter.package_name }}:
+    level: DEBUG
+    handlers: [console]
+    propagate: no

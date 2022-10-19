@@ -44,7 +44,7 @@ install: $(DEPENDENCIES) $(TOOLS_FIRST_INSTALLED) .cache
 install-tests: $(VIRTUAL_ENV_NAME)/bin/pytest
 $(VIRTUAL_ENV_NAME)/bin/pytest:
 	poetry install --with tests --no-root
-{% if cookiecutter.docs_tool == "yes" %}
+{% if cookiecutter.include_docs == "yes" %}
 install-docs: $(VIRTUAL_ENV_NAME)/bin/mkdocs
 $(VIRTUAL_ENV_NAME)/bin/mkdocs:
 	poetry install --with docs --no-root
@@ -62,7 +62,7 @@ $(DEPENDENCIES): $(VIRTUAL_ENV_NAME)
 
 $(TOOLS_FIRST_INSTALLED):
 	git init  # remove after first install
-	@ poetry run pre-commit install -t pre-commit -t pre-push
+	@ poetry run pre-commit install -t pre-commit -t pre-push -tcommit-msg
 	@ poetry run git config commit.template .gitmessage
 	@ touch $@ # This will create a file named `.tools_first_installed` inside venv folder
 
@@ -158,22 +158,10 @@ test-all: install-tests
 .PHONY: read-coverage
 read-coverage:  ## Open last coverage report in html page
 	${ROOT_DIR}/scripts/open htmlcov/index.html
-
+{% if cookiecutter.include_docs == "yes" %}
 
 # DOCUMENTATION ###############################################################
 
-{% if cookiecutter.docs_tool == "sphinx" -%}
-.PHONY: build-docs
-build-docs: install ## Generate Sphinx documentation locally
-	rm -f docs/{{ cookiecutter.package_name }}.rst
-	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ {{ cookiecutter.package_name }}
-	$(MAKE) -C docs clean
-	$(MAKE) -C docs html
-
-docs: build-docs ## Open the documentation
-	scripts/open docs/_build/html/index.html
-{%- elif cookiecutter.docs_tool == "yes" -%}
 MKDOCS_INDEX := site/index.html
 
 .PHONY: build-docs
@@ -243,7 +231,7 @@ clean-all: clean
 all: install
 
 .PHONY: ci
-ci: format check test {%- if cookiecutter.docs_tool == "yes" %} build-docs{% endif %} ## Run all tasks that determine CI status
+ci: format check test {%- if cookiecutter.include_docs == "yes" %} build-docs{% endif %} ## Run all tasks that determine CI status
 
 {% if cookiecutter.notebooks_support == "yes" -%}
 notebooks:
