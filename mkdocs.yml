@@ -4,11 +4,12 @@ site_description: A cookiecutter template for python packages.
 site_author: "Marco Henriques <marco.martins.henriques@gmail.com>"
 
 repo_url: https://github.com/marcohenriques/python-project-skeleton
+edit_uri: blob/main/docs/
 
 theme:
   name: material
-  favicon: images/favicon.ico
-  logo: images/logo.png
+  favicon: images/favicon.svg
+  logo: images/logo.svg
   static_templates:
     - 404.html
   feature:
