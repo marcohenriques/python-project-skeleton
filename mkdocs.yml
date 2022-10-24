@@ -3,8 +3,7 @@ site_name: python-project-skeleton
 site_description: A cookiecutter template for python packages.
 site_author: "Marco Henriques <marco.martins.henriques@gmail.com>"
 
-#repo_url: https://__REPO_URI__
-#edit_uri: https://__REPO_URI__/__BRANCH__/docs
+repo_url: https://github.com/marcohenriques/python-project-skeleton
 
 theme:
   name: material
@@ -47,3 +46,4 @@ plugins:
 
 nav:
   - Start: index.md
+  - Requirements: requirements.md
