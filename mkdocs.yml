@@ -1,21 +1,34 @@
-# check https://squidfunk.github.io/mkdocs-material/reference/ for more cool stuff
+# For more cool stuff to enrich your docs check out:
+# https://squidfunk.github.io/mkdocs-material/reference/
+# https://facelessuser.github.io/pymdown-extensions/
 site_name: python-project-skeleton
 site_description: A cookiecutter template for python packages.
 site_author: "Marco Henriques <marco.martins.henriques@gmail.com>"
 
 repo_url: https://github.com/marcohenriques/python-project-skeleton
-edit_uri: blob/main/docs/
+edit_uri: ""
 
 theme:
   name: material
   favicon: images/favicon.svg
   logo: images/logo.svg
+  icon:
+    repo: material/github
   static_templates:
     - 404.html
   feature:
-    tabs: true
+    - navigation.tabs
   palette:
-    primary: cyan
+    - scheme: default
+      media: "(prefers-color-scheme: light)"
+      toggle:
+        icon: material/lightbulb
+        name: Switch to dark mode
+    - scheme: slate
+      media: "(prefers-color-scheme: dark)"
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to light mode
   hljs_languages:
     - yaml
 
@@ -28,16 +41,14 @@ markdown_extensions:
   - codehilite
   - pymdownx.critic
   - pymdownx.details
-  - pymdownx.emoji
   - pymdownx.keys
-  - pymdownx.magiclink
   - pymdownx.superfences
+  - pymdownx.snippets:
+      base_path: docs
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tabbed:
       alternate_style: true
-  - mdx_include:
-      base_path: .
 
 
 plugins:
@@ -48,3 +59,4 @@ plugins:
 nav:
   - Start: index.md
   - Requirements: requirements.md
+  - Changelog: changelog.md

@@ -11,6 +11,11 @@ logger = logging.getLogger("post_gen_project")
 
 
 def process_docs(include_docs: str) -> None:
+    """Process the docs.
+
+    Args:
+        include_docs (str): whether to include docs or not ('yes' or 'no')
+    """
     logger.debug("Processing docs")
     if include_docs == "no":
         logger.info("Not including docs")
@@ -20,10 +25,16 @@ def process_docs(include_docs: str) -> None:
 
 
 def rename_gitignore() -> None:
+    """Rename the gitignore file to .gitignore."""
     os.rename("gitignore", ".gitignore")
 
 
 def process_cli(include_cli: str) -> None:
+    """Process the CLI.
+
+    Args:
+        include_cli (str): whether to include CLI or not ('yes' or 'no')
+    """
     logger.debug("Processing cli")
     if include_cli == "no":
         logger.info("Not including cli")
@@ -31,9 +42,27 @@ def process_cli(include_cli: str) -> None:
         os.remove("tests/test_cli.py")
 
 
-def process_docker(include_docker) -> None:
+def process_docker(include_docker: str) -> None:
+    """Process the docker files.
+
+    Args:
+        include_docker (str): whether to include docker files or not ('yes' or 'no')
     """
-    Remove the Dockerfile and Dockerfile.test if the user doesn't want to use Docker.
+    logger.debug("Processing docker")
+    if include_docker == "no":
+        logger.info("Not including docker")
+        shutil.rmtree("docker/")
+        os.remove("Dockerfile")
+        os.remove(".dockerignore")
+    # optional dockerfile with poetry - not supported yet
+    os.remove("Dockerfile_poetry")
+
+
+def _process_docker(include_docker: str) -> None:
+    """Process the docker files.
+
+    Args:
+        include_docker (str): whether to include docker files or not ('yes' or 'no')
     """
     logger.debug("Processing docker")
     if include_docker == "no":

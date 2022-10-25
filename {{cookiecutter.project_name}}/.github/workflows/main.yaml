@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 env:
-  BASE_IMAGE_NAME: {{cookiecutter.project_name}}
+  BASE_IMAGE_NAME: {{cookiecutter.project_name.lower()}}
 
 jobs:
   setup-env:

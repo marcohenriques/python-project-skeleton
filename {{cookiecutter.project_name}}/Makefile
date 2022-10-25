@@ -167,10 +167,6 @@ MKDOCS_INDEX := site/index.html
 .PHONY: build-docs
 build-docs: install-docs $(MKDOCS_INDEX) ## Generate mkdocs documentation locally
 $(MKDOCS_INDEX): mkdocs.yml docs/*.md
-	@ mkdir -p docs/about
-	@ cd docs && ln -sf ../README.md index.md
-	@ cd docs/about && ln -sf ../../CHANGELOG.md changelog.md
-	@ cd docs/about && ln -sf ../../CONTRIBUTING.md contributing.md
 	poetry run mkdocs build --clean --strict
 
 .PHONY: docs

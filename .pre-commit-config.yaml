@@ -19,9 +19,9 @@ repos:
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
       - id: end-of-file-fixer
-      - id: check-yaml
       - id: check-symlinks
       - id: check-toml
+        exclude: \{\{cookiecutter\.project_name\}\}/pyproject\.toml
       - id: check-added-large-files
         args: ['--maxkb=1000']
   - repo: https://github.com/asottile/add-trailing-comma

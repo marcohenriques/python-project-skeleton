@@ -1,21 +1,34 @@
-# check https://squidfunk.github.io/mkdocs-material/reference/ for more cool stuff
+# For more cool stuff to enrich your docs check out:
+# https://squidfunk.github.io/mkdocs-material/reference/
+# https://facelessuser.github.io/pymdown-extensions/extensions/snippets/#snippets-notation
 site_name: {{cookiecutter.project_name}}
 site_description: {{cookiecutter.project_short_description}}
 site_author: {{cookiecutter.full_name}}
 
-#repo_url: https://__REPO_URI__
-#edit_uri: https://__REPO_URI__/__BRANCH__/docs
+repo_url: https://github.com/{{ cookiecutter.github_username_or_organization }}/{{ cookiecutter.project_name }}
+edit_uri: ""
 
 theme:
   name: material
-  favicon: images/favicon.ico
-  logo: images/logo.png
+  favicon: images/favicon.svg
+  logo: images/logo.svg
+  icon:
+    repo: material/github
   static_templates:
     - 404.html
   feature:
-    tabs: true
+    - navigation.tabs
   palette:
-    primary: cyan
+    - scheme: default
+      media: "(prefers-color-scheme: light)"
+      toggle:
+        icon: material/lightbulb
+        name: Switch to dark mode
+    - scheme: slate
+      media: "(prefers-color-scheme: dark)"
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to light mode
   hljs_languages:
     - yaml
 
@@ -28,16 +41,14 @@ markdown_extensions:
   - codehilite
   - pymdownx.critic
   - pymdownx.details
-  - pymdownx.emoji
   - pymdownx.keys
-  - pymdownx.magiclink
   - pymdownx.superfences
+  - pymdownx.snippets:
+      base_path: docs
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tabbed:
       alternate_style: true
-  - mdx_include:
-      base_path: .
 
 
 plugins:
@@ -47,4 +58,4 @@ plugins:
 
 nav:
   - Start: index.md
-  - Reference: reference/{{cookiecutter.package_name}}.md
+  - Contributing: contributing.md
