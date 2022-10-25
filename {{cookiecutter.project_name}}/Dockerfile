@@ -16,10 +16,10 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_DEFAULT_TIMEOUT=100
 
-WORKDIR /app
+WORKDIR /code
 
 # Add our app code to python path:
-ENV PYTHONPATH="/app/src"
+ENV PYTHONPATH="/code/src"
 
 RUN apt-get update && apt-get upgrade -y \
     && apt-get install --no-install-recommends -y \
@@ -27,9 +27,9 @@ RUN apt-get update && apt-get upgrade -y \
     build-essential \
     gcc \
     # Create custom user and group to run the app as:
-    && groupadd -g "${GID}" -r web \
-    && useradd -d /app -g web -l -r -u "${UID}" web \
-    && chown web:web -R /app
+    && groupadd -g "${GID}" -r app \
+    && useradd -d /code -g app -l -r -u "${UID}" app \
+    && chown app:app -R /code
 
 COPY requirements.txt /
 RUN pip install -U pip \
@@ -43,13 +43,13 @@ FROM python-base as production
 COPY . .
 
 # Running as non-root user:
-USER web
+USER app
 
 CMD ["python"]
 
 
 # 'development' stage installs all dev deps and can be used to develop code.
-# For example using docker-compose to mount local volume under /app
+# For example using docker-compose to mount local volume under /code
 FROM python-base as development
 
 COPY requirements-dev.txt /
@@ -59,6 +59,6 @@ RUN pip install -r /requirements-dev.txt
 # COPY . .
 
 # Running as non-root user:
-USER web
+USER app
 
 CMD ["python"]

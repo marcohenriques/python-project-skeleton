@@ -7,13 +7,13 @@ name = "{{cookiecutter.package_name}}"
 version = "0.0.1"
 description = "{{cookiecutter.project_short_description}}"
 authors = ["{{cookiecutter.full_name}} <{{cookiecutter.email}}>"]
-readme = "README.md"
-repository = ""
-keywords = []
-maintainers = []
-license = ""
-homepage = ""
+maintainers = ["{{ cookiecutter.full_name }} <{{ cookiecutter.email }}>"]
+homepage = "https://github.com/{{ cookiecutter.github_username_or_org_name }}/{{ cookiecutter.project_name }}"
+repository = "https://github.com/{{ cookiecutter.github_username_or_org_name }}/{{ cookiecutter.project_name }}"
 documentation = ""
+readme = "README.md"
+keywords = []
+license = ""
 packages = [
     { include = "{{cookiecutter.package_name}}", from = "src" }
 ]

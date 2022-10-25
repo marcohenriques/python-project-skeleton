@@ -41,19 +41,22 @@ TOOLS_FIRST_INSTALLED := $(VIRTUAL_ENV_NAME)/.tools_first_installed
 .PHONY: install
 install: $(DEPENDENCIES) $(TOOLS_FIRST_INSTALLED) .cache
 
-install-tests: $(VIRTUAL_ENV_NAME)/bin/pytest
-$(VIRTUAL_ENV_NAME)/bin/pytest:
+install-tests: $(TOOLS_FIRST_INSTALLED)_tests
+$(TOOLS_FIRST_INSTALLED)_tests:
 	poetry install --with tests --no-root
+	@ touch $@
 {% if cookiecutter.include_docs == "yes" %}
-install-docs: $(VIRTUAL_ENV_NAME)/bin/mkdocs
-$(VIRTUAL_ENV_NAME)/bin/mkdocs:
+install-docs: $(TOOLS_FIRST_INSTALLED)_docs
+$(TOOLS_FIRST_INSTALLED)_docs:
 	poetry install --with docs --no-root
+	@ touch $@
 {% endif %}{% if cookiecutter.notebooks_support == "yes" %}
-install-jupyter: $(VIRTUAL_ENV_NAME)/bin/jupyter
-$(VIRTUAL_ENV_NAME)/bin/jupyter:
+install-jupyter: $(TOOLS_FIRST_INSTALLED)_jupyter
+$(TOOLS_FIRST_INSTALLED)_jupyter:
 	poetry install --with jupyter --no-root
 	@ echo "$(ECHO_COLOUR)Creating ipython kernel$(NC)"
 	@ poetry run python -m ipykernel install --sys-prefix --name {{ cookiecutter.package_name }}
+	@ touch $@
 {% endif %}
 $(DEPENDENCIES): $(VIRTUAL_ENV_NAME)
 	poetry install

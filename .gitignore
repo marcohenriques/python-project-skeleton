@@ -1,47 +1,101 @@
-# Temporary Python files
-*.pyc
-*.egg-info
-__pycache__
-.ipynb_checkpoints
-setup.py
-pip-wheel-metadata/
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
 
-# Temporary OS files
-Icon*
+# C extensions
+*.so
 
-# Temporary virtual environment files
-/.cache/
-/.venv/
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# Temporary server files
-.env
-*.pid
-
-# Generated documentation
-/docs/gen/
-/docs/apidocs/
-/site/
-/*.html
-/docs/*.png
-
-# Google Drive
-*.gdoc
-*.gsheet
-*.gslides
-*.gdraw
-
-# Testing and coverage results
-/.coverage
-/.coverage.*
-/htmlcov/
-
-# Build and release directories
-/build/
-/dist/
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
 *.spec
 
-# Sublime Text
-*.sublime-workspace
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
 
-# Eclipse
-.settings
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# dotenv
+.env
+
+# virtualenv
+.venv
+venv/
+ENV/
+
+# Sphinx documentation
+docs/_build/
+
+# mkdocs documentation
+/site
+docs/*.png
+
+# mypy
+.mypy_cache/
+
+# vscode cache
+.vscode
+
+# Pycharm files
+.idea
+
+### macOS template
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+# serverless
+**/.serverless
+**/node_modules
+
+# terraform
+**/.terraform
+*.tfstate*
+
+# exclude data from source control by default
+/data/

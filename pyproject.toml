@@ -5,7 +5,7 @@ build-backend = "poetry.masonry.api"
 [tool.poetry]
 name = "python-project-skeleton"
 version = "0.1.0"
-description = "{{cookiecutter.project_short_description}}"
+description = "Cookiecutter template for Python projects"
 authors = ["Marco Henriques <marco.martins.henriques@gmail.com>"]
 readme = "README.md"
 repository = ""
@@ -16,11 +16,20 @@ homepage = ""
 documentation = ""
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.10"
+
 
 [tool.poetry.group.dev.dependencies]
+black = "*"
+isort = "*"
+flake8 = "*"
+mypy = "*"
 pre-commit = "^2.20.0"
+
 # Documentation
+[tool.poetry.group.docs]
+optional = true
+[tool.poetry.group.docs.dependencies]
 mkdocs = "*"
 mkdocs-material = "*"
 mkdocstrings = {extras = ["python"], version = "*"}

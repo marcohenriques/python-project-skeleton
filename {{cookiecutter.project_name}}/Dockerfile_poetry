@@ -22,17 +22,17 @@ ENV PYTHONUNBUFFERED=1 \
     # tini:
     TINI_VERSION=v0.19.0 \
     TINI_PATH=/usr/local/bin/tini \
-    VENV_PATH="/app/.venv"
+    VENV_PATH="/code/.venv"
 
 ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
 
 SHELL ["/bin/bash", "-eo", "pipefail", "-c"]
 
-WORKDIR /app
+WORKDIR /code
 
-RUN groupadd -g "${GID}" -r web \
-    && useradd -d /app -g web -l -r -u "${UID}" web \
-    && chown web:web -R /app
+RUN groupadd -g "${GID}" -r app \
+    && useradd -d /code -g app -l -r -u "${UID}" app \
+    && chown app:app -R /code
 
 RUN apt-get update && apt-get upgrade -y \
     && apt-get install --no-install-recommends -y \
@@ -75,41 +75,41 @@ FROM python-base as production
 
 # Copying poetry, venv and tini into image
 COPY --from=builder-base $POETRY_HOME $POETRY_HOME
-COPY --from=builder-base $PYSETUP_PATH/.venv /app/.venv
+COPY --from=builder-base $PYSETUP_PATH/.venv /code/.venv
 COPY --from=builder-base $TINI_PATH $TINI_PATH
 
 # Copying in our entrypoint
 COPY ./docker/entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
-WORKDIR /app
+WORKDIR /code
 COPY . .
 
 # Install project python package itself
 RUN poetry install --no-interaction --no-ansi --only-root
 
 # Running as non-root user:
-USER web
+USER app
 
-# We customize how our app is loaded with the custom entrypoint:
+# We customize how our code is loaded with the custom entrypoint:
 ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]
 
 
 # 'development' stage installs all dev deps and can be used to develop code.
-# For example using docker-compose to mount local volume under /app
+# For example using docker-compose to mount local volume under /code
 FROM builder-base as development
 
 # Installing dev deps:
 RUN poetry install --no-interaction --no-ansi --with dev,docs,jupyter,tests \
-    && mv $PYSETUP_PATH/.venv /app/.venv
+    && mv $PYSETUP_PATH/.venv /code/.venv
 
-ENV PYTHONPATH="/app/src:$PYTHONPATH"
+ENV PYTHONPATH="/code/src:$PYTHONPATH"
 
 # Copying in our entrypoint
 COPY ./docker/entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
-WORKDIR /app
+WORKDIR /code
 
 # Instead of copying the whole project, we could mount a volume to current directory:
 # COPY . .
@@ -119,7 +119,7 @@ COPY ./poetry.lock ./pyproject.toml ./
 RUN poetry install --no-interaction --no-ansi --only-root
 
 # Running as non-root user:
-USER web
+USER app
 
-# We customize how our app is loaded with the custom entrypoint:
+# We customize how our code is loaded with the custom entrypoint:
 ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]
