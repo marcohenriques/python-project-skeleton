@@ -1,3 +1,4 @@
+"""This file serves only as example, it should be modified/removed."""
 import uuid
 from datetime import datetime
 from enum import Enum
@@ -6,7 +7,6 @@ from typing import Optional
 import typer
 
 from {{cookiecutter.package_name}} import __version__
-from {{cookiecutter.package_name}}.cli import files, lands, users
 from {{cookiecutter.package_name}}.settings import settings
 
 
@@ -29,10 +29,6 @@ app = typer.Typer(
     short_help="{{cookiecutter.package_name}} CLI",
     help="{{cookiecutter.project_short_description}}",
 )
-
-app.add_typer(users.app, name="users-new", short_help="overwritten short help and name")
-app.add_typer(files.app)
-app.add_typer(lands.app)
 
 
 def version_callback(used_flag: bool) -> None:
