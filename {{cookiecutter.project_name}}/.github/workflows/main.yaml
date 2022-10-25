@@ -58,7 +58,7 @@ jobs:
     needs: setup-env
     with:
       run-test: {% raw %}${{ needs.setup-env.outputs.run-test-flag}}{% endraw %}
-
+{% if cookiecutter.include_docker == "yes" %}
   build-docker:
     uses: ./.github/workflows/build_docker.yaml
     needs:
@@ -68,3 +68,4 @@ jobs:
       image-name: {% raw %}${{ needs.setup-env.outputs.image-name}}{% endraw %}
       image-tag: {% raw %}${{ needs.setup-env.outputs.image-tag}}{% endraw %}
       push-image: {% raw %}${{ needs.setup-env.outputs.push-image}}{% endraw %}
+{% endif -%}

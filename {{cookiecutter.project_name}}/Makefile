@@ -84,7 +84,7 @@ $(VIRTUAL_ENV_NAME): .python-version  ## Create python environment
 	pyenv install -s $(PYENV_LATEST_VERSION)
 	pyenv local $(PYENV_LATEST_VERSION)
 
-requirements.txt:  ## Generate requirements.txt file from poetry
+requirements.txt: poetry.lock  ## Generate requirements.txt file from poetry
 	@ echo "$(ECHO_COLOUR)Generating requirements.txt$(NC)"
 	@ poetry export -f requirements.txt --without-hashes -o requirements.txt
 	@ poetry run ${ROOT_DIR}/scripts/req_fixer requirements.txt
@@ -235,4 +235,20 @@ notebooks:
 .PHONY: jupyter
 jupyter: install-jupyter notebooks ## Launch an Jupyter notebook session
 	poetry run jupyter notebook --notebook-dir=notebooks
+{% endif -%}
+{% if cookiecutter.include_docker == "yes" %}
+
+# DOCKER ######################################################################
+
+DOCKER_IMAGE_NAME ?= {{cookiecutter.project_name.lower()}}
+DOCKER_IMAGE_TAG ?= latest
+
+.PHONY: build-docker
+build-docker: requirements.txt  ## Build docker image
+	docker build -f Dockerfile -t $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG) . --platform linux/amd64
+	@ rm requirements.txt
+
+.PHONY: run-docker
+run-docker:  ## Run docker container for built image
+	docker run -it --rm --platform linux/amd64 --name=$(DOCKER_IMAGE_NAME)_local $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)
 {% endif -%}

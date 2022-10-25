@@ -54,6 +54,7 @@ def process_docker(include_docker: str) -> None:
         shutil.rmtree("docker/")
         os.remove("Dockerfile")
         os.remove(".dockerignore")
+        os.remove(".github/workflows/build_docker.yaml")
     # optional dockerfile with poetry - not supported yet
     os.remove("Dockerfile_poetry")
 
