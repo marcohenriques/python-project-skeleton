@@ -7,31 +7,31 @@ name = "python-project-skeleton"
 version = "0.1.0"
 description = "Cookiecutter template for Python projects"
 authors = ["Marco Henriques <marco.martins.henriques@gmail.com>"]
+maintainers = ["Marco Henriques <marco.martins.henriques@gmail.com>"]
+homepage = "https://github.com/marcohenriques/python-project-skeleton"
+repository = "https://github.com/marcohenriques/python-project-skeleton"
+documentation = "https://marcohenriques.github.io/python-project-skeleton/"
 readme = "README.md"
-repository = ""
 keywords = []
-maintainers = []
 license = ""
-homepage = ""
-documentation = ""
 
 [tool.poetry.dependencies]
 python = "^3.10"
 
 
 [tool.poetry.group.dev.dependencies]
-black = "*"
-isort = "*"
-flake8 = "*"
-mypy = "*"
+black = "^22.10.0"
+isort = "^5.10.1"
+flake8 = "^5.0.4"
+mypy = "^0.982"
 pre-commit = "^2.20.0"
 
 # Documentation
 [tool.poetry.group.docs]
 optional = true
 [tool.poetry.group.docs.dependencies]
-mkdocs = "*"
-mkdocs-material = "*"
-mkdocstrings = {extras = ["python"], version = "*"}
-pygments = "*"
-pymdown-extensions = "*"
+mkdocs = "^1.4.1"
+mkdocs-material = "^8.5.7"
+mkdocstrings = {extras = ["python"], version = "^0.19.0"}
+pygments = "^2.13.0"
+pymdown-extensions = "^9.7"

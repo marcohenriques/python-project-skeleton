@@ -15,10 +15,11 @@ readme = "README.md"
 keywords = []
 license = ""
 packages = [
-    { include = "{{cookiecutter.package_name}}", from = "src" }
+    { include = "{{cookiecutter.package_name}}", from = "src" },
 ]
 include = [
-    { path = "tests", format = "sdist" }
+    { path = "src/configs" },
+    { path = "tests", format = "sdist" },
 ]
 {% if cookiecutter.include_cli|lower == 'yes' %}
 [tool.poetry.scripts]
@@ -80,9 +81,11 @@ jupyter-contrib-nbextensions = "^0.5.1"
 branch = "main"
 version_toml = "pyproject.toml:tool.poetry.version"
 version_variable = "src/{{ cookiecutter.package_name }}/__init__.py:__version__"
-upload_to_repository = false  # TODO: set to true if you want to upload to pypi
+upload_to_repository = false  # set to true if you want to upload to pypi
 upload_to_release = false  # upload to github release
 
+
+### FORMATTERS
 
 [tool.black]
 target-version = ["py39", "py310"]
@@ -96,6 +99,8 @@ combine_as_imports = true
 lines_after_imports = 2
 line_length = 100
 
+
+### LINTERS
 
 [tool.mypy]
 plugins = [
@@ -122,6 +127,8 @@ disallow_incomplete_defs = false
 disallow_untyped_decorators = false
 
 
+### TEST
+
 [tool.pytest.ini_options]
 testpaths = ["tests", "src"]
 addopts = [
@@ -137,6 +144,8 @@ console_output_style = "count"
 cache_dir = ".cache"
 markers = ""
 filterwarnings = ["ignore::DeprecationWarning"]
+env = ["D:ENV=local"]
+
 
 [tool.coverage.run]
 branch = true

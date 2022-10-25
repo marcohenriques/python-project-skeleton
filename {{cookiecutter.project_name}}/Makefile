@@ -61,13 +61,14 @@ $(TOOLS_FIRST_INSTALLED)_jupyter:
 $(DEPENDENCIES): $(VIRTUAL_ENV_NAME)
 	poetry install
 	@ touch $@
-	@ $(MAKE) gen-req
 
-$(TOOLS_FIRST_INSTALLED):
-	git init  # remove after first install
+$(TOOLS_FIRST_INSTALLED): .git
 	@ poetry run pre-commit install -t pre-commit -t pre-push -tcommit-msg
 	@ poetry run git config commit.template .gitmessage
 	@ touch $@ # This will create a file named `.tools_first_installed` inside venv folder
+
+.git:
+	git init
 
 .cache:
 	@ mkdir -p .cache
@@ -83,12 +84,10 @@ $(VIRTUAL_ENV_NAME): .python-version  ## Create python environment
 	pyenv install -s $(PYENV_LATEST_VERSION)
 	pyenv local $(PYENV_LATEST_VERSION)
 
-.PHONY: gen-req
-gen-req:  ## Generate requirements files from poetry
-	@ echo "$(ECHO_COLOUR)Updating requirements files$(NC)"
+requirements.txt:  ## Generate requirements.txt file from poetry
+	@ echo "$(ECHO_COLOUR)Generating requirements.txt$(NC)"
 	@ poetry export -f requirements.txt --without-hashes -o requirements.txt
-	@ poetry export -f requirements.txt --without-hashes --with dev,docs,jupyter,tests -o requirements-dev.txt
-	@ poetry run ${ROOT_DIR}/scripts/req_fixer requirements.txt requirements-dev.txt
+	@ poetry run ${ROOT_DIR}/scripts/req_fixer requirements.txt
 
 
 # CHECKS ######################################################################
@@ -101,13 +100,11 @@ format:  ## Run formatters
 	poetry run black $(PACKAGES)
 
 .PHONY: check-packages
-check-packages: requirements.txt  ## Run package check
+check-packages:  ## Run package check
 	@ echo "$(ECHO_COLOUR)Checking packages$(NC)"
 	poetry check
 	poetry run pip check
-	poetry run safety check --full-report -r requirements.txt
-	@ echo "$(ECHO_COLOUR)Removing requirements.txt$(NC)"
-	@ rm requirements.txt
+	poetry export -f requirements.txt --without-hashes | poetry run safety check --full-report --stdin
 
 mypy:
 	@ echo "$(ECHO_COLOUR)##### Running mypy #####$(NC)"
@@ -231,7 +228,6 @@ all: install
 
 .PHONY: ci
 ci: format check test {%- if cookiecutter.include_docs == "yes" %} build-docs{% endif %} ## Run all tasks that determine CI status
-
 {% if cookiecutter.notebooks_support == "yes" -%}
 notebooks:
 	mkdir -p notebooks

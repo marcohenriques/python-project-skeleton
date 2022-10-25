@@ -26,6 +26,7 @@ RUN apt-get update && apt-get upgrade -y \
     procps \
     build-essential \
     gcc \
+    tini \
     # Create custom user and group to run the app as:
     && groupadd -g "${GID}" -r app \
     && useradd -d /code -g app -l -r -u "${UID}" app \
@@ -34,6 +35,11 @@ RUN apt-get update && apt-get upgrade -y \
 COPY requirements.txt /
 RUN pip install -U pip \
     && pip install -r /requirements.txt
+
+# We customize how our code is loaded with the custom entrypoint:
+COPY ./docker/entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]
 
 
 # # 'production' stage uses the clean 'python-base' stage and copyies

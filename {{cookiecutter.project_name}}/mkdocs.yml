@@ -5,7 +5,7 @@ site_name: {{cookiecutter.project_name}}
 site_description: {{cookiecutter.project_short_description}}
 site_author: {{cookiecutter.full_name}}
 
-repo_url: https://github.com/{{ cookiecutter.github_username_or_organization }}/{{ cookiecutter.project_name }}
+repo_url: https://github.com/{{ cookiecutter.github_username_or_org_name }}/{{ cookiecutter.project_name }}
 edit_uri: ""
 
 theme:

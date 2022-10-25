@@ -35,13 +35,13 @@ def test_app_simple_command() -> None:
 
     cli_result = runner.invoke(app, ["fake-command"])
     assert cli_result.exit_code == 2
-    assert "Error: No such command 'fake-command'." in cli_result.stdout
+    assert "No such command 'fake-command'." in cli_result.stdout
 
 
 def test_app_fake_command() -> None:
     cli_result = runner.invoke(app, ["fake-command"])
     assert cli_result.exit_code == 2
-    assert "Error: No such command 'fake-command'." in cli_result.stdout
+    assert "No such command 'fake-command'." in cli_result.stdout
 
 
 def test_app_lands_reigns_command() -> None:

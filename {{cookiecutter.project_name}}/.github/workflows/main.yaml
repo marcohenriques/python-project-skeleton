@@ -37,9 +37,9 @@ jobs:
               PUSH_IMAGE=false
           fi
 
-          echo "::set-output name=image-name::$IMAGE_NAME"
-          echo "::set-output name=image-tag::$GITHUB_SHA"
-          echo "::set-output name=push-image::$PUSH_IMAGE"
+          echo "image-name=$IMAGE_NAME" >> $GITHUB_OUTPUT
+          echo "image-tag=$GITHUB_SHA" >> $GITHUB_OUTPUT
+          echo "push-image=$PUSH_IMAGE" >> $GITHUB_OUTPUT
 
       - id: setup-run-test-vars
         name: Setup run test vars
@@ -51,7 +51,7 @@ jobs:
           else
               RUN_TESTS=true
           fi
-          echo "::set-output name=run-test-flag::$RUN_TESTS"
+          echo "run-test-flag=$RUN_TESTS" >> $GITHUB_OUTPUT
 
   run-ci-tests:
     uses: ./.github/workflows/ci_tests.yaml

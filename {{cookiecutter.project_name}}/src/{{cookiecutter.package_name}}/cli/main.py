@@ -26,8 +26,8 @@ class LogLevel(str, Enum):
 app = typer.Typer(
     name="{{cookiecutter.package_name}}",
     no_args_is_help=True,
-    short_help="my short help",
-    help="My help",
+    short_help="{{cookiecutter.package_name}} CLI",
+    help="{{cookiecutter.project_short_description}}",
 )
 
 app.add_typer(users.app, name="users-new", short_help="overwritten short help and name")

@@ -39,14 +39,6 @@ repos:
       - id: add-trailing-comma
   - repo: local
     hooks:
-      - id: update-req
-        name: Update requirements.txt and requirements-dev.txt
-        stages: [commit]
-        language: system
-        entry: make
-        files: poetry.lock|requirements.txt|requirements-dev.txt
-        pass_filenames: false
-        args: [gen-req]
       - id: isort
         name: Running isort
         stages: [commit]
