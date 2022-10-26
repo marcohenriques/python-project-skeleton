@@ -245,7 +245,7 @@ DOCKER_IMAGE_TAG ?= latest
 
 .PHONY: build-docker
 build-docker: requirements.txt  ## Build docker image
-	docker build -f Dockerfile -t $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG) . --platform linux/amd64
+	docker build -f Dockerfile -t $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG) --target production . --platform linux/amd64
 	@ rm requirements.txt
 
 .PHONY: run-docker
