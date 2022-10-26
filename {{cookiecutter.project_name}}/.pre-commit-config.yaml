@@ -61,13 +61,13 @@ repos:
             scripts/|
             notebooks/
           )
-      - id: safety
-        name: Running safety check on requirements.txt
+      - id: check-packages
+        name: Running check-packages
         stages: [commit]
         language: system
-        entry: poetry run safety
+        entry: make
         pass_filenames: false
-        args: [check, --full-report, -r, requirements.txt]
+        args: [check-packages]
       - id: flake8
         name: Running flake8
         stages: [commit]
