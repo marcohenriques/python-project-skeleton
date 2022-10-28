@@ -1,0 +1,227 @@
+# Makefile
+
+The project includes a `Makefile` to help automate some tasks. These tasks can be grouped into sections.
+
+
+## System Dependencies
+
+To check if you have all required tools:
+
+```make
+make doctor
+```
+
+
+## Project Dependencies
+
+Tasks that help you setup your environment (create environment, install packages and tools...)
+
+### install
+
+```make
+make install
+```
+
+This will should be the first command to prepare your environment. It will setup several things:
+1. create a `.python-version` file, that will tell `pyenv` which python version to use. Behind the scenes, it will look
+at the python version you select during project generation (which is stored in the variable `PYTHON_VERSION` on your
+Makefile), and will search for the latest version available and use it (make sure to have `pyenv` up to date)
+2. `poetry` will use this version and create your virtual environment on the project root (`.venv` folder), and then
+install the project `core`, `dev` and `test` dependencies
+3. if there's no git initialization in the project, it will perform a `git init`, if there is, it will be skipped
+4. next it will install the `pre-commit` hooks and install the [git message template](../../{{cookiecutter.project_name}}/.gitmessage)
+
+### install-jupyter
+
+```make
+make install-jupyter
+```
+
+Install the dependencies to run jupyter notebooks. This target is only available if selected in project setup
+(`notebooks_support`).
+
+### install-docs
+
+```make
+make install-docs
+```
+
+Install the dependencies to build documentation. This target is only available if selected in project setup
+(`include_docs`).
+
+### requirements.txt
+
+```make
+make requirements.txt
+```
+
+This will update/generate the project `requirements.txt`, based on the installed dependencies from poetry.
+
+
+## Checks
+
+Tasks to run linters, formatters and python dependencies vulnerabilities scanner
+
+### format
+
+```make
+make format
+```
+
+Runs `black` and `isort` on your **src** and *tests* directory.
+
+### check-packages
+
+```make
+make check-packages
+```
+
+Runs checks on packages:
+- Checks the validity of the `pyproject.toml` file
+- Verify installed packages have compatible dependencies
+- Run `safety check` to find vulnerabilities in Python dependencies
+
+### lint
+
+```make
+make -k lint
+```
+
+Runs `mypy` and `flake8` on your **src** and *tests* directory, and `shellcheck` on shell files.
+
+You can also run each check individually: `make mypy`, `make flake8` and `make shellcheck`.
+
+### check
+
+```make
+make -k check
+```
+
+Runs both `check-packages` and `lint` targets.
+
+### pre-commit
+
+```make
+make pre-commit
+```
+
+Runs the pre-commit checks on all files.
+
+
+## Tests
+
+Tasks related with testing.
+
+### test
+
+```make
+make test
+```
+
+Runs the tests with `pytest`. As we're using `pytest-randomly` to shuffle the tests, if the last run of the tests fails,
+it will run the test with the same random seed first, and then, if the tests pass, it will run with a new one.
+
+### read-coverage
+
+```make
+make read-coverage
+```
+
+Opens the coverage report for the last pytest run.
+
+
+## Documentation
+
+Tasks related with documentation. This section is only available if selected in project setup (`include_docs`).
+
+### build-docs
+
+```make
+make build-docs
+```
+
+Generate mkdocs documentation locally.  
+The first this target is executed, it will run the target `install-docs` before.
+
+### docs
+
+```make
+make docs
+```
+
+Build docs and serve them.
+
+
+## Build
+
+Tasks related with builds.
+
+### dist
+
+```make
+make dist
+```
+
+Builds the package, as a tarball and a wheel.
+
+
+## Cleanup
+
+Tasks to cleanup.
+
+### clean
+
+```make
+make clean
+```
+
+Delete all generated and temporary files.
+
+### clean-all
+
+```make
+make clean-all
+```
+
+Delete virtual environment and all generated and temporary files.
+
+
+## Docker
+
+Tasks related with docker. This section is only available if selected in project setup (`include_docker`).
+
+### build-docker
+
+```make
+make build-docker
+```
+
+Build docker image.
+
+### run-docker
+
+```make
+make run-docker
+```
+
+Run docker container for the built image.
+
+
+## Other Tasks
+
+### ci
+
+```make
+make -k ci
+```
+
+Run targets `format`, `check`, `test` and `build-docs` (if selected)
+
+### jupyter
+
+```make
+make jupyter
+```
+
+Run jupyter notebooks on the notebooks directory (it will be created if it doesn't exist).  
+The first this target is executed, it will run the target `install-jupyter` before.

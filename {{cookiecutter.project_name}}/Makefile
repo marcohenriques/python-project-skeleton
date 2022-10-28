@@ -39,12 +39,8 @@ DEPENDENCIES := $(VIRTUAL_ENV_NAME)/.poetry-$(shell ${ROOT_DIR}/scripts/checksum
 TOOLS_FIRST_INSTALLED := $(VIRTUAL_ENV_NAME)/.tools_first_installed
 
 .PHONY: install
-install: $(DEPENDENCIES) $(TOOLS_FIRST_INSTALLED) .cache
+install: $(DEPENDENCIES) $(TOOLS_FIRST_INSTALLED) .cache  ## Install project dependencies and tools
 
-install-tests: $(TOOLS_FIRST_INSTALLED)_tests
-$(TOOLS_FIRST_INSTALLED)_tests:
-	poetry install --with tests --no-root
-	@ touch $@
 {% if cookiecutter.include_docs == "yes" %}
 install-docs: $(TOOLS_FIRST_INSTALLED)_docs
 $(TOOLS_FIRST_INSTALLED)_docs:
@@ -110,7 +106,7 @@ mypy:
 	@ echo "$(ECHO_COLOUR)##### Running mypy #####$(NC)"
 	poetry run mypy --install-types --non-interactive $(PACKAGES)
 
-flake:
+flake8:
 	@ echo "$(ECHO_COLOUR)##### Running flake8 #####$(NC)"
 	poetry run flake8 $(PACKAGES)
 
@@ -120,7 +116,7 @@ shellcheck:
 	$(if $(sh_files),poetry run shellcheck $(sh_files), @ echo "No shell files found")
 
 .PHONY: lint
-lint: mypy flake shellcheck  ## Run linters (mypy, flake8, shellcheck)
+lint: mypy flake8 shellcheck  ## Run linters (mypy, flake8, shellcheck)
 
 .PHONY: check
 check: check-packages lint  ## Run linters, and static code analysis
@@ -150,7 +146,7 @@ PYTEST_RERUN_OPTIONS := -v --randomly-seed=last
 test: test-all ## Run unit and integration tests
 
 .PHONY: test-all
-test-all: install-tests
+test-all:
 	@ if test -e $(FAILURES); then poetry run pytest $(PYTEST_RERUN_OPTIONS); fi
 	@ rm -rf $(FAILURES)
 	poetry run pytest $(PYTEST_OPTIONS)
@@ -179,7 +175,7 @@ docs: build-docs ## Serve the documentation (localhost:8000)
 DIST_FILES := dist/*.tar.gz dist/*.whl
 
 .PHONY: dist
-dist: install $(DIST_FILES)
+dist: install $(DIST_FILES)  ## Builds the package, as a tarball and a wheel
 $(DIST_FILES): $(MODULES) pyproject.toml
 	rm -f $(DIST_FILES)
 	poetry build
@@ -200,7 +196,7 @@ $(DIST_FILES): $(MODULES) pyproject.toml
 clean: .clean-build .clean-docs .clean-test .clean-install ## Delete all generated and temporary files
 
 .PHONY: clean-all
-clean-all: clean
+clean-all: clean ## Delete virtual environment and all generated and temporary files
 	rm -rf $(VIRTUAL_ENV_NAME)
 
 .PHONY: .clean-install
@@ -221,7 +217,7 @@ clean-all: clean
 	rm -rf *.spec dist build
 
 
-# MAIN TASKS ##################################################################
+# OTHER TASKS #################################################################
 
 .PHONY: all
 all: install

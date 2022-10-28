@@ -56,13 +56,17 @@ jobs:
         poetry run pip install -U pip
         poetry install --with dev,tests
 
+    - name: Run formatters
+      run: |
+        make format
+
     - name: Run package checks
       run: |
         make check-packages
 
     - name: Run Linters
       run: |
-        make lint
+        make -k lint
 
     - name: Run tests
       run: |
