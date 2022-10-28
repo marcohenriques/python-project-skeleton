@@ -60,3 +60,5 @@ nav:
   - Start: index.md
   - Requirements: requirements.md
   - Changelog: changelog.md
+  - Generated files:
+    - Makefile: tools_included/makefile.md

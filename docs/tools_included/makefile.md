@@ -23,13 +23,17 @@ make install
 ```
 
 This will should be the first command to prepare your environment. It will setup several things:
+
 1. create a `.python-version` file, that will tell `pyenv` which python version to use. Behind the scenes, it will look
 at the python version you select during project generation (which is stored in the variable `PYTHON_VERSION` on your
 Makefile), and will search for the latest version available and use it (make sure to have `pyenv` up to date)
+
 2. `poetry` will use this version and create your virtual environment on the project root (`.venv` folder), and then
 install the project `core`, `dev` and `test` dependencies
+
 3. if there's no git initialization in the project, it will perform a `git init`, if there is, it will be skipped
-4. next it will install the `pre-commit` hooks and install the [git message template](../../{{cookiecutter.project_name}}/.gitmessage)
+
+4. next it will install the `pre-commit` hooks and install the git message template
 
 ### install-jupyter
 
