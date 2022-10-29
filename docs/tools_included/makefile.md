@@ -42,7 +42,7 @@ make install-jupyter
 ```
 
 Install the dependencies to run jupyter notebooks. This target is only available if selected in project setup
-(`notebooks_support`).
+(`include_notebooks`).
 
 ### install-docs
 

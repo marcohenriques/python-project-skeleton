@@ -18,13 +18,21 @@ license = ""
 [tool.poetry.dependencies]
 python = "^3.10"
 
-
 [tool.poetry.group.dev.dependencies]
 black = "^22.10.0"
 isort = "^5.10.1"
 flake8 = "^5.0.4"
 mypy = "^0.982"
 pre-commit = "^2.20.0"
+
+# Tests
+[tool.poetry.group.tests]
+optional = false
+[tool.poetry.group.tests.dependencies]
+pytest = "^7.1.2"
+pytest-cov = "^3.0.0"
+pytest-clarity = "^1.0.1"
+pytest-cookies = "^0.6.1"
 
 # Documentation
 [tool.poetry.group.docs]
@@ -35,3 +43,16 @@ mkdocs-material = "^8.5.7"
 mkdocstrings = {extras = ["python"], version = "^0.19.0"}
 pygments = "^2.13.0"
 pymdown-extensions = "^9.7"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = [
+    "--strict",
+    "-vv",
+    "-r sxX",
+    "--cov-report=html",
+    "--cov-report=term-missing:skip-covered",
+    "--no-cov-on-fail",
+]
+console_output_style = "count"
+filterwarnings = ["ignore::DeprecationWarning"]

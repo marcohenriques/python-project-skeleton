@@ -46,7 +46,7 @@ install-docs: $(TOOLS_FIRST_INSTALLED)_docs
 $(TOOLS_FIRST_INSTALLED)_docs:
 	poetry install --with docs --no-root
 	@ touch $@
-{% endif %}{% if cookiecutter.notebooks_support == "yes" %}
+{% endif %}{% if cookiecutter.include_notebooks == "yes" %}
 install-jupyter: $(TOOLS_FIRST_INSTALLED)_jupyter
 $(TOOLS_FIRST_INSTALLED)_jupyter:
 	poetry install --with jupyter --no-root
@@ -224,7 +224,7 @@ all: install
 
 .PHONY: ci
 ci: format check test {%- if cookiecutter.include_docs == "yes" %} build-docs{% endif %} ## Run all tasks that determine CI status
-{% if cookiecutter.notebooks_support == "yes" -%}
+{% if cookiecutter.include_notebooks == "yes" -%}
 notebooks:
 	mkdir -p notebooks
 

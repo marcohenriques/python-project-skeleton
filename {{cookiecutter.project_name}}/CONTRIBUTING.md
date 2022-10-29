@@ -85,7 +85,7 @@ Clean all temporary folder/files on the project:
 make clean
 ```
 
-{% if cookiecutter.notebooks_support == "yes" %}
+{% if cookiecutter.include_notebooks == "yes" %}
 Open jupyter notebooks on notebooks directory:
 
 ```make

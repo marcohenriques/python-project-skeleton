@@ -1,11 +1,12 @@
 {
-  "full_name": "user",
-  "email": "user@domain.com",
-  "github_username_or_org_name": "",
-  "project_name": "my_project",
+  "project_name": "awesome-project",
   "package_name": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
-  "project_short_description": "Python Boilerplate contains all the boilerplate you need to create a Python package.",
+  "project_short_description": "Project to do awesome things",
+  "author_name": "John Doe",
+  "author_email": "john.doe@domain.com",
+  "github_username_or_org_name": "",
   "python_version": [
+    "3.11",
     "3.10",
     "3.9",
     "3.8"
@@ -14,7 +15,7 @@
     "yes",
     "no"
   ],
-  "notebooks_support": [
+  "include_notebooks": [
     "yes",
     "no"
   ],

@@ -6,8 +6,8 @@ build-backend = "poetry.masonry.api"
 name = "{{cookiecutter.project_name}}"
 version = "0.0.1"
 description = "{{cookiecutter.project_short_description}}"
-authors = ["{{cookiecutter.full_name}} <{{cookiecutter.email}}>"]
-maintainers = ["{{ cookiecutter.full_name }} <{{ cookiecutter.email }}>"]
+authors = ["{{cookiecutter.author_name}} <{{cookiecutter.author_email}}>"]
+maintainers = ["{{ cookiecutter.author_name }} <{{ cookiecutter.author_email }}>"]
 homepage = "https://github.com/{{ cookiecutter.github_username_or_org_name }}/{{ cookiecutter.project_name }}"
 repository = "https://github.com/{{ cookiecutter.github_username_or_org_name }}/{{ cookiecutter.project_name }}"
 documentation = ""
@@ -64,7 +64,7 @@ optional = true
 mkdocs = "^1.3.0"
 mkdocs-material = "^8.3.9"
 mkdocstrings = {extras = ["python"], version = "^0.19.0"}
-{% endif %}{% if cookiecutter.notebooks_support == "yes" %}
+{% endif %}{% if cookiecutter.include_notebooks == "yes" %}
 [tool.poetry.group.jupyter]
 optional = true
 [tool.poetry.group.jupyter.dependencies]
@@ -127,8 +127,7 @@ disallow_incomplete_defs = false
 disallow_untyped_decorators = false
 
 
-### TEST
-
+### TESTS
 [tool.pytest.ini_options]
 testpaths = ["tests", "src"]
 addopts = [
