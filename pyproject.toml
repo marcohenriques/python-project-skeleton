@@ -44,6 +44,52 @@ mkdocstrings = {extras = ["python"], version = "^0.19.0"}
 pygments = "^2.13.0"
 pymdown-extensions = "^9.7"
 
+
+####################
+### TOOLS CONFIG ###
+####################
+
+### FORMATTERS
+
+[tool.black]
+target-version = ["py39", "py310"]
+line-length = 100
+ipynb = false
+
+
+[tool.isort]
+profile = "black"
+combine_as_imports = true
+lines_after_imports = 2
+line_length = 100
+
+
+### LINTERS
+
+[tool.mypy]
+plugins = []
+cache_dir = ".cache/mypy/"
+ignore_missing_imports = true
+no_implicit_optional = true
+check_untyped_defs = true
+strict_equality = true
+disallow_any_generics = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_untyped_decorators = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+disallow_untyped_decorators = false
+
+
+### TESTS
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = [
