@@ -97,7 +97,7 @@ repos:
         entry: poetry run shellcheck
         language: python
         types: [shell]
-{% if cookiecutter.notebooks_support == "yes" %}
+{% if cookiecutter.include_notebooks == "yes" %}
       - id: nbqa-isort
         name: Running isort on notebooks
         description: "isort formatting for jupyter notebooks"
