@@ -1,3 +1,1 @@
-# Python project skeleton
-
-A cookiecutter template for python packages.
+--8<-- "../README.md"

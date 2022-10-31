@@ -57,5 +57,5 @@ plugins:
 
 
 nav:
-  - Start: index.md
+  - {{cookiecutter.project_name}}: index.md
   - Contributing: contributing.md

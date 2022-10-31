@@ -16,7 +16,7 @@ To confirm these system dependencies are configured correctly:
 ./scripts/verchew
 ```
 
-In Linux, make sure you have all required Python dependencies instaled:
+In Linux, make sure you have all required Python dependencies installed:
 ```shell
 sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev liblzma-dev tk-dev
 ```
@@ -105,7 +105,7 @@ make -k ci
 
 ## Logging
 
-For logging, we're using a centralized file (`logging_config.yaml`), under `{{ cookiecutter.package_name }}/configs/<your_environment>` (where _your\_environment_ is defined by the env var `APP_ENV`, defaults to **dev**). In this file, you can define your log _formatters_, _filters_, _handlers_ and your _root_ and specific loggers (including from other packages). To better understand how to configure it, you can check the [logging-cookbook](https://docs.python.org/3/howto/logging-cookbook.html).
+For logging, we're using a centralized file (`logging_config.yaml`), under `{{ cookiecutter.project_name }}/src/configs/<your_environment>` (where _your\_environment_ is defined by the env var `APP_ENV`, defaults to **local**). In this file, you can define your log _formatters_, _filters_, _handlers_ and your _root_ and specific loggers (including from other packages). To better understand how to configure it, you can check the [logging-cookbook](https://docs.python.org/3/howto/logging-cookbook.html).
 
 ### Custom logging objects
 
