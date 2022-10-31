@@ -94,6 +94,8 @@ format:  ## Run formatters
 	poetry run isort $(PACKAGES)
 	@ echo "$(ECHO_COLOUR)##### Running black #####$(NC)"
 	poetry run black $(PACKAGES)
+	@ echo "$(ECHO_COLOUR)##### Running sqlfluff fix #####$(NC)"
+	poetry run sqlfluff fix --force
 
 .PHONY: check-packages
 check-packages:  ## Run package check
@@ -115,8 +117,12 @@ shellcheck:
 	@ $(eval sh_files := $(shell find . -not -path '*/.*' -regex '.*\.sh$$'))
 	$(if $(sh_files),poetry run shellcheck $(sh_files), @ echo "No shell files found")
 
+sqlfluff-lint:
+	@ echo "$(ECHO_COLOUR)##### Running sqlfluff lint #####$(NC)"
+	poetry run sqlfluff lint
+
 .PHONY: lint
-lint: mypy flake8 shellcheck  ## Run linters (mypy, flake8, shellcheck)
+lint: mypy flake8 shellcheck sqlfluff-lint  ## Run linters (mypy, flake8, shellcheck, sqlfluff-lint)
 
 .PHONY: check
 check: check-packages lint  ## Run linters, and static code analysis

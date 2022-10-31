@@ -245,6 +245,7 @@ project `settings.json`:
     "python.linting.mypyEnabled": true,
     "python.linting.mypyPath": "${workspaceFolder}/.venv/bin/mypy",
     "python.linting.mypyArgs": [],
+    "sql.linter.executablePath": "${workspaceFolder}/.venv/bin/sqlfluff",
     // Formatters
     "python.formatting.provider": "black",
     "python.formatting.blackPath": "${workspaceFolder}/.venv/bin/black",

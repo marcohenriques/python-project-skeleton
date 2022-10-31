@@ -47,6 +47,7 @@ wemake-python-styleguide = "^0.16.1"
 safety = "^2.0.0"
 pre-commit = "^2.20.0"
 shellcheck-py = "^0.8.0.4"
+sqlfluff = "^1.2.1"
 
 [tool.poetry.group.tests]
 optional = false
@@ -125,6 +126,29 @@ module = "tests.*"
 disallow_untyped_defs = false
 disallow_incomplete_defs = false
 disallow_untyped_decorators = false
+
+
+# check default configurations on:
+# https://docs.sqlfluff.com/en/stable/configuration.html#default-configuration
+[tool.sqlfluff.core]
+dialect = "snowflake"  # CHANGE THIS TO YOUR DIALECT
+templater = "placeholder"
+exclude_rules = "L031"
+
+[tool.sqlfluff.rules.L010]
+capitalisation_policy = "upper"
+
+[tool.sqlfluff.rules.L016]
+max_line_length = 100
+
+[tool.sqlfluff.rules.L030]
+extended_capitalisation_policy = "upper"
+
+[tool.sqlfluff.rules.L040]
+extended_capitalisation_policy = "upper"
+
+[tool.sqlfluff.rules.L063]
+extended_capitalisation_policy = "upper"
 
 
 ### TESTS

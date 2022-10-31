@@ -61,6 +61,15 @@ repos:
             scripts/|
             notebooks/
           )
+      - id: sqlfluff-fix
+        name: Running sqlfluff fix
+        stages: [commit]
+        # Needs to use "--force" to disable confirmation
+        # By default all the rules are applied
+        entry: poetry run sqlfluff fix --force
+        language: python
+        description: 'Fixes sql lint errors with `SQLFluff`'
+        types: [sql]
       - id: check-packages
         name: Running check-packages
         stages: [commit]
@@ -91,6 +100,13 @@ repos:
             scripts/|
             notebooks/
           )
+      - id: sqlfluff-lint
+        name: Running sqlfluff lint
+        stages: [push]
+        entry: poetry run sqlfluff lint
+        language: python
+        description: 'Lints sql files with `SQLFluff`'
+        types: [sql]
       - id: shellcheck
         name: Running shellcheck
         stages: [commit]
