@@ -71,6 +71,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#formatters" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -313,10 +318,50 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Formatters
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         Formatters
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#black" class="md-nav__link">
+    black
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#isort" class="md-nav__link">
+    isort
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -501,6 +546,30 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#black" class="md-nav__link">
+    black
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#isort" class="md-nav__link">
+    isort
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -515,9 +584,15 @@
                   
 
 
-  <h1>Formatters</h1>
-
-<p>🔨👷‍♂️</p>
+<h1 id="formatters">Formatters<a class="headerlink" href="#formatters" title="Permanent link">&para;</a></h1>
+<p>To make sure all our code follows the same format without much effort, we can leverage some tools to do it for us.<br />
+By default the project is configured to use a line length of <code>100</code>.</p>
+<h3 id="black"><a href="https://black.readthedocs.io/en/stable/" target="_blank"><code>black</code></a><a class="headerlink" href="#black" title="Permanent link">&para;</a></h3>
+<p>We use <code>black</code> to format our code.  </p>
+<p>Check configs on <code>pyproject.toml</code>.</p>
+<h3 id="isort"><a href="https://pycqa.github.io/isort/" target="_blank"><code>isort</code></a><a class="headerlink" href="#isort" title="Permanent link">&para;</a></h3>
+<p>Used to sort our imports.</p>
+<p>Check configs on <code>pyproject.toml</code>.</p>
 
 
 

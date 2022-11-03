@@ -1061,15 +1061,15 @@
 <h1 id="makefile">Makefile<a class="headerlink" href="#makefile" title="Permanent link">&para;</a></h1>
 <p>The project includes a <code>Makefile</code> to help automate some tasks. These tasks can be grouped into sections.</p>
 <h2 id="system-dependencies">System Dependencies<a class="headerlink" href="#system-dependencies" title="Permanent link">&para;</a></h2>
-<p>To check if you have all required tools:</p>
+<p>To check if you have all the required tools:</p>
 <div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">doctor</span><span class="w"></span>
 </code></pre></div>
 <h2 id="project-dependencies">Project Dependencies<a class="headerlink" href="#project-dependencies" title="Permanent link">&para;</a></h2>
-<p>Tasks that help you setup your environment (create environment, install packages and tools&hellip;)</p>
+<p>Tasks that help you set up your environment (create a virtual environment, install packages and tools&hellip;)</p>
 <h3 id="install">install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">install</span><span class="w"></span>
 </code></pre></div>
-<p>This will should be the first command to prepare your environment. It will setup several things:</p>
+<p>This will should be the first command to prepare your environment. It will set up several things:</p>
 <ol>
 <li>
 <p>create a <code>.python-version</code> file, that will tell <code>pyenv</code> which python version to use. Behind the scenes, it will look
@@ -1084,18 +1084,18 @@ install the project <code>core</code>, <code>dev</code> and <code>test</code> de
 <p>if there&rsquo;s no git initialization in the project, it will perform a <code>git init</code>, if there is, it will be skipped</p>
 </li>
 <li>
-<p>next it will install the <code>pre-commit</code> hooks and install the git message template</p>
+<p>next, it will install the <code>pre-commit</code> hooks and install the git message template</p>
 </li>
 </ol>
 <h3 id="install-jupyter">install-jupyter<a class="headerlink" href="#install-jupyter" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">install-jupyter</span><span class="w"></span>
 </code></pre></div>
-<p>Install the dependencies to run jupyter notebooks. This target is only available if selected in project setup
+<p>Install the dependencies to run jupyter notebooks. This target is only available if selected in the project setup
 (<code>include_notebooks</code>).</p>
 <h3 id="install-docs">install-docs<a class="headerlink" href="#install-docs" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">install-docs</span><span class="w"></span>
 </code></pre></div>
-<p>Install the dependencies to build documentation. This target is only available if selected in project setup
+<p>Install the dependencies to build documentation. This target is only available if selected in the project setup
 (<code>include_docs</code>).</p>
 <h3 id="requirementstxt">requirements.txt<a class="headerlink" href="#requirementstxt" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">requirements.txt</span><span class="w"></span>
@@ -1128,7 +1128,7 @@ install the project <code>core</code>, <code>dev</code> and <code>test</code> de
 </code></pre></div>
 <p>Runs the pre-commit checks on all files.</p>
 <h2 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h2>
-<p>Tasks related with testing.</p>
+<p>Tasks related to testing.</p>
 <h3 id="test">test<a class="headerlink" href="#test" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">test</span><span class="w"></span>
 </code></pre></div>
@@ -1139,7 +1139,7 @@ it will run the test with the same random seed first, and then, if the tests pas
 </code></pre></div>
 <p>Opens the coverage report for the last pytest run.</p>
 <h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h2>
-<p>Tasks related with documentation. This section is only available if selected in project setup (<code>include_docs</code>).</p>
+<p>Tasks related to documentation. This section is only available if selected in the project setup (<code>include_docs</code>).</p>
 <h3 id="build-docs">build-docs<a class="headerlink" href="#build-docs" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">build-docs</span><span class="w"></span>
 </code></pre></div>
@@ -1150,13 +1150,13 @@ The first this target is executed, it will run the target <code>install-docs</co
 </code></pre></div>
 <p>Build docs and serve them.</p>
 <h2 id="build">Build<a class="headerlink" href="#build" title="Permanent link">&para;</a></h2>
-<p>Tasks related with builds.</p>
+<p>Tasks related to builds.</p>
 <h3 id="dist">dist<a class="headerlink" href="#dist" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">dist</span><span class="w"></span>
 </code></pre></div>
 <p>Builds the package, as a tarball and a wheel.</p>
 <h2 id="cleanup">Cleanup<a class="headerlink" href="#cleanup" title="Permanent link">&para;</a></h2>
-<p>Tasks to cleanup.</p>
+<p>Tasks to clean up.</p>
 <h3 id="clean">clean<a class="headerlink" href="#clean" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">clean</span><span class="w"></span>
 </code></pre></div>
@@ -1164,17 +1164,17 @@ The first this target is executed, it will run the target <code>install-docs</co
 <h3 id="clean-all">clean-all<a class="headerlink" href="#clean-all" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">clean-all</span><span class="w"></span>
 </code></pre></div>
-<p>Delete virtual environment and all generated and temporary files.</p>
+<p>Delete the virtual environment and all generated and temporary files.</p>
 <h2 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">&para;</a></h2>
-<p>Tasks related with docker. This section is only available if selected in project setup (<code>include_docker</code>).</p>
+<p>Tasks related to docker. This section is only available if selected in the project setup (<code>include_docker</code>).</p>
 <h3 id="build-docker">build-docker<a class="headerlink" href="#build-docker" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">build-docker</span><span class="w"></span>
 </code></pre></div>
-<p>Build docker image.</p>
+<p>Build the docker image.</p>
 <h3 id="run-docker">run-docker<a class="headerlink" href="#run-docker" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">run-docker</span><span class="w"></span>
 </code></pre></div>
-<p>Run docker container for the built image.</p>
+<p>Run the docker container for the built image.</p>
 <h2 id="other-tasks">Other Tasks<a class="headerlink" href="#other-tasks" title="Permanent link">&para;</a></h2>
 <h3 id="ci">ci<a class="headerlink" href="#ci" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">-k</span><span class="w"> </span><span class="err">ci</span><span class="w"></span>
