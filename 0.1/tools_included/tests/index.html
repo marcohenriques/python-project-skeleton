@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A cookiecutter template for python packages.">
+        <meta name="description" content="A cookiecutter template for python projects.">
       
       
         <meta name="author" content="Marco Henriques <marco.martins.henriques@gmail.com>">
@@ -70,6 +70,11 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
+      
+        
+        <a href="#tests" class="md-skip">
+          Skip to content
+        </a>
       
     </div>
     <div data-md-component="announce">
@@ -355,6 +360,8 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+        
+      
       
       <a href="./" class="md-nav__link md-nav__link--active">
         Tests
@@ -501,6 +508,8 @@
   
   
   
+    
+  
   
 </nav>
                   </div>
@@ -515,9 +524,16 @@
                   
 
 
-  <h1>Tests</h1>
-
-<p>🔨👷‍♂️</p>
+<h1 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h1>
+<p>For testing, we use <a href="https://docs.pytest.org/" target="_blank"><code>pytest</code></a> with some predefined
+configs (you can check it on <code>pyproject.toml</code> file). Additionaly, we&rsquo;re also packing pytest with some plugins:</p>
+<ul>
+<li><a href="https://pytest-cov.readthedocs.io/en/latest/" target="_blank">pytest-cov</a>: produces coverage reports</li>
+<li><a href="https://github.com/darrenburns/pytest-clarity" target="_blank">pytest-clarity</a>: coloured diff output</li>
+<li><a href="https://github.com/pytest-dev/pytest-randomly" target="_blank">pytest-randomly</a>: randomly order tests and controls random.seed</li>
+<li><a href="https://github.com/MobileDynasty/pytest-env" target="_blank">pytest-env</a>: enables you to set environment variables in the pytest config file</li>
+<li><a href="https://github.com/Erotemic/xdoctest" target="_blank">xdoctest</a>: allows executing tests in docstrings</li>
+</ul>
 
 
 

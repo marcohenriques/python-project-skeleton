@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A cookiecutter template for python packages.">
+        <meta name="description" content="A cookiecutter template for python projects.">
       
       
         <meta name="author" content="Marco Henriques <marco.martins.henriques@gmail.com>">
@@ -70,6 +70,11 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
+      
+        
+        <a href="#documentation" class="md-skip">
+          Skip to content
+        </a>
       
     </div>
     <div data-md-component="announce">
@@ -369,6 +374,8 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+        
+      
       
       <a href="./" class="md-nav__link md-nav__link--active">
         Documentation
@@ -501,6 +508,8 @@
   
   
   
+    
+  
   
 </nav>
                   </div>
@@ -515,9 +524,16 @@
                   
 
 
-  <h1>Documentation</h1>
-
-<p>🔨👷‍♂️</p>
+<h1 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h1>
+<p>For building documentation we use <a href="https://www.mkdocs.org/" target="_blank"><code>mkdocs</code></a> with
+the <a href="https://squidfunk.github.io/mkdocs-material/getting-started/" target="_blank"><code>material</code></a>
+theme. The <code>material</code> theme already includes several plugins and customizations for <code>mkdocs</code>, you can check the
+<a href="https://squidfunk.github.io/mkdocs-material/reference/" target="_blank"><code>material reference</code></a>
+and the <a href="https://facelessuser.github.io/pymdown-extensions/" target="_blank"><code>PyMdown Extensions</code></a>
+on how to get your documentation to the next level 🚀.</p>
+<p>We also packed it with <a href="https://mkdocstrings.github.io/" target="_blank"><code>mkdocstrings</code></a>
+which allows you automatically create documentation from your source code.</p>
+<p>The <code>mkdocs.yml</code> file already comes pre-filled with some plugins and extensions, just add/remove according to your needs.</p>
 
 
 

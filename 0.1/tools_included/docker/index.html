@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A cookiecutter template for python packages.">
+        <meta name="description" content="A cookiecutter template for python projects.">
       
       
         <meta name="author" content="Marco Henriques <marco.martins.henriques@gmail.com>">
@@ -70,6 +70,11 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
+      
+        
+        <a href="#docker" class="md-skip">
+          Skip to content
+        </a>
       
     </div>
     <div data-md-component="announce">
@@ -425,6 +430,8 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+        
+      
       
       <a href="./" class="md-nav__link md-nav__link--active">
         Docker
@@ -501,6 +508,8 @@
   
   
   
+    
+  
   
 </nav>
                   </div>
@@ -515,9 +524,47 @@
                   
 
 
-  <h1>Docker</h1>
-
-<p>🔨👷‍♂️</p>
+<h1 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">&para;</a></h1>
+<p>The project comes with a <code>Dockerfile</code> to helps containerize your application.</p>
+<p>It already includes some best practices when building docker images, as such:</p>
+<ul>
+<li><a href="https://docs.docker.com/build/building/multi-stage/" target="_blank">multi-stage building</a>: to better organize and optimize your build</li>
+<li>default non-root user when launching your container</li>
+<li>build from <code>python:&lt;python_version&gt;-slim</code> to keep your image small</li>
+<li>uses a <code>entrypoint</code> for your container<ul>
+<li>script in <code>docker/entrypoint.sh</code>, modify it according to your needs</li>
+<li>entrypoint script is called with <a href="https://github.com/krallin/tini" target="_blank"><code>tini</code></a><ul>
+<li>protects you from software that accidentally creates zombie processes</li>
+<li>ensures that the default signal handlers work for the software you run in your Docker image</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>The <code>Dockerfile</code> uses 2 targets:</p>
+<ul>
+<li><code>development</code>: image to use in development. With this you can mount a local volume that points to your code and if
+you change it locally, it will automatically change in the container.</li>
+<li><code>production</code>: image to use in production</li>
+</ul>
+<p>When building both target, you&rsquo;ll need to have your project <code>requirements.txt</code> generated beforehand. You can do this running:</p>
+<div class="annotate highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>poetry <span class="nb">export</span> -f requirements.txt --without-hashes -o requirements.txt <span class="c1"># (1)</span>
+</code></pre></div>
+<ol>
+<li>If you need additional dependency groups add the extra parameter <code>--with &lt;your_other_group_1&gt;,&lt;your_other_group_2&gt;</code></li>
+</ol>
+<p>For the <code>development</code> target, you&rsquo;ll also need your <code>requirements-dev.txt</code>, to generate this run:</p>
+<div class="annotate highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>poetry <span class="nb">export</span> -f requirements.txt --without-hashes -o requirements-dev.txt --with dev,tests <span class="c1"># (1)</span>
+</code></pre></div>
+<ol>
+<li>If you need additional dependency groups add them like <code>--with dev,tests,&lt;your_other_group&gt;</code></li>
+</ol>
+<p>For the <code>production</code>, there&rsquo;s a Make target that will automatically build your image:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="err">make</span><span class="w"> </span><span class="err">build-docker</span><span class="w"></span>
+</code></pre></div>
+<p>And other to run it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="err">make</span><span class="w"> </span><span class="err">run-docker</span><span class="w"></span>
+</code></pre></div>
 
 
 

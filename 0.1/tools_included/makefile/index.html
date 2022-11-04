@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A cookiecutter template for python packages.">
+        <meta name="description" content="A cookiecutter template for python projects.">
       
       
         <meta name="author" content="Marco Henriques <marco.martins.henriques@gmail.com>">
@@ -1062,12 +1062,12 @@
 <p>The project includes a <code>Makefile</code> to help automate some tasks. These tasks can be grouped into sections.</p>
 <h2 id="system-dependencies">System Dependencies<a class="headerlink" href="#system-dependencies" title="Permanent link">&para;</a></h2>
 <p>To check if you have all the required tools:</p>
-<div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">doctor</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="err">make</span><span class="w"> </span><span class="err">doctor</span><span class="w"></span>
 </code></pre></div>
 <h2 id="project-dependencies">Project Dependencies<a class="headerlink" href="#project-dependencies" title="Permanent link">&para;</a></h2>
 <p>Tasks that help you set up your environment (create a virtual environment, install packages and tools&hellip;)</p>
 <h3 id="install">install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">install</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="err">make</span><span class="w"> </span><span class="err">install</span><span class="w"></span>
 </code></pre></div>
 <p>This will should be the first command to prepare your environment. It will set up several things:</p>
 <ol>
@@ -1088,100 +1088,100 @@ install the project <code>core</code>, <code>dev</code> and <code>test</code> de
 </li>
 </ol>
 <h3 id="install-jupyter">install-jupyter<a class="headerlink" href="#install-jupyter" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">install-jupyter</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="err">make</span><span class="w"> </span><span class="err">install-jupyter</span><span class="w"></span>
 </code></pre></div>
 <p>Install the dependencies to run jupyter notebooks. This target is only available if selected in the project setup
 (<code>include_notebooks</code>).</p>
 <h3 id="install-docs">install-docs<a class="headerlink" href="#install-docs" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">install-docs</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="err">make</span><span class="w"> </span><span class="err">install-docs</span><span class="w"></span>
 </code></pre></div>
 <p>Install the dependencies to build documentation. This target is only available if selected in the project setup
 (<code>include_docs</code>).</p>
 <h3 id="requirementstxt">requirements.txt<a class="headerlink" href="#requirementstxt" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">requirements.txt</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="err">make</span><span class="w"> </span><span class="err">requirements.txt</span><span class="w"></span>
 </code></pre></div>
 <p>This will update/generate the project <code>requirements.txt</code>, based on the installed dependencies from poetry.</p>
 <h2 id="checks">Checks<a class="headerlink" href="#checks" title="Permanent link">&para;</a></h2>
 <p>Tasks to run linters, formatters and python dependencies vulnerabilities scanner</p>
 <h3 id="format">format<a class="headerlink" href="#format" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">format</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="err">make</span><span class="w"> </span><span class="err">format</span><span class="w"></span>
 </code></pre></div>
 <p>Runs <code>black</code> and <code>isort</code> on your <strong>src</strong> and <em>tests</em> directory.</p>
 <h3 id="check-packages">check-packages<a class="headerlink" href="#check-packages" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">check-packages</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="err">make</span><span class="w"> </span><span class="err">check-packages</span><span class="w"></span>
 </code></pre></div>
 <p>Runs checks on packages:
 - Checks the validity of the <code>pyproject.toml</code> file
 - Verify installed packages have compatible dependencies
 - Run <code>safety check</code> to find vulnerabilities in Python dependencies</p>
 <h3 id="lint">lint<a class="headerlink" href="#lint" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">-k</span><span class="w"> </span><span class="err">lint</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="err">make</span><span class="w"> </span><span class="err">-k</span><span class="w"> </span><span class="err">lint</span><span class="w"></span>
 </code></pre></div>
 <p>Runs <code>mypy</code> and <code>flake8</code> on your <strong>src</strong> and <em>tests</em> directory, and <code>shellcheck</code> on shell files.</p>
 <p>You can also run each check individually: <code>make mypy</code>, <code>make flake8</code> and <code>make shellcheck</code>.</p>
 <h3 id="check">check<a class="headerlink" href="#check" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">-k</span><span class="w"> </span><span class="err">check</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="err">make</span><span class="w"> </span><span class="err">-k</span><span class="w"> </span><span class="err">check</span><span class="w"></span>
 </code></pre></div>
 <p>Runs both <code>check-packages</code> and <code>lint</code> targets.</p>
 <h3 id="pre-commit">pre-commit<a class="headerlink" href="#pre-commit" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">pre-commit</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="err">make</span><span class="w"> </span><span class="err">pre-commit</span><span class="w"></span>
 </code></pre></div>
 <p>Runs the pre-commit checks on all files.</p>
 <h2 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h2>
 <p>Tasks related to testing.</p>
 <h3 id="test">test<a class="headerlink" href="#test" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">test</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="err">make</span><span class="w"> </span><span class="err">test</span><span class="w"></span>
 </code></pre></div>
 <p>Runs the tests with <code>pytest</code>. As we&rsquo;re using <code>pytest-randomly</code> to shuffle the tests, if the last run of the tests fails,
 it will run the test with the same random seed first, and then, if the tests pass, it will run with a new one.</p>
 <h3 id="read-coverage">read-coverage<a class="headerlink" href="#read-coverage" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">read-coverage</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="err">make</span><span class="w"> </span><span class="err">read-coverage</span><span class="w"></span>
 </code></pre></div>
 <p>Opens the coverage report for the last pytest run.</p>
 <h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h2>
 <p>Tasks related to documentation. This section is only available if selected in the project setup (<code>include_docs</code>).</p>
 <h3 id="build-docs">build-docs<a class="headerlink" href="#build-docs" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">build-docs</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="err">make</span><span class="w"> </span><span class="err">build-docs</span><span class="w"></span>
 </code></pre></div>
 <p>Generate mkdocs documentation locally.<br />
 The first this target is executed, it will run the target <code>install-docs</code> before.</p>
 <h3 id="docs">docs<a class="headerlink" href="#docs" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">docs</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="err">make</span><span class="w"> </span><span class="err">docs</span><span class="w"></span>
 </code></pre></div>
 <p>Build docs and serve them.</p>
 <h2 id="build">Build<a class="headerlink" href="#build" title="Permanent link">&para;</a></h2>
 <p>Tasks related to builds.</p>
 <h3 id="dist">dist<a class="headerlink" href="#dist" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">dist</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="err">make</span><span class="w"> </span><span class="err">dist</span><span class="w"></span>
 </code></pre></div>
 <p>Builds the package, as a tarball and a wheel.</p>
 <h2 id="cleanup">Cleanup<a class="headerlink" href="#cleanup" title="Permanent link">&para;</a></h2>
 <p>Tasks to clean up.</p>
 <h3 id="clean">clean<a class="headerlink" href="#clean" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">clean</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="err">make</span><span class="w"> </span><span class="err">clean</span><span class="w"></span>
 </code></pre></div>
 <p>Delete all generated and temporary files.</p>
 <h3 id="clean-all">clean-all<a class="headerlink" href="#clean-all" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">clean-all</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="err">make</span><span class="w"> </span><span class="err">clean-all</span><span class="w"></span>
 </code></pre></div>
 <p>Delete the virtual environment and all generated and temporary files.</p>
 <h2 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">&para;</a></h2>
 <p>Tasks related to docker. This section is only available if selected in the project setup (<code>include_docker</code>).</p>
 <h3 id="build-docker">build-docker<a class="headerlink" href="#build-docker" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">build-docker</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="err">make</span><span class="w"> </span><span class="err">build-docker</span><span class="w"></span>
 </code></pre></div>
 <p>Build the docker image.</p>
 <h3 id="run-docker">run-docker<a class="headerlink" href="#run-docker" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">run-docker</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="err">make</span><span class="w"> </span><span class="err">run-docker</span><span class="w"></span>
 </code></pre></div>
 <p>Run the docker container for the built image.</p>
 <h2 id="other-tasks">Other Tasks<a class="headerlink" href="#other-tasks" title="Permanent link">&para;</a></h2>
 <h3 id="ci">ci<a class="headerlink" href="#ci" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">-k</span><span class="w"> </span><span class="err">ci</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="err">make</span><span class="w"> </span><span class="err">-k</span><span class="w"> </span><span class="err">ci</span><span class="w"></span>
 </code></pre></div>
 <p>Run targets <code>format</code>, <code>check</code>, <code>test</code> and <code>build-docs</code> (if selected)</p>
 <h3 id="jupyter">jupyter<a class="headerlink" href="#jupyter" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="err">make</span><span class="w"> </span><span class="err">jupyter</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="err">make</span><span class="w"> </span><span class="err">jupyter</span><span class="w"></span>
 </code></pre></div>
 <p>Run jupyter notebooks on the notebooks directory (it will be created if it doesn&rsquo;t exist).<br />
 The first this target is executed, it will run the target <code>install-jupyter</code> before.</p>

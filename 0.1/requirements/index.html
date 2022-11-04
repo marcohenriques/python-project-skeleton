@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A cookiecutter template for python packages.">
+        <meta name="description" content="A cookiecutter template for python projects.">
       
       
         <meta name="author" content="Marco Henriques <marco.martins.henriques@gmail.com>">
@@ -592,12 +592,40 @@
 <li><a href="https://poetry.eustace.io/docs/#installation">Poetry</a> (version ~1.2.0)</li>
 </ul>
 <p>In Linux, make sure you have all required Python dependencies installed:
-<div class="highlight"><pre><span></span><code>sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev liblzma-dev tk-dev
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev liblzma-dev tk-dev
 </code></pre></div></p>
 <hr />
 <p>To confirm these system dependencies are configured correctly, on your project directory run:</p>
-<div class="highlight"><pre><span></span><code>./scripts/verchew
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>./scripts/verchew
 </code></pre></div>
+<p>After running this, you should see something similar to:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Checking for Make...
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>$ make --version
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>GNU Make 3.81
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>✔ MATCHED: GNU Make
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>Checking for Python...
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>$ python --version
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>Python 3.10.5
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>✔ MATCHED: &lt;anything&gt;
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>Checking for Poetry...
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>$ poetry --version
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>Poetry (version 1.2.2)
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>✔ MATCHED: 1.2
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>Checking for Pyenv...
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>$ pyenv --version
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>pyenv 2.3.5
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>✔ MATCHED: &lt;anything&gt;
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>Results: ✔ ✔ ✔ ✔
+</code></pre></div>
+<p>If you have all the ✔ you&rsquo;re good to go.</p>
 
 
 

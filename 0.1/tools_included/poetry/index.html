@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A cookiecutter template for python packages.">
+        <meta name="description" content="A cookiecutter template for python projects.">
       
       
         <meta name="author" content="Marco Henriques <marco.martins.henriques@gmail.com>">
@@ -70,6 +70,11 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
+      
+        
+        <a href="#poetry" class="md-skip">
+          Skip to content
+        </a>
       
     </div>
     <div data-md-component="announce">
@@ -411,10 +416,98 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Poetry
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         Poetry
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dependency-groups" class="md-nav__link">
+    Dependency groups
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basic-usage" class="md-nav__link">
+    Basic usage
+  </a>
+  
+    <nav class="md-nav" aria-label="Basic usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-dependencies" class="md-nav__link">
+    Install dependencies
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-new-dependencies" class="md-nav__link">
+    Add new dependencies
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-dependencies" class="md-nav__link">
+    Update dependencies
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remove-dependencies" class="md-nav__link">
+    Remove dependencies
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#show-package-details" class="md-nav__link">
+    Show package details
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-commands-using-your-virtual-environment" class="md-nav__link">
+    Running commands using your virtual environment
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -501,6 +594,78 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dependency-groups" class="md-nav__link">
+    Dependency groups
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basic-usage" class="md-nav__link">
+    Basic usage
+  </a>
+  
+    <nav class="md-nav" aria-label="Basic usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-dependencies" class="md-nav__link">
+    Install dependencies
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-new-dependencies" class="md-nav__link">
+    Add new dependencies
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-dependencies" class="md-nav__link">
+    Update dependencies
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remove-dependencies" class="md-nav__link">
+    Remove dependencies
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#show-package-details" class="md-nav__link">
+    Show package details
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-commands-using-your-virtual-environment" class="md-nav__link">
+    Running commands using your virtual environment
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -515,9 +680,111 @@
                   
 
 
-  <h1>Poetry</h1>
-
-<p>🔨👷‍♂️</p>
+<h1 id="poetry">Poetry<a class="headerlink" href="#poetry" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Poetry is a tool for dependency management and packaging in Python. It allows you to declare the libraries your
+project depends on and it will manage (install/update) them for you. Poetry offers a lockfile to ensure repeatable
+installs, and can build your project for distribution.</p>
+</blockquote>
+<p>The project uses <a href="https://python-poetry.org/" target="_blank"><code>poetry</code></a> to manage your
+dependencies in a deterministic way, to make sure everyone uses the same dependencies versions (and the dependencies
+of the dependencies).</p>
+<h2 id="dependency-groups">Dependency groups<a class="headerlink" href="#dependency-groups" title="Permanent link">&para;</a></h2>
+<p>The project organizes some dependencies into groups, so you don&rsquo;t need to install some groups of dependencies unless
+they&rsquo;re required. The predefined groups of dependencies are:</p>
+<ul>
+<li>your core project dependencies</li>
+<li><code>dev</code>: related to development tasks (formatter, linters, pre-commit)</li>
+<li><code>tests</code>: to run tests</li>
+<li><code>docs</code>: to build documentation</li>
+<li><code>jupyter</code>: to run jupyter notebooks and formatter and linters for notebooks</li>
+</ul>
+<p>To learn how to manage these groups, please refer to poetry <a href="https://python-poetry.org/docs/managing-dependencies/" target="_blank">dependency groups documentation</a></p>
+<h2 id="basic-usage">Basic usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h2>
+<p>Here we describe some basic usage for poetry, for more details and additional available commands, please refer to the
+<a href="https://python-poetry.org/docs/cli/" target="_blank">documentation</a>.</p>
+<h3 id="install-dependencies">Install dependencies<a class="headerlink" href="#install-dependencies" title="Permanent link">&para;</a></h3>
+<p>Install the required dependencies:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>poetry install
+</code></pre></div>
+<p>If there&rsquo;s no <code>poetry.lock</code> Poetry simply resolves all dependencies listed in your <code>pyproject.toml</code> file and downloads
+the latest version of their files. In the end, it will write the <code>poetry.lock</code>.<br />
+If you already have a <code>poetry.lock</code> file, it will use this file to install the exact versions listed on it.</p>
+<p>If you also want to install some optional dependency group, let&rsquo;s say <code>docs</code>, you should run:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>poetry install --with docs
+</code></pre></div>
+<h3 id="add-new-dependencies">Add new dependencies<a class="headerlink" href="#add-new-dependencies" title="Permanent link">&para;</a></h3>
+<p>If you want to add a new dependency to your core dependencies (let&rsquo;s say <code>django</code>), run:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>poetry add django
+</code></pre></div>
+<p>This will find a suitable version constraint and install the package and sub-dependencies</p>
+<p>If you add to add a dependency to a specific group (let&rsquo;s say <code>pytest</code> into <code>tests</code> group), run:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>poetry add pytest --group tests
+</code></pre></div>
+<p>You can also specify a <a href="https://python-poetry.org/docs/dependency-specification#version-constraints" target="_blank">version constraint</a>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>poetry add django@4.0.0
+</code></pre></div>
+<p>In this case, poetry would install the exact specified <code>django</code> version.</p>
+<p>For more options on how to add dependencies, please check the <a href="https://python-poetry.org/docs/dependency-specification" target="_blank">dependency specification documentation</a>.</p>
+<h3 id="update-dependencies">Update dependencies<a class="headerlink" href="#update-dependencies" title="Permanent link">&para;</a></h3>
+<p>To update all your dependencies, to the latest allowed versions (according to constraints), run:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>poetry update
+</code></pre></div>
+<p>If you just want to update some dependencies (let&rsquo;s say <code>django</code> and <code>pytest</code>), run:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>poetry django pytest
+</code></pre></div>
+<p>If you need to update a dependency outside the constraint defined in the <code>pyproject.toml</code>, you&rsquo;ll have to use the
+<code>poetry add</code> command.</p>
+<h3 id="remove-dependencies">Remove dependencies<a class="headerlink" href="#remove-dependencies" title="Permanent link">&para;</a></h3>
+<p>To remove a dependency (let&rsquo;s say <code>django</code>), from your core dependency group run:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>poetry remove django
+</code></pre></div>
+<p>If it&rsquo;s in other dependency group (let&rsquo;s say <code>pytest</code> into <code>tests</code> group), run:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>poetry remove pytest --group tests
+</code></pre></div>
+<h3 id="show-package-details">Show package details<a class="headerlink" href="#show-package-details" title="Permanent link">&para;</a></h3>
+<p>Poetry also allows you to check package details. To check all your required dependencies details run:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>poetry show
+</code></pre></div>
+<p>If you also want some optional dependency groups (let&rsquo;s say <code>tests</code> group), run:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>poetry show --with tests
+</code></pre></div>
+<p>For detailed information on a specific package (let&rsquo;s say <code>pytest</code>), run:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>poetry show pytest
+</code></pre></div>
+<p>you&rsquo;ll see something like this:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a> name         : pytest  
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a> version      : 7.2.0  
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a> description  : pytest: simple powerful testing with Python
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>dependencies
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a> - attrs &gt;=19.2.0
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a> - colorama *
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a> - exceptiongroup &gt;=1.0.0rc8
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a> - iniconfig *
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a> - packaging *
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a> - pluggy &gt;=0.12,&lt;2.0
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a> - tomli &gt;=1.0.0
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>required by
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a> - pytest-clarity &gt;=3.5.0
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a> - pytest-cookies &gt;=3.3.0
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a> - pytest-cov &gt;=4.6
+</code></pre></div>
+<h3 id="running-commands-using-your-virtual-environment">Running commands using your virtual environment<a class="headerlink" href="#running-commands-using-your-virtual-environment" title="Permanent link">&para;</a></h3>
+<p>You can make sure you&rsquo;re running commands inside your project virtual environment in 2 ways:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>poetry run &lt;my_command&gt;
+</code></pre></div>
+<p>This will execute <code>&lt;my_command&gt;</code> from your virtual environment, and return to the environment where you were running.</p>
+<p>Or you can also run:</p>
+<div class="annotate highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>poetry shell <span class="c1"># (1)</span>
+</code></pre></div>
+<ol>
+<li>Note that this command starts a new shell and activates the virtual environment.
+<br><br>As such, <code>exit</code> should be used to properly exit the shell and the virtual environment instead of <code>deactivate</code>.</li>
+</ol>
+<p>This spawns a shell, according to the <code>$SHELL</code> environment variable, within the virtual environment. Then you can run
+your command inside the provisioned shell.</p>
 
 
 
