@@ -11,7 +11,7 @@ COMMANDS = types.MappingProxyType(
 )
 
 
-def run(path):
+def run(path: str) -> None:
     command = COMMANDS.get(sys.platform, "open")
     os.system("{command} {path}".format(command=command, path=path))
 

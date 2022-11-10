@@ -59,7 +59,7 @@ $(DEPENDENCIES): $(VIRTUAL_ENV_NAME)
 	@ touch $@
 
 $(TOOLS_FIRST_INSTALLED): .git
-	@ poetry run pre-commit install -t pre-commit -t pre-push -tcommit-msg
+	@ poetry run pre-commit install -t pre-commit -t pre-push -t commit-msg
 	@ poetry run git config commit.template .gitmessage
 	@ touch $@ # This will create a file named `.tools_first_installed` inside venv folder
 
@@ -84,6 +84,11 @@ requirements.txt: poetry.lock  ## Generate requirements.txt file from poetry
 	@ echo "$(ECHO_COLOUR)Generating requirements.txt$(NC)"
 	@ poetry export -f requirements.txt --without-hashes -o requirements.txt
 	@ poetry run ${ROOT_DIR}/scripts/req_fixer requirements.txt
+
+requirements-dev.txt: poetry.lock  ## Generate requirements.txt file from poetry
+	@ echo "$(ECHO_COLOUR)Generating requirements.txt$(NC)"
+	@ poetry export -f requirements.txt --without-hashes -o requirements-dev.txt --with dev,tests
+	@ poetry run ${ROOT_DIR}/scripts/req_fixer requirements-dev.txt
 
 
 # CHECKS ######################################################################
