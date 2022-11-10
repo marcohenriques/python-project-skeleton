@@ -3,9 +3,10 @@
 
 import hashlib
 import sys
+from typing import List
 
 
-def run(paths):
+def run(paths: List[str]) -> None:
     sha = hashlib.sha1()
 
     for path in paths:
