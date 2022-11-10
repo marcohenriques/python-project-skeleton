@@ -22,3 +22,35 @@ To confirm these system dependencies are configured correctly, on your project d
 ```bash
 ./scripts/verchew
 ```
+
+After running this, you should see something similar to:
+
+```
+Checking for Make...
+
+$ make --version
+GNU Make 3.81
+✔ MATCHED: GNU Make
+
+Checking for Python...
+
+$ python --version
+Python 3.10.5
+✔ MATCHED: <anything>
+
+Checking for Poetry...
+
+$ poetry --version
+Poetry (version 1.2.2)
+✔ MATCHED: 1.2
+
+Checking for Pyenv...
+
+$ pyenv --version
+pyenv 2.3.5
+✔ MATCHED: <anything>
+
+Results: ✔ ✔ ✔ ✔
+```
+
+If you have all the ✔ you're good to go.

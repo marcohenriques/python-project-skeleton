@@ -5,7 +5,7 @@ The project includes a `Makefile` to help automate some tasks. These tasks can b
 
 ## System Dependencies
 
-To check if you have all required tools:
+To check if you have all the required tools:
 
 ```make
 make doctor
@@ -14,7 +14,7 @@ make doctor
 
 ## Project Dependencies
 
-Tasks that help you setup your environment (create environment, install packages and tools...)
+Tasks that help you set up your environment (create a virtual environment, install packages and tools...)
 
 ### install
 
@@ -22,7 +22,7 @@ Tasks that help you setup your environment (create environment, install packages
 make install
 ```
 
-This will should be the first command to prepare your environment. It will setup several things:
+This will should be the first command to prepare your environment. It will set up several things:
 
 1. create a `.python-version` file, that will tell `pyenv` which python version to use. Behind the scenes, it will look
 at the python version you select during project generation (which is stored in the variable `PYTHON_VERSION` on your
@@ -33,7 +33,7 @@ install the project `core`, `dev` and `test` dependencies
 
 3. if there's no git initialization in the project, it will perform a `git init`, if there is, it will be skipped
 
-4. next it will install the `pre-commit` hooks and install the git message template
+4. next, it will install the `pre-commit` hooks and install the git message template
 
 ### install-jupyter
 
@@ -41,7 +41,7 @@ install the project `core`, `dev` and `test` dependencies
 make install-jupyter
 ```
 
-Install the dependencies to run jupyter notebooks. This target is only available if selected in project setup
+Install the dependencies to run jupyter notebooks. This target is only available if selected in the project setup
 (`include_notebooks`).
 
 ### install-docs
@@ -50,7 +50,7 @@ Install the dependencies to run jupyter notebooks. This target is only available
 make install-docs
 ```
 
-Install the dependencies to build documentation. This target is only available if selected in project setup
+Install the dependencies to build documentation. This target is only available if selected in the project setup
 (`include_docs`).
 
 ### requirements.txt
@@ -114,7 +114,7 @@ Runs the pre-commit checks on all files.
 
 ## Tests
 
-Tasks related with testing.
+Tasks related to testing.
 
 ### test
 
@@ -136,7 +136,7 @@ Opens the coverage report for the last pytest run.
 
 ## Documentation
 
-Tasks related with documentation. This section is only available if selected in project setup (`include_docs`).
+Tasks related to documentation. This section is only available if selected in the project setup (`include_docs`).
 
 ### build-docs
 
@@ -158,7 +158,7 @@ Build docs and serve them.
 
 ## Build
 
-Tasks related with builds.
+Tasks related to builds.
 
 ### dist
 
@@ -171,7 +171,7 @@ Builds the package, as a tarball and a wheel.
 
 ## Cleanup
 
-Tasks to cleanup.
+Tasks to clean up.
 
 ### clean
 
@@ -187,12 +187,12 @@ Delete all generated and temporary files.
 make clean-all
 ```
 
-Delete virtual environment and all generated and temporary files.
+Delete the virtual environment and all generated and temporary files.
 
 
 ## Docker
 
-Tasks related with docker. This section is only available if selected in project setup (`include_docker`).
+Tasks related to docker. This section is only available if selected in the project setup (`include_docker`).
 
 ### build-docker
 
@@ -200,7 +200,7 @@ Tasks related with docker. This section is only available if selected in project
 make build-docker
 ```
 
-Build docker image.
+Build the docker image.
 
 ### run-docker
 
@@ -208,7 +208,7 @@ Build docker image.
 make run-docker
 ```
 
-Run docker container for the built image.
+Run the docker container for the built image.
 
 
 ## Other Tasks
