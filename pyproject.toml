@@ -24,8 +24,9 @@ isort = "^5.10.1"
 flake8 = "^5.0.4"
 mypy = "^0.982"
 pre-commit = "^2.20.0"
+commitizen = "^2.37.0"
+safety = "^2.3.1"
 
-# Tests
 [tool.poetry.group.tests]
 optional = false
 [tool.poetry.group.tests.dependencies]
@@ -34,7 +35,6 @@ pytest-cov = "^3.0.0"
 pytest-clarity = "^1.0.1"
 pytest-cookies = "^0.6.1"
 
-# Documentation
 [tool.poetry.group.docs]
 optional = true
 [tool.poetry.group.docs.dependencies]
@@ -43,11 +43,18 @@ mkdocs-material = "^8.5.7"
 mkdocstrings = {extras = ["python"], version = "^0.19.0"}
 pygments = "^2.13.0"
 pymdown-extensions = "^9.7"
+mike = "^1.1.2"
 
 
 ####################
 ### TOOLS CONFIG ###
 ####################
+
+[tool.commitizen]
+version = "0.1.0"
+version_files = [
+    "pyproject.toml:version",
+]
 
 ### FORMATTERS
 
@@ -90,6 +97,7 @@ disallow_untyped_decorators = false
 
 
 ### TESTS
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = [
@@ -101,4 +109,5 @@ addopts = [
     "--no-cov-on-fail",
 ]
 console_output_style = "count"
+cache_dir = ".cache"
 filterwarnings = ["ignore::DeprecationWarning"]

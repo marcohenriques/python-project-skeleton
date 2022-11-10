@@ -5,6 +5,7 @@ import logging
 import os
 import shutil
 
+
 LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT)
 logger = logging.getLogger("post_gen_project")

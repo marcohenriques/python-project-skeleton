@@ -2,7 +2,7 @@
 # https://squidfunk.github.io/mkdocs-material/reference/
 # https://facelessuser.github.io/pymdown-extensions/
 site_name: python-project-skeleton
-site_description: A cookiecutter template for python packages.
+site_description: A cookiecutter template for python projects.
 site_author: "Marco Henriques <marco.martins.henriques@gmail.com>"
 
 repo_url: https://github.com/marcohenriques/python-project-skeleton
@@ -43,12 +43,21 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.keys
   - pymdownx.superfences
+  - attr_list
+  - md_in_html
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
   - pymdownx.snippets:
       base_path: docs
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tabbed:
       alternate_style: true
+
+extra:
+  version:
+    provider: mike
 
 plugins:
   - search
