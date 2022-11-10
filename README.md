@@ -19,22 +19,27 @@ A cookiecutter template for python projects.
 
 - Github actions CICD to run formatters, linter, tests. Also support to build and push docker images
 - Dockerfile to ship python apps
-- Documentation with [`mkdocs`](https://www.mkdocs.org/) using the beautiful [`material`](https://squidfunk.github.io/mkdocs-material/getting-started/) theme
-- Testing using [`pytest`](https://docs.pytest.org/en/7.2.x/) and several plugins
-- Code formatters using [`black`](https://black.readthedocs.io/en/stable/) and [`isort`](https://pycqa.github.io/isort/)
-- Linters using [`flake8`](https://flake8.pycqa.org/en/latest/) (with [`wemake-python-styleguide`](https://wemake-python-styleguide.readthedocs.io/en/latest/)), [`mypy`](http://mypy-lang.org/) and [`shellcheck`](https://github.com/shellcheck-py/shellcheck-py)
-- Python dependencies vulnerabilities scanner using [`safety`](https://github.com/pyupio/safety)
-- [`pre-commit`](https://pre-commit.com/) hooks for some validations
+- Documentation with <a href="https://www.mkdocs.org/" target="_blank"><code>mkdocs</code></a> using the beautiful
+<a href="https://squidfunk.github.io/mkdocs-material/getting-started/" target="_blank"><code>material</code></a> theme
+- Testing using <a href="https://docs.pytest.org/" target="_blank"><code>pytest</code></a> and several plugins
+- Code formatters using <a href="https://black.readthedocs.io/en/stable/" target="_blank"><code>black</code></a> and
+<a href="https://pycqa.github.io/isort/" target="_blank"><code>isort</code></a>
+- Linters using <a href="https://flake8.pycqa.org/en/latest/" target="_blank"><code>flake8</code></a>
+(with <a href="https://wemake-python-styleguide.readthedocs.io/en/latest/" target="_blank"><code>wemake-python-styleguide</code></a>),
+<a href="http://mypy-lang.org/" target="_blank"><code>mypy</code></a> and
+<a href="https://github.com/shellcheck-py/shellcheck-py" target="_blank"><code>shellcheck</code></a>
+- Python dependencies vulnerabilities scanner using <a href="https://github.com/pyupio/safety" target="_blank"><code>safety</code></a>
+- <a href="https://pre-commit.com/" target="_blank"><code>pre-commit</code></a> hooks for some validations
 - `Makefile` to automate some development tasks
-- [`poetry`](https://python-poetry.org/) to manage your python dependencies
+- <a href="https://python-poetry.org/" target="_blank"><code>poetry</code></a> to manage your python dependencies
 - Python package pre-configured with:
     - logging module to be easier to manage your loggers per environment
-    - setting module using [`pydantic`](https://pydantic-docs.helpmanual.io/) to help manage your project settings
-    - (optional) CLI example using [`typer`](https://typer.tiangolo.com/)
+    - setting module using <a href="https://pydantic-docs.helpmanual.io/" target="_blank"><code>pydantic</code></a> to help manage your project settings
+    - (optional) CLI example using <a href="https://typer.tiangolo.com/" target="_blank"><code>typer</code></a>
 
 ## Requirements
 
-You'll need to have [cookiecutter](https://cookiecutter.readthedocs.io/en/2.0.2/installation.html) installed.
+You'll need to have <a href="https://cookiecutter.readthedocs.io/en/2.0.2/installation.html" target="_blank">cookiecutter</a> installed.
 
 ## Installation
 
@@ -53,7 +58,7 @@ The template asks for the following inputs:
 - `project_description`: A short description of the project.
 - `author_name`: The name of the author.
 - `author_email`: The email of the author.
-- `github_username_or_org_name`: The github username or organization name.
+- `github_username_or_org_name`: The GitHub username or organization name.
 - `python_version`: The python version to use.
 - `include_docker`: Whether to include docker support.
 - `include_notebooks`: Whether to include support for jupyter notebooks.
