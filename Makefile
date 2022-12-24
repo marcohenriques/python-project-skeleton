@@ -114,6 +114,10 @@ lint: mypy flake8 shellcheck  ## Run linters (mypy, flake8, shellcheck)
 .PHONY: check
 check: check-packages lint  ## Run linters, and static code analysis
 
+.PHONY: bump
+bump:  ## Bumps version number based on commit history
+	poetry run cz bump -ch
+
 
 # TESTS #######################################################################
 
