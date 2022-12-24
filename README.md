@@ -49,6 +49,14 @@ Run the following command to create a new project, on your current directory:
 cookiecutter gh:marcohenriques/python-project-skeleton
 ```
 
+If you want to use a different version of the template, use the following command:
+
+```bash
+cookiecutter gh:marcohenriques/python-project-skeleton -c <VERSION>
+```
+
+where `<VERSION>` can be the branch, tag or commit of the template repo.
+
 ## Template inputs
 
 The template asks for the following inputs:

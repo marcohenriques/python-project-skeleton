@@ -168,7 +168,7 @@ mike-docs: build-docs ## Serve the documentation using mike (localhost:8000)
 
 .PHONY: deploy-docs
 deploy-docs:  ## Deploys the documentation to github pages
-	poetry run mike deploy -p $(cz version -p) latest
+	poetry run mike deploy -u -p $(shell poetry run cz version -p) latest
 
 
 # CLEANUP #####################################################################
