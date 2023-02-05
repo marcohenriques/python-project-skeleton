@@ -1,4 +1,4 @@
-name: Build and push docker image
+name: Docker
 
 on:
   workflow_call:
@@ -6,13 +6,21 @@ on:
       image-name:
         required: true
         type: string
+        description: the name of the docker image (with repo, if applied)
       image-tag:
         required: true
         type: string
+        description: the docker image tag to use
       push-image:
         required: false
-        type: string
-        default: "false"
+        type: boolean
+        default: false
+        description: whether to push the image to registry
+      push-latest-tag:
+        required: false
+        type: boolean
+        default: false
+        description: whether to also push the latest tag (only applied if `push-image`` is 'true')
 
 env:
   IMAGE_NAME: {% raw %}${{ inputs.image-name}}{% endraw %}
@@ -29,10 +37,10 @@ jobs:
       - name: Checkout Git repository
         uses: actions/checkout@v3
 
-      - name: Set up Python {{ cookiecutter.python_version }}
+      - name: Set up Python 3.11
         uses: actions/setup-python@v4
         with:
-          python-version: "{{ cookiecutter.python_version }}"
+          python-version: "3.11"
 
       - name: Install and configure Poetry
         uses: snok/install-poetry@v1
@@ -43,11 +51,13 @@ jobs:
           installer-parallel: true
 
       - name: Build image
+        env:
+          DOCKER_IMAGE_NAME: ${IMAGE_NAME}
+          DOCKER_IMAGE_TAG: ${IMAGE_TAG}
         run: |
-          set -eux
-          DOCKER_IMAGE_NAME=${IMAGE_NAME} DOCKER_IMAGE_TAG=${IMAGE_TAG} make build-docker
+          make build-docker
 
-      # https://github.com/docker/login-action
+      # More repo options: https://github.com/docker/login-action
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         if: inputs.push-image == 'true'
@@ -56,15 +66,17 @@ jobs:
           username: {% raw %}${{ github.actor }}{% endraw %}
           password: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
 
-      - name: Push image to Amazon ECR
+      - name: Push image to registry
         if: inputs.push-image == 'true'
         env:
-          ECR_REGISTRY: ghcr.io/{{ cookiecutter.github_username_or_org_name }}
+          DOCKER_REGISTRY: ghcr.io/{{ cookiecutter.github_username_or_org_name }}
         run: |
           # Tagging with $IMAGE_NAME:$IMAGE_TAG
-          docker tag "${IMAGE_NAME}":"${IMAGE_TAG}" "${ECR_REGISTRY}"/"${IMAGE_NAME}":"${IMAGE_TAG}"
-          docker push "${ECR_REGISTRY}"/"${IMAGE_NAME}":"${IMAGE_TAG}"
+          docker tag "${IMAGE_NAME}":"${IMAGE_TAG}" "${DOCKER_REGISTRY}"/"${IMAGE_NAME}":"${IMAGE_TAG}"
+          docker push "${DOCKER_REGISTRY}"/"${IMAGE_NAME}":"${IMAGE_TAG}"
 
           # Tagging with $IMAGE_NAME:latest to be used in airflow
-          docker tag "${IMAGE_NAME}":"${IMAGE_TAG}" "${ECR_REGISTRY}"/"${IMAGE_NAME}":latest
-          docker push "${ECR_REGISTRY}"/"${IMAGE_NAME}":latest
+          if [[ {% raw %}${{ inputs.push-latest-tag }}{% endraw %} == 'true' ]]; then
+            docker tag "${IMAGE_NAME}":"${IMAGE_TAG}" "${DOCKER_REGISTRY}"/"${IMAGE_NAME}":latest
+            docker push "${DOCKER_REGISTRY}"/"${IMAGE_NAME}":latest
+          fi
