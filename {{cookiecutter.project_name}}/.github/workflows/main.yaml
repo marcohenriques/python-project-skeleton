@@ -2,10 +2,10 @@ name: CICD
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
   workflow_dispatch:
     inputs:
       run-test:
@@ -13,66 +13,34 @@ on:
         required: false
         type: boolean
         default: true
-env:
-  BASE_IMAGE_NAME: {{cookiecutter.project_name.lower()}}
 
 {% raw %}jobs:
-  setup-env:
-    runs-on: ubuntu-latest
-    outputs:
-      image-name: ${{ steps.setup-docker-image-vars.outputs.image-name }}
-      image-tag: ${{ steps.setup-docker-image-vars.outputs.image-tag }}
-      push-image: ${{ steps.setup-docker-image-vars.outputs.push-image }}
-      run-test-flag: ${{ steps.setup-run-test-vars.outputs.run-test-flag }}
-    steps:
-      - id: setup-docker-image-vars
-        name: Setup docker image vars
-        run: |
-          set -eux
-
-          if [[ ${{ github.event_name }} == "workflow_dispatch" ]]; then
-              IMAGE_NAME=$BASE_IMAGE_NAME-dev
-          elif [[ ${{ github.event_name }} == "workflow_dispatch" ]]; then
-              RUN_TESTS=${{ inputs.run-test }}
-          else
-              IMAGE_NAME=$BASE_IMAGE_NAME
-          fi
-
-          if [[ ${{ github.event_name }} == "workflow_dispatch" || (${{ github.event_name }} == "push" && ${{ github.ref }} == "refs/heads/master") ]]; then
-              PUSH_IMAGE=true
-          else
-              PUSH_IMAGE=false
-          fi
-
-          echo "image-name=$IMAGE_NAME" >> $GITHUB_OUTPUT
-          echo "image-tag=$GITHUB_SHA" >> $GITHUB_OUTPUT
-          echo "push-image=$PUSH_IMAGE" >> $GITHUB_OUTPUT
-
-      - id: setup-run-test-vars
-        name: Setup run test vars
-        run: |
-          set -eux
-
-          if [[ ${{ github.event_name }} == "push" && ${{ github.ref }} == "refs/heads/master" ]]; then
-              RUN_TESTS=false
-          else
-              RUN_TESTS=true
-          fi
-          echo "run-test-flag=$RUN_TESTS" >> $GITHUB_OUTPUT
-
   run-ci-tests:
     uses: ./.github/workflows/ci_tests.yaml
-    needs: setup-env
-    with:
-      run-test: ${{ needs.setup-env.outputs.run-test-flag}}{% endraw %}
+    if: github.event_name != 'workflow_dispatch' || inputs.run-test{% endraw %}
 {% if cookiecutter.include_docker == "yes" %}
-  {% raw %}build-docker:
+  {% raw %}build-docker-dev:
     uses: ./.github/workflows/build_docker.yaml
     needs:
-      - setup-env
+      - run-ci-tests
+    if: contains(fromJson('["success", "skipped"]'), needs.run-ci-tests.result) && always()
+    with:
+      image-name:  {% endraw %}{{cookiecutter.project_name.lower()}}{% raw %}
+      image-tag: ${{ github.sha }}
+      push-image: ${{ (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')) }}
+      push-latest-tag: true
+
+  build-docker-prod:
+    uses: ./.github/workflows/build_docker.yaml
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/master')
+      && contains(fromJson('["success", "skipped"]'), needs.run-ci-tests.result)
+      && always()
+    needs:
       - run-ci-tests
     with:
-      image-name: ${{ needs.setup-env.outputs.image-name}}
-      image-tag: ${{ needs.setup-env.outputs.image-tag}}
-      push-image: ${{ needs.setup-env.outputs.push-image}}{% endraw %}
+      image-name:  {% endraw %}{{cookiecutter.project_name.lower()}}{% raw %}
+      image-tag: ${{ github.sha }}
+      push-image: true
+      push-latest-tag: true{% endraw %}
 {% endif -%}
