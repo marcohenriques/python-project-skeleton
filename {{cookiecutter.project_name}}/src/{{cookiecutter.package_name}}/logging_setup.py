@@ -1,7 +1,6 @@
 """Setup to load logging configuration file and additional logging formatters and filters."""
 
 import logging
-import os
 from logging.config import dictConfig
 from pathlib import Path
 from typing import Optional
@@ -27,9 +26,9 @@ def setup_logging(
         default_level (int): Default logging level in case no config file found.
             Defaults to DEFAULT_LOGGING_LEVEL.
     """
-    path = logging_config_path
-    if path is not None and os.path.exists(path):
-        with open(path, "rt") as config_file:
+    logging_config_path = logging_config_path
+    if logging_config_path is not None and logging_config_path.exists():
+        with logging_config_path.open() as config_file:
             try:
                 config = yaml.safe_load(config_file.read())
                 dictConfig(config)

@@ -39,17 +39,6 @@ repos:
       - id: add-trailing-comma
   - repo: local
     hooks:
-      - id: isort
-        name: Running isort
-        stages: [commit]
-        language: system
-        entry: poetry run isort
-        types: [python]
-        exclude: |
-          (?x)^(
-            scripts/|
-            notebooks/
-          )
       - id: black
         name: Running black
         stages: [commit]
@@ -68,11 +57,11 @@ repos:
         entry: make
         pass_filenames: false
         args: [check-packages]
-      - id: flake8
-        name: Running flake8
+      - id: ruff
+        name: Running ruff
         stages: [commit]
         language: system
-        entry: poetry run flake8
+        entry: poetry run ruff --fix
         types: [python]
         exclude: |
           (?x)^(
@@ -98,14 +87,6 @@ repos:
         language: python
         types: [shell]
 {% if cookiecutter.include_notebooks == "yes" %}
-      - id: nbqa-isort
-        name: Running isort on notebooks
-        description: "isort formatting for jupyter notebooks"
-        language: system
-        entry: poetry run nbqa isort
-        args: [--nbqa-mutate]
-        types: [file]
-        files: \.(ipynb)$
       - id: nbqa-black
         name: Running black on notebooks
         description: "black formatting for jupyter notebooks"
@@ -114,11 +95,11 @@ repos:
         args: [--nbqa-mutate]
         types: [file]
         files: \.(ipynb)$
-      - id: nbqa-flake8
-        name: Running flake8 on notebooks
-        description: "flake8 checking for jupyter notebooks"
+      - id: nbqa-ruff
+        name: Running ruff on notebooks
+        description: "ruff checking for jupyter notebooks"
         language: system
-        entry: poetry run nbqa flake8
+        entry: poetry run nbqa ruff --fix
         types: [file]
         files: \.(ipynb)$
       - id: nbqa-mypy

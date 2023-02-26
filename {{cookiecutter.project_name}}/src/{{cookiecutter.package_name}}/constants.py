@@ -1,3 +1,4 @@
+"""Global project constants."""
 from enum import Enum
 
 
@@ -10,7 +11,7 @@ class StrEnum(str, Enum):
         Returns:
             str: string representation
         """
-        return str.__str__(self)  # noqa: WPS609
+        return str.__str__(self)
 
     def __repr__(self) -> str:
         """Object representation.
@@ -18,7 +19,7 @@ class StrEnum(str, Enum):
         Returns:
             str: object representation
         """
-        return str.__repr__(self)  # noqa: WPS609
+        return str.__repr__(self)
 
 
 class Environment(StrEnum):

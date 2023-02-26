@@ -111,9 +111,9 @@ mypy:
 	@ echo "$(ECHO_COLOUR)##### Running mypy #####$(NC)"
 	poetry run mypy --install-types --non-interactive $(PACKAGES)
 
-flake8:
-	@ echo "$(ECHO_COLOUR)##### Running flake8 #####$(NC)"
-	poetry run flake8 $(PACKAGES)
+ruff:
+	@ echo "$(ECHO_COLOUR)##### Running ruff #####$(NC)"
+	poetry run ruff --fix $(PACKAGES)
 
 shellcheck:
 	@ echo "$(ECHO_COLOUR)##### Running shellcheck #####$(NC)"
@@ -121,7 +121,7 @@ shellcheck:
 	$(if $(sh_files),poetry run shellcheck $(sh_files), @ echo "No shell files found")
 
 .PHONY: lint
-lint: mypy flake8 shellcheck  ## Run linters (mypy, flake8, shellcheck)
+lint: mypy ruff shellcheck  ## Run linters (mypy, ruff, shellcheck)
 
 .PHONY: check
 check: check-packages lint  ## Run linters, and static code analysis
