@@ -1,3 +1,4 @@
+"""Global project settings."""
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -29,7 +30,7 @@ class AppSettings(BaseSettings):
     PACKAGE_DIR: DirectoryPath = Path(__file__).parent
     LOGGING_CONFIG_PATH: Optional[FilePath] = None
 
-    class Config(object):  # noqa: WPS431
+    class Config:
         """Config for Pydantic."""
 
         env_prefix = APP_ENV_PREFIX
@@ -37,9 +38,9 @@ class AppSettings(BaseSettings):
 
     @validator("LOGGING_CONFIG_PATH")
     def default_logging_config_path(
-        cls,  # noqa: N805
+        cls,
         logging_config_path: Optional[FilePath],
-        values: Dict[str, Any],  # noqa: WPS110
+        values: Dict[str, Any],
     ) -> Optional[FilePath]:
         """Get the default logging config path if not provided.
 

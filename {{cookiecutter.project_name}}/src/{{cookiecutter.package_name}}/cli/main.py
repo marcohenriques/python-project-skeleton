@@ -1,4 +1,4 @@
-"""This file serves only as example, it should be modified/removed."""
+"""Main CLI definition."""
 import uuid
 from datetime import datetime
 from enum import Enum
@@ -18,7 +18,7 @@ class LogLevel(str, Enum):
     ERROR = "ERROR"
     WARN = "WARN"
     WARNING = "WARNING"
-    INFO = "INFO"  # noqa: WPS110
+    INFO = "INFO"
     DEBUG = "DEBUG"
     NOTSET = "NOTSET"
 
@@ -28,7 +28,7 @@ app = typer.Typer(
     no_args_is_help=True,
     short_help="{{cookiecutter.package_name}} CLI",
     help="{{cookiecutter.project_short_description}}",
-    pretty_exceptions_show_locals=False, # can be set to true for debugging
+    pretty_exceptions_show_locals=False,  # can be set to true for debugging
 )
 
 
@@ -67,7 +67,7 @@ def app_callback(
 
 
 @app.command(name="simple-command", no_args_is_help=True)
-def my_simple_command(  # noqa: WPS211, WPS213
+def my_simple_command(  # noqa: PLR0913
     some_field: str,
     env_var_field: str = typer.Argument(..., envvar="ENV_VAR_FIELD"),
     some_int: int = typer.Option(1, min=1, max=3),
@@ -100,9 +100,9 @@ def my_simple_command(  # noqa: WPS211, WPS213
         Abort: if `some_field` is empty
         Exit: if `some_field` is "exit"
     """
-    typer.echo("settings.ENV: {0}".format(settings.ENV))
-    typer.echo("settings.PACKAGE_DIR: {0}".format(settings.PACKAGE_DIR))
-    typer.echo("settings.LOGGING_CONFIG_PATH: {0}".format(settings.LOGGING_CONFIG_PATH))
+    typer.echo(f"settings.ENV: {settings.ENV}")
+    typer.echo(f"settings.PACKAGE_DIR: {settings.PACKAGE_DIR}")
+    typer.echo(f"settings.LOGGING_CONFIG_PATH: {settings.LOGGING_CONFIG_PATH}")
 
     # Customize message with color and bold
     style_message = typer.style("Cool message", fg=typer.colors.GREEN, bold=True)

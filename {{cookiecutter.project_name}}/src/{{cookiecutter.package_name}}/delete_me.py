@@ -8,6 +8,7 @@ from {{cookiecutter.package_name}}.exceptions import TooBigFeetError
 LOGGER = logging.getLogger(__name__)
 
 METER_TO_FOOT_SCALE = 3.281
+BIG_FOOT_THRESHOLD = 100
 
 
 def feet_to_meters(feet: int) -> float:
@@ -26,9 +27,9 @@ def feet_to_meters(feet: int) -> float:
     try:
         value_feet = float(feet)
     except ValueError:
-        LOGGER.error("Unable to convert to float: {feet}".format(feet=feet))
+        LOGGER.error(f"Unable to convert to float: {feet}")
         raise
-    if value_feet > 100:
+    if value_feet > BIG_FOOT_THRESHOLD:
         raise TooBigFeetError("That's some big feet value")
     return value_feet / METER_TO_FOOT_SCALE
 
@@ -56,6 +57,6 @@ def meters_to_feet(meters: int) -> float:
     try:
         value_meters = float(meters)
     except ValueError:
-        LOGGER.error("Unable to convert to float: {meters}".format(meters=meters))
+        LOGGER.error(f"Unable to convert to float: {meters}")
         raise
     return METER_TO_FOOT_SCALE * value_meters
