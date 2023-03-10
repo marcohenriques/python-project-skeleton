@@ -92,7 +92,7 @@ ipynb = false
 [tool.ruff]
 cache-dir = ".cache/.ruff_cache"
 src = ["src", "tests"]
-target-version = "py37"           # Always generate Python 3.7-compatible code.
+target-version = "{{ 'py' ~ cookiecutter.python_version | replace('.', '') }} "           # Always generate Python {{cookiecutter.python_version}}-compatible code.
 line-length = 100
 ignore-init-module-imports = true
 extend-exclude = ["tests"]
