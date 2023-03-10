@@ -1,0 +1,26 @@
+ci/cd:
+  - .github/**
+
+code:
+  - src/**
+
+infrastructure:
+  - infrastructure/**
+  - infra/**
+  - terraform/**
+
+documentation:
+  - README.md
+  - docs/**
+  - ./*.md
+
+orchestration:
+  - airflow/**
+
+transformations:
+  - dbt/**
+
+data-quality:
+  - soda/**
+  - great-expectations/**
+  - great-expectations-documentation/**
