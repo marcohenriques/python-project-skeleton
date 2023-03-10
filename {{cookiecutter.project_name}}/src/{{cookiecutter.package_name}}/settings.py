@@ -52,7 +52,8 @@ class AppSettings(BaseSettings):
             Optional[FilePath]: the default logging config path
         """
         if logging_config_path is None and "ENV" in values:
-            return Path(__file__).parent.parent / "configs" / values["ENV"] / "logging_config.yaml"
+            env: Environment = values["ENV"]
+            return Path(__file__).parent.parent / "configs" / env / "logging_config.yaml"
         return logging_config_path
 
 
