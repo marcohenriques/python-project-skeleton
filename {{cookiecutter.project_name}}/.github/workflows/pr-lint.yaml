@@ -1,4 +1,4 @@
-name: pr-lint
+{% raw %}name: pr-lint
 
 on:
   pull_request:
@@ -24,4 +24,4 @@ jobs:
     steps:
       - uses: amannn/action-semantic-pull-request@v5
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}{% endraw %}

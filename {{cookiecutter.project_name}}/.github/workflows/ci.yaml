@@ -11,7 +11,7 @@ on:
 # cancel in progress workflow:
 # https://docs.github.com/en/actions/using-jobs/using-concurrency#example-using-a-fallback-value
 concurrency:
-  group: {% raw %}${{ github.workflow }}{% endraw %}-{% raw %}${{ github.head_ref || github.run_id }}{% endraw %}
+  group: {% raw %}${{ github.workflow }}-${{ github.head_ref || github.run_id }}{% endraw %}
   cancel-in-progress: true
 
 jobs:
@@ -42,7 +42,7 @@ jobs:
       id: cache
       with:
         path: .venv
-        key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+        key: venv-{% raw %}${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}{% endraw %}
 
     - name: Ensure cache is healthy
       if: steps.cache.outputs.cache-hit == 'true'
