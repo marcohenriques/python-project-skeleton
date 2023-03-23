@@ -17,15 +17,14 @@ A cookiecutter template for python projects.
 
 ### Features included
 
-- Github actions CICD to run formatters, linter, tests. Also support to build and push docker images
+- GitHub actions CICD to run formatters, linter, and tests. Also support to build and push docker images
 - Dockerfile to ship python apps
 - Documentation with <a href="https://www.mkdocs.org/" target="_blank"><code>mkdocs</code></a> using the beautiful
 <a href="https://squidfunk.github.io/mkdocs-material/getting-started/" target="_blank"><code>material</code></a> theme
 - Testing using <a href="https://docs.pytest.org/" target="_blank"><code>pytest</code></a> and several plugins
-- Code formatters using <a href="https://black.readthedocs.io/en/stable/" target="_blank"><code>black</code></a> and
-<a href="https://pycqa.github.io/isort/" target="_blank"><code>isort</code></a>
-- Linters using <a href="https://flake8.pycqa.org/en/latest/" target="_blank"><code>flake8</code></a>
-(with <a href="https://wemake-python-styleguide.readthedocs.io/en/latest/" target="_blank"><code>wemake-python-styleguide</code></a>),
+- Code formatters using <a href="https://black.readthedocs.io/en/stable/" target="_blank"><code>black</code></a>
+- Linters using <a href="https://beta.ruff.rs/docs/" target="_blank"><code>ruff</code></a>
+(check configuration file for enabled plugins),
 <a href="http://mypy-lang.org/" target="_blank"><code>mypy</code></a> and
 <a href="https://github.com/shellcheck-py/shellcheck-py" target="_blank"><code>shellcheck</code></a>
 - Python dependencies vulnerabilities scanner using <a href="https://github.com/pyupio/safety" target="_blank"><code>safety</code></a>

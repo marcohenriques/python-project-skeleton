@@ -17,13 +17,11 @@ Following is a list with the included hooks:
 - <a href="https://github.com/pre-commit/pre-commit-hooks#check-toml" target="_blank">check-toml</a>: attempts to load all TOML files to verify syntax
 - <a href="https://github.com/pre-commit/pre-commit-hooks#check-added-large-files" target="_blank">check-added-large-files</a>: prevent giant files from being committed (default: `1000kB`)
 - <a href="https://github.com/asottile/add-trailing-comma#add-trailing-comma" target="_blank">add-trailing-comma</a>: add a trailing comma to python code when applicable
-- **isort**: runs *isort* formatter
 - **black**: runs *black* formatter
 - **check-packages**: runs *safety check* linter
-- **flake8**: runs *flake8* linter
+- **ruff**: runs *ruff* linter
 - **mypy**: runs *mypy* type checker
 - **shellcheck**: runs *shellcheck* linter
-- **nbqa-isort**: runs *isort* on your jupyter notebooks, using *nbqa*. Only included if selected in the project setup (`include_notebooks`)
 - **nbqa-black**: runs *black* on your jupyter notebooks, using *nbqa*. Only included if selected in the project setup (`include_notebooks`)
-- **nbqa-flake8**: runs *flake8* on your jupyter notebooks, using *nbqa*. Only included if selected in the project setup (`include_notebooks`)
+- **nbqa-ruff**: runs *ruff* on your jupyter notebooks, using *nbqa*. Only included if selected in the project setup (`include_notebooks`)
 - **nbqa-mypy**: runs *mypy* on your jupyter notebooks, using *nbqa*. Only included if selected in the project setup (`include_notebooks`)

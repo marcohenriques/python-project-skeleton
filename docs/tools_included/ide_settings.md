@@ -13,9 +13,6 @@ A `settings.json` file will be generated:
   "python.terminal.activateEnvironment": true,
   // Linters
   "python.linting.enabled": true,
-  "python.linting.flake8Enabled": true,
-  "python.linting.flake8Path": "${workspaceFolder}/.venv/bin/flake8",
-  "python.linting.flake8Args": [],
   "python.linting.mypyEnabled": true,
   "python.linting.mypyPath": "${workspaceFolder}/.venv/bin/mypy",
   "python.linting.mypyArgs": [],
@@ -23,8 +20,6 @@ A `settings.json` file will be generated:
   "python.formatting.provider": "black",
   "python.formatting.blackPath": "${workspaceFolder}/.venv/bin/black",
   "python.formatting.blackArgs": [],
-  "isort.path": ["${workspaceFolder}/.venv/bin/isort"],
-  "isort.args": [],
   // Tests
   "python.testing.pytestEnabled": true,
   "python.testing.pytestPath": "${workspaceFolder}/.venv/bin/pytest",

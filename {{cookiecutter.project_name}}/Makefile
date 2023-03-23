@@ -3,6 +3,14 @@
 
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
+# Define macro to print which target is running
+define INFO
+    @echo "$(ECHO_COLOUR)##### Running$(NC) $1 $(ECHO_COLOUR)target #####$(NC)"
+endef
+
+# Store the macro call in a variable
+PRINT_INFO = $(call INFO,$@)
+
 .PHONY: help
 help:
 	@ printf "\nusage : make <commands> \n\nthe following commands are available : \n\n"
@@ -95,9 +103,7 @@ requirements-dev.txt: poetry.lock  ## Generate requirements.txt file from poetry
 
 .PHONY: format
 format:  ## Run formatters
-	@ echo "$(ECHO_COLOUR)##### Running isort #####$(NC)"
-	poetry run isort $(PACKAGES)
-	@ echo "$(ECHO_COLOUR)##### Running black #####$(NC)"
+	$(PRINT_INFO)
 	poetry run black $(PACKAGES)
 
 .PHONY: check-packages
@@ -108,15 +114,15 @@ check-packages:  ## Run package check
 	poetry export -f requirements.txt --without-hashes | poetry run safety check --full-report --stdin
 
 mypy:
-	@ echo "$(ECHO_COLOUR)##### Running mypy #####$(NC)"
+	$(PRINT_INFO)
 	poetry run mypy --install-types --non-interactive $(PACKAGES)
 
 ruff:
-	@ echo "$(ECHO_COLOUR)##### Running ruff #####$(NC)"
+	$(PRINT_INFO)
 	poetry run ruff --fix $(PACKAGES)
 
 shellcheck:
-	@ echo "$(ECHO_COLOUR)##### Running shellcheck #####$(NC)"
+	$(PRINT_INFO)
 	@ $(eval sh_files := $(shell find . -not -path '*/.*' -regex '.*\.sh$$'))
 	$(if $(sh_files),poetry run shellcheck $(sh_files), @ echo "No shell files found")
 
@@ -197,21 +203,21 @@ $(DIST_FILES): $(MODULES) pyproject.toml
 
 # CLEANUP #####################################################################
 
-.PHONY: clean
-clean: .clean-build .clean-docs .clean-test .clean-install ## Delete all generated and temporary files
-
-.PHONY: clean-all
-clean-all: clean ## Delete virtual environment and all generated and temporary files
+.PHONY: uninstall
+uninstall: clean ## Delete virtual environment and all generated and temporary files
 	rm -rf $(VIRTUAL_ENV_NAME)
+
+.PHONY: clean
+clean: .clean-build .clean-docs .clean-cache .clean-install ## Delete all generated and temporary files
 
 .PHONY: .clean-install
 .clean-install:
 	find $(PACKAGES) -name '__pycache__' -delete
 	rm -rf *.egg-info
 
-.PHONY: .clean-test
-.clean-test:
-	rm -rf .cache .pytest .coverage htmlcov
+.PHONY: .clean-cache
+.clean-cache:
+	rm -rf .cache .ruff_cache .mypy_cache .pytest .coverage htmlcov
 
 .PHONY: .clean-docs
 .clean-docs:

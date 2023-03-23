@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+"""Operations to perform before generating the project."""
 
 import logging
 import re
@@ -20,7 +19,7 @@ project_name = "{{cookiecutter.project_name}}"
 if not re.match(MODULE_REGEX, module_name):
     link = "https://www.python.org/dev/peps/pep-0008/#package-and-module-names"
     logger.error("Module name should be pep-8 compliant.")
-    logger.error("  More info: {}".format(link))
+    logger.error(f"  More info: {link}")
     sys.exit(1)
 
 if not re.match(PROJECT_REGEX, project_name):

@@ -52,13 +52,13 @@ Read full coverage report:
 make read-coverage
 ```
 
-Run formatters (_black_ and _isort_):
+Run formatters (_black_):
 
 ```make
 make format
 ```
 
-Run code static analysis (_flake8_,  _mypy_ and _safety_):
+Run code static analysis (_ruff_,  _mypy_ and _safety_):
 
 ```make
 make check
@@ -239,9 +239,6 @@ project `settings.json`:
     "python.terminal.activateEnvironment": true,
     // Linters
     "python.linting.enabled": true,
-    "python.linting.flake8Enabled": true,
-    "python.linting.flake8Path": "${workspaceFolder}/.venv/bin/flake8",
-    "python.linting.flake8Args": [],
     "python.linting.mypyEnabled": true,
     "python.linting.mypyPath": "${workspaceFolder}/.venv/bin/mypy",
     "python.linting.mypyArgs": [],
@@ -249,8 +246,6 @@ project `settings.json`:
     "python.formatting.provider": "black",
     "python.formatting.blackPath": "${workspaceFolder}/.venv/bin/black",
     "python.formatting.blackArgs": [],
-    "python.sortImports.path": "${workspaceFolder}/.venv/bin/isort",
-    "python.sortImports.args": [],
     // Tests
     "python.testing.pytestEnabled": true,
     "python.testing.pytestPath": "${workspaceFolder}/.venv/bin/pytest",

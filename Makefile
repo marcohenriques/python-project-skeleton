@@ -3,6 +3,14 @@
 
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
+# Define macro to print which target is running
+define INFO
+    @echo "$(ECHO_COLOUR)##### Running$(NC) $1 $(ECHO_COLOUR)target #####$(NC)"
+endef
+
+# Store the macro call in a variable
+PRINT_INFO = $(call INFO,$@)
+
 .PHONY: help
 help:
 	@ printf "\nusage : make <commands> \n\nthe following commands are available : \n\n"
@@ -79,7 +87,7 @@ requirements.txt: poetry.lock  ## Generate requirements.txt file from poetry
 	@ poetry run ${ROOT_DIR}/scripts/req_fixer requirements.txt
 
 requirements-dev.txt: poetry.lock  ## Generate requirements.txt file from poetry
-	@ echo "$(ECHO_COLOUR)Generating requirements.txt$(NC)"
+	@ echo "$(ECHO_COLOUR)Generating requirements-dev.txt$(NC)"
 	@ poetry export -f requirements.txt --without-hashes -o requirements-dev.txt --with dev,tests
 	@ poetry run ${ROOT_DIR}/scripts/req_fixer requirements-dev.txt
 
@@ -88,28 +96,26 @@ requirements-dev.txt: poetry.lock  ## Generate requirements.txt file from poetry
 
 .PHONY: format
 format:  ## Run formatters
-	@ echo "$(ECHO_COLOUR)##### Running isort #####$(NC)"
-	poetry run isort $(PACKAGES)
-	@ echo "$(ECHO_COLOUR)##### Running black #####$(NC)"
+	$(PRINT_INFO)
 	poetry run black $(PACKAGES)
 
 .PHONY: check-packages
 check-packages:  ## Run package check
-	@ echo "$(ECHO_COLOUR)Checking packages$(NC)"
+	$(PRINT_INFO)
 	poetry check
 	poetry run pip check
 	poetry export -f requirements.txt --without-hashes | poetry run safety check --full-report --stdin
 
 mypy:
-	@ echo "$(ECHO_COLOUR)##### Running mypy #####$(NC)"
+	$(PRINT_INFO)
 	poetry run mypy --install-types --non-interactive $(PACKAGES)
 
-flake8:
-	@ echo "$(ECHO_COLOUR)##### Running flake8 #####$(NC)"
-	poetry run flake8 $(PACKAGES)
+ruff:
+	$(PRINT_INFO)
+	poetry run ruff --fix $(PACKAGES)
 
 .PHONY: lint
-lint: mypy flake8 shellcheck  ## Run linters (mypy, flake8, shellcheck)
+lint: mypy ruff shellcheck  ## Run linters (mypy, ruff, shellcheck)
 
 .PHONY: check
 check: check-packages lint  ## Run linters, and static code analysis

@@ -72,7 +72,7 @@ Tasks to run linters, formatters and python dependencies vulnerabilities scanner
 make format
 ```
 
-Runs `black` and `isort` on your **src** and *tests* directory.
+Runs all formatters (`black`) on your **src** and *tests* directory.
 
 ### check-packages
 
@@ -91,9 +91,9 @@ Runs checks on packages:
 make -k lint
 ```
 
-Runs `mypy` and `flake8` on your **src** and *tests* directory, and `shellcheck` on shell files.
+Runs `mypy` and `ruff` on your **src** and *tests* directory, and `shellcheck` on shell files.
 
-You can also run each check individually: `make mypy`, `make flake8` and `make shellcheck`.
+You can also run each check individually: `make mypy`, `make ruff` and `make shellcheck`.
 
 ### check
 
