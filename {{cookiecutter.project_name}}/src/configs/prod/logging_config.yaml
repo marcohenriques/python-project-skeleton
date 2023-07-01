@@ -13,7 +13,7 @@ handlers:
     stream: ext://sys.stdout
 
 root:
-  level: NOTSET # if set, this will be the default logging level for all packages not cover in loggers section
+  level: WARNING
   handlers: [console]
   propagate: no
 
