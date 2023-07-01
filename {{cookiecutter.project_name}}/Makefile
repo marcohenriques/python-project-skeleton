@@ -101,10 +101,18 @@ requirements-dev.txt: poetry.lock  ## Generate requirements.txt file from poetry
 
 # CHECKS ######################################################################
 
-.PHONY: format
-format:  ## Run formatters
+.PHONY: black
+format-black:
 	$(PRINT_INFO)
 	poetry run black $(PACKAGES)
+
+.PHONY: ruff
+format-ruff:
+	$(PRINT_INFO)
+	poetry run ruff --fix-only $(PACKAGES)
+
+.PHONY: format
+format: format-black format-ruff  ## Run formatters (black, ruff)
 
 .PHONY: check-packages
 check-packages:  ## Run package check
@@ -113,21 +121,25 @@ check-packages:  ## Run package check
 	poetry run pip check
 	poetry export -f requirements.txt --without-hashes | poetry run safety check --full-report --stdin
 
-mypy:
+lint-black:
+	$(PRINT_INFO)
+	poetry run black --check $(PACKAGES)
+
+lint-mypy:
 	$(PRINT_INFO)
 	poetry run mypy --install-types --non-interactive $(PACKAGES)
 
-ruff:
+lint-ruff:
 	$(PRINT_INFO)
 	poetry run ruff --fix $(PACKAGES)
 
-shellcheck:
+lint-shellcheck:
 	$(PRINT_INFO)
 	@ $(eval sh_files := $(shell find . -not -path '*/.*' -regex '.*\.sh$$'))
 	$(if $(sh_files),poetry run shellcheck $(sh_files), @ echo "No shell files found")
 
 .PHONY: lint
-lint: mypy ruff shellcheck  ## Run linters (mypy, ruff, shellcheck)
+lint: lint-black lint-mypy lint-ruff lint-shellcheck  ## Run linters (black, mypy, ruff, shellcheck)
 
 .PHONY: check
 check: check-packages lint  ## Run linters, and static code analysis
