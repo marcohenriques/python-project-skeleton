@@ -99,7 +99,6 @@ extend-exclude = ["tests"]
 show-fixes = true
 force-exclude = true
 format = "grouped"                # github
-
 select = [
     # all rules: https://beta.ruff.rs/docs/rules/
     "ANN2", # flake8-annotations
@@ -123,7 +122,6 @@ select = [
     "W",    # pycodestyle
     "PL",   # pylint
 ]
-
 ignore = [
     "E501",  # Line length regulated by black
     "PT011", # pytest.raises({exception}) is too broad, set the match parameter or use a more specific exception
@@ -135,6 +133,10 @@ ignore = [
     # "D104", # Missing docstring in public package
     # "D101", # Missing docstring in public class
 ]
+unfixable = [
+    "ERA001", # commented-out-code
+]
+
 [tool.ruff.flake8-annotations]
 allow-star-arg-any = true
 suppress-dummy-args = true
