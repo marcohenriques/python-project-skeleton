@@ -45,7 +45,7 @@ jobs:
       - name: Install and configure Poetry
         uses: snok/install-poetry@v1
         with:
-          version: {{cookiecutter.package_name}}
+          version: {{cookiecutter.poetry_version}}.0
           virtualenvs-create: true
           virtualenvs-in-project: true
           installer-parallel: true
@@ -75,7 +75,6 @@ jobs:
           docker tag "${IMAGE_NAME}":"${IMAGE_TAG}" "${DOCKER_REGISTRY}"/"${IMAGE_NAME}":"${IMAGE_TAG}"
           docker push "${DOCKER_REGISTRY}"/"${IMAGE_NAME}":"${IMAGE_TAG}"
 
-          # Tagging with $IMAGE_NAME:latest to be used in airflow
           if [[ {% raw %}${{ inputs.push-latest-tag }}{% endraw %} == 'true' ]]; then
             docker tag "${IMAGE_NAME}":"${IMAGE_TAG}" "${DOCKER_REGISTRY}"/"${IMAGE_NAME}":latest
             docker push "${DOCKER_REGISTRY}"/"${IMAGE_NAME}":latest

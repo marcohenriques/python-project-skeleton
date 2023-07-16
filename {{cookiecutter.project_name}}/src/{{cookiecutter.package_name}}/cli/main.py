@@ -50,7 +50,7 @@ def version_callback(used_flag: bool) -> None:
 
 @app.callback()
 def app_callback(
-    version: Optional[bool] = typer.Option(
+    version: Optional[bool] = typer.Option(  # noqa: UP007
         None,
         "--version",
         "-v",
@@ -72,7 +72,7 @@ def my_simple_command(  # noqa: PLR0913
     env_var_field: str = typer.Argument(..., envvar="ENV_VAR_FIELD"),
     some_int: int = typer.Option(1, min=1, max=3),
     some_cap_int: int = typer.Option(0, max=10, clamp=True),
-    some_datetime: Optional[datetime] = typer.Option(None),
+    some_datetime: Optional[datetime] = typer.Option(None),  # noqa: UP007
     some_uuid: uuid.UUID = typer.Option(uuid.uuid4),
     verbose: int = typer.Option(0, "--verbose", "-v", count=True),
     log_level: LogLevel = typer.Option(LogLevel.WARNING),

@@ -8,7 +8,7 @@
     * MacOS: `$ xcode-select --install`
     * Linux: [https://www.gnu.org/software/make](https://www.gnu.org/software/make)
 * [Pyenv](https://github.com/pyenv/pyenv)
-* [Poetry](https://poetry.eustace.io/docs/#installation) (version ~{{cookiecutter.package_name}})
+* [Poetry](https://poetry.eustace.io/docs/#installation) (version ~{{cookiecutter.poetry_version}})
 
 To confirm these system dependencies are configured correctly:
 

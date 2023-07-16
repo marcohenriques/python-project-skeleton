@@ -1,13 +1,12 @@
 """Global project settings."""
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Optional
 
-from pydantic import BaseSettings, DirectoryPath, FilePath, validator
+from pydantic import DirectoryPath, FilePath, field_validator
+from pydantic_core.core_schema import FieldValidationInfo
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from {{cookiecutter.package_name}}.constants import Environment
-
-
-APP_ENV_PREFIX = "APP_"
+from python_package.constants import Environment
 
 
 class AppSettings(BaseSettings):
@@ -18,7 +17,7 @@ class AppSettings(BaseSettings):
     Pydantic will automatically convert the value to the correct type, or throw
     an error if the value is not valid.
 
-    Check https://pydantic-docs.helpmanual.io/usage/settings/ for more info.
+    Check https://docs.pydantic.dev/latest/api/pydantic_settings/ for more info.
 
     Args:
         ENV (Environment): environment to use.
@@ -26,33 +25,30 @@ class AppSettings(BaseSettings):
         LOGGING_CONFIG (Optional[FilePath]): path to the logging configuration file.
     """
 
+    model_config = SettingsConfigDict(extra="ignore", case_sensitive=True)
+
     ENV: Environment = Environment.LOCAL
     PACKAGE_DIR: DirectoryPath = Path(__file__).parent
     LOGGING_CONFIG_PATH: Optional[FilePath] = None
 
-    class Config:
-        """Config for Pydantic."""
-
-        env_prefix = APP_ENV_PREFIX
-        case_sensitive = True
-
-    @validator("LOGGING_CONFIG_PATH")
+    @field_validator("LOGGING_CONFIG_PATH")
+    @classmethod
     def default_logging_config_path(
         cls,
         logging_config_path: Optional[FilePath],
-        values: Dict[str, Any],
+        info: FieldValidationInfo,
     ) -> Optional[FilePath]:
         """Get the default logging config path if not provided.
 
         Args:
             logging_config_path (Optional[FilePath]): LOGGING_CONFIG_PATH value
-            values (Dict[str, Any]): previous provided class values
+            info (FieldValidationInfo): pydantic validation object (let you access other values)
 
         Returns:
             Optional[FilePath]: the default logging config path
         """
-        if logging_config_path is None and "ENV" in values:
-            env: Environment = values["ENV"]
+        if logging_config_path is None and "ENV" in info.data:
+            env: Environment = info.data["ENV"]
             return Path(__file__).parent.parent / "configs" / env / "logging_config.yaml"
         return logging_config_path
 

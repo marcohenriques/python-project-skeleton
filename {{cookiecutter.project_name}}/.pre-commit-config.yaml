@@ -14,9 +14,8 @@ repos:
       - id: commitizen
         stages: [commit-msg]
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.4.0
+    rev: v4.4.0
     hooks:
-      - id: requirements-txt-fixer
       - id: trailing-whitespace
         exclude: |
           (?x)^(
@@ -33,15 +32,10 @@ repos:
       - id: check-toml
       - id: check-added-large-files
         args: ['--maxkb=1000']
-  - repo: https://github.com/asottile/add-trailing-comma
-    rev: v2.1.0
-    hooks:
-      - id: add-trailing-comma
   - repo: local
     hooks:
       - id: black
-        name: Running black
-        stages: [commit]
+        name: black
         language: system
         entry: poetry run black
         types: [python]
@@ -51,15 +45,13 @@ repos:
             notebooks/
           )
       - id: check-packages
-        name: Running check-packages
-        stages: [commit]
+        name: check-packages
         language: system
         entry: make
         pass_filenames: false
         args: [check-packages]
       - id: ruff
-        name: Running ruff
-        stages: [commit]
+        name: ruff
         language: system
         entry: poetry run ruff --fix
         types: [python]
@@ -69,8 +61,7 @@ repos:
             notebooks/
           )
       - id: mypy
-        name: Running mypy
-        stages: [commit]
+        name: mypy
         language: system
         entry: poetry run mypy
         args: [--install-types, --non-interactive]
@@ -81,14 +72,13 @@ repos:
             notebooks/
           )
       - id: shellcheck
-        name: Running shellcheck
-        stages: [commit]
+        name: shellcheck
         entry: poetry run shellcheck
         language: python
         types: [shell]
 {% if cookiecutter.include_notebooks == "yes" %}
       - id: nbqa-black
-        name: Running black on notebooks
+        name: black on notebooks
         description: "black formatting for jupyter notebooks"
         language: system
         entry: poetry run nbqa black
@@ -96,14 +86,14 @@ repos:
         types: [file]
         files: \.(ipynb)$
       - id: nbqa-ruff
-        name: Running ruff on notebooks
+        name: ruff on notebooks
         description: "ruff checking for jupyter notebooks"
         language: system
         entry: poetry run nbqa ruff --fix
         types: [file]
         files: \.(ipynb)$
       - id: nbqa-mypy
-        name: Running mypy on notebooks
+        name: mypy on notebooks
         description: "mypy checking for jupyter notebooks"
         language: system
         entry: poetry run nbqa mypy
@@ -112,10 +102,11 @@ repos:
 {% endif %}
       # - id: pytest
       #   name: pytest
-      #   stages: [commit]
-      #   language: system
-      #   entry: poetry run pytest
       #   types: [python]
+      #   entry: poetry run pytest
+      #   language: system
+      #   pass_filenames: false
+      #   always_run: true
 
       # - id: pytest-cov
       #   name: pytest

@@ -11,7 +11,7 @@ runner = CliRunner()
 def test_app_help() -> None:
     cli_result = runner.invoke(app, [])
     assert cli_result.exit_code == 0
-    assert "Usage: {{cookiecutter.package_name}} [OPTIONS] COMMAND [ARGS]..." in cli_result.stdout
+    assert "{{cookiecutter.project_short_description}}" in cli_result.stdout
 
 
 def test_app_version() -> None:

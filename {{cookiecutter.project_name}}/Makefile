@@ -5,7 +5,7 @@ ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 # Define macro to print which target is running
 define INFO
-    @echo "$(ECHO_COLOUR)##### Running$(NC) $1 $(ECHO_COLOUR)target #####$(NC)"
+    @echo "$(ECHO_COLOUR)##### Running $1 target #####$(NC)"
 endef
 
 # Store the macro call in a variable
@@ -83,10 +83,8 @@ $(VIRTUAL_ENV_NAME): .python-version  ## Create python environment
 
 .python-version:  # Setup .python-version (local pyenv python version) file
 	@ echo "$(ECHO_COLOUR)Initializing pyenv$(NC)"
-	$(eval PYENV_LATEST_VERSION=$(shell pyenv install --list | grep " $(PYTHON_VERSION)\.[0-9]*$$" | tail -1))
-	@ echo "$(ECHO_COLOUR)Installing python version $(PYENV_LATEST_VERSION)...$(NC)"
-	pyenv install -s $(PYENV_LATEST_VERSION)
-	pyenv local $(PYENV_LATEST_VERSION)
+	pyenv install -s $(PYTHON_VERSION)
+	pyenv local $(PYTHON_VERSION)
 
 requirements.txt: poetry.lock  ## Generate requirements.txt file from poetry
 	@ echo "$(ECHO_COLOUR)Generating requirements.txt$(NC)"
@@ -270,4 +268,14 @@ build-docker: requirements.txt  ## Build docker image
 .PHONY: run-docker
 run-docker:  ## Run docker container for built image
 	docker run -it --rm --platform linux/amd64 --name=$(DOCKER_IMAGE_NAME)_local $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)
+
+.PHONY: build-docker-dev
+build-docker-dev: requirements.txt requirements-dev.txt  ## Build docker dev image
+	docker build -f Dockerfile -t $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG) --target development . --platform linux/amd64
+	@ rm requirements.txt
+	@ rm requirements-dev.txt
+
+.PHONY: run-docker-dev
+run-docker-dev:  ## Run docker container for built dev image
+	docker run -it --rm --platform linux/amd64 --name=$(DOCKER_IMAGE_NAME)_debug -v $(ROOT_DIR):/code $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG) bash
 {% endif -%}

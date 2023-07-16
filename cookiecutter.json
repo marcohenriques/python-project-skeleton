@@ -1,7 +1,7 @@
 {
   "project_name": "awesome-project",
   "package_name": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
-  "project_short_description": "Project to do awesome things",
+  "project_short_description": "Project to do awesome things.",
   "author_name": "John Doe",
   "author_email": "john.doe@domain.com",
   "github_username_or_org_name": "",
