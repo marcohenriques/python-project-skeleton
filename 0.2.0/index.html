@@ -624,15 +624,14 @@
 <hr />
 <h3 id="features-included">Features included<a class="headerlink" href="#features-included" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Github actions CICD to run formatters, linter, tests. Also support to build and push docker images</li>
+<li>GitHub actions CICD to run formatters, linter, and tests. Also support to build and push docker images</li>
 <li>Dockerfile to ship python apps</li>
 <li>Documentation with <a href="https://www.mkdocs.org/" target="_blank"><code>mkdocs</code></a> using the beautiful
 <a href="https://squidfunk.github.io/mkdocs-material/getting-started/" target="_blank"><code>material</code></a> theme</li>
 <li>Testing using <a href="https://docs.pytest.org/" target="_blank"><code>pytest</code></a> and several plugins</li>
-<li>Code formatters using <a href="https://black.readthedocs.io/en/stable/" target="_blank"><code>black</code></a> and
-<a href="https://pycqa.github.io/isort/" target="_blank"><code>isort</code></a></li>
-<li>Linters using <a href="https://flake8.pycqa.org/en/latest/" target="_blank"><code>flake8</code></a>
-(with <a href="https://wemake-python-styleguide.readthedocs.io/en/latest/" target="_blank"><code>wemake-python-styleguide</code></a>),
+<li>Code formatters using <a href="https://black.readthedocs.io/en/stable/" target="_blank"><code>black</code></a></li>
+<li>Linters using <a href="https://beta.ruff.rs/docs/" target="_blank"><code>ruff</code></a>
+(check configuration file for enabled plugins),
 <a href="http://mypy-lang.org/" target="_blank"><code>mypy</code></a> and
 <a href="https://github.com/shellcheck-py/shellcheck-py" target="_blank"><code>shellcheck</code></a></li>
 <li>Python dependencies vulnerabilities scanner using <a href="https://github.com/pyupio/safety" target="_blank"><code>safety</code></a></li>
@@ -650,10 +649,10 @@
 <p>You&rsquo;ll need to have <a href="https://cookiecutter.readthedocs.io/en/2.0.2/installation.html" target="_blank">cookiecutter</a> installed.</p>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
 <p>Run the following command to create a new project, on your current directory:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>cookiecutter gh:marcohenriques/python-project-skeleton
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>cookiecutter<span class="w"> </span>gh:marcohenriques/python-project-skeleton
 </code></pre></div>
 <p>If you want to use a different version of the template, use the following command:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>cookiecutter gh:marcohenriques/python-project-skeleton -c &lt;VERSION&gt;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>cookiecutter<span class="w"> </span>gh:marcohenriques/python-project-skeleton<span class="w"> </span>-c<span class="w"> </span>&lt;VERSION&gt;
 </code></pre></div>
 <p>where <code>&lt;VERSION&gt;</code> can be the branch, tag or commit of the template repo.</p>
 <h2 id="template-inputs">Template inputs<a class="headerlink" href="#template-inputs" title="Permanent link">&para;</a></h2>

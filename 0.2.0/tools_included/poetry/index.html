@@ -707,52 +707,52 @@ they&rsquo;re required. The predefined groups of dependencies are:</p>
 <a href="https://python-poetry.org/docs/cli/" target="_blank">documentation</a>.</p>
 <h3 id="install-dependencies">Install dependencies<a class="headerlink" href="#install-dependencies" title="Permanent link">&para;</a></h3>
 <p>Install the required dependencies:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>poetry install
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>poetry<span class="w"> </span>install
 </code></pre></div>
 <p>If there&rsquo;s no <code>poetry.lock</code> Poetry simply resolves all dependencies listed in your <code>pyproject.toml</code> file and downloads
 the latest version of their files. In the end, it will write the <code>poetry.lock</code>.<br />
 If you already have a <code>poetry.lock</code> file, it will use this file to install the exact versions listed on it.</p>
 <p>If you also want to install some optional dependency group, let&rsquo;s say <code>docs</code>, you should run:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>poetry install --with docs
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>poetry<span class="w"> </span>install<span class="w"> </span>--with<span class="w"> </span>docs
 </code></pre></div>
 <h3 id="add-new-dependencies">Add new dependencies<a class="headerlink" href="#add-new-dependencies" title="Permanent link">&para;</a></h3>
 <p>If you want to add a new dependency to your core dependencies (let&rsquo;s say <code>django</code>), run:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>poetry add django
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>poetry<span class="w"> </span>add<span class="w"> </span>django
 </code></pre></div>
 <p>This will find a suitable version constraint and install the package and sub-dependencies</p>
 <p>If you add to add a dependency to a specific group (let&rsquo;s say <code>pytest</code> into <code>tests</code> group), run:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>poetry add pytest --group tests
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>poetry<span class="w"> </span>add<span class="w"> </span>pytest<span class="w"> </span>--group<span class="w"> </span>tests
 </code></pre></div>
 <p>You can also specify a <a href="https://python-poetry.org/docs/dependency-specification#version-constraints" target="_blank">version constraint</a>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>poetry add django@4.0.0
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>poetry<span class="w"> </span>add<span class="w"> </span>django@4.0.0
 </code></pre></div>
 <p>In this case, poetry would install the exact specified <code>django</code> version.</p>
 <p>For more options on how to add dependencies, please check the <a href="https://python-poetry.org/docs/dependency-specification" target="_blank">dependency specification documentation</a>.</p>
 <h3 id="update-dependencies">Update dependencies<a class="headerlink" href="#update-dependencies" title="Permanent link">&para;</a></h3>
 <p>To update all your dependencies, to the latest allowed versions (according to constraints), run:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>poetry update
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>poetry<span class="w"> </span>update
 </code></pre></div>
 <p>If you just want to update some dependencies (let&rsquo;s say <code>django</code> and <code>pytest</code>), run:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>poetry django pytest
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>poetry<span class="w"> </span>django<span class="w"> </span>pytest
 </code></pre></div>
 <p>If you need to update a dependency outside the constraint defined in the <code>pyproject.toml</code>, you&rsquo;ll have to use the
 <code>poetry add</code> command.</p>
 <h3 id="remove-dependencies">Remove dependencies<a class="headerlink" href="#remove-dependencies" title="Permanent link">&para;</a></h3>
 <p>To remove a dependency (let&rsquo;s say <code>django</code>), from your core dependency group run:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>poetry remove django
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>poetry<span class="w"> </span>remove<span class="w"> </span>django
 </code></pre></div>
 <p>If it&rsquo;s in other dependency group (let&rsquo;s say <code>pytest</code> into <code>tests</code> group), run:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>poetry remove pytest --group tests
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>poetry<span class="w"> </span>remove<span class="w"> </span>pytest<span class="w"> </span>--group<span class="w"> </span>tests
 </code></pre></div>
 <h3 id="show-package-details">Show package details<a class="headerlink" href="#show-package-details" title="Permanent link">&para;</a></h3>
 <p>Poetry also allows you to check package details. To check all your required dependencies details run:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>poetry show
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>poetry<span class="w"> </span>show
 </code></pre></div>
 <p>If you also want some optional dependency groups (let&rsquo;s say <code>tests</code> group), run:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>poetry show --with tests
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>poetry<span class="w"> </span>show<span class="w"> </span>--with<span class="w"> </span>tests
 </code></pre></div>
 <p>For detailed information on a specific package (let&rsquo;s say <code>pytest</code>), run:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>poetry show pytest
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>poetry<span class="w"> </span>show<span class="w"> </span>pytest
 </code></pre></div>
 <p>you&rsquo;ll see something like this:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a> name         : pytest  
@@ -775,11 +775,11 @@ If you already have a <code>poetry.lock</code> file, it will use this file to in
 </code></pre></div>
 <h3 id="running-commands-using-your-virtual-environment">Running commands using your virtual environment<a class="headerlink" href="#running-commands-using-your-virtual-environment" title="Permanent link">&para;</a></h3>
 <p>You can make sure you&rsquo;re running commands inside your project virtual environment in 2 ways:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>poetry run &lt;my_command&gt;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>&lt;my_command&gt;
 </code></pre></div>
 <p>This will execute <code>&lt;my_command&gt;</code> from your virtual environment, and return to the environment where you were running.</p>
 <p>Or you can also run:</p>
-<div class="annotate highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>poetry shell <span class="c1"># (1)</span>
+<div class="annotate highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>poetry<span class="w"> </span>shell<span class="w"> </span><span class="c1"># (1)</span>
 </code></pre></div>
 <ol>
 <li>Note that this command starts a new shell and activates the virtual environment.
