@@ -1,9 +1,8 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+"""Operations to perform after generating the project."""
 
 import logging
-import os
 import shutil
+from pathlib import Path
 
 
 LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -21,13 +20,13 @@ def process_docs(include_docs: str) -> None:
     if include_docs == "no":
         logger.info("Not including docs")
         shutil.rmtree("docs/")
-        os.remove("mkdocs.yml")
-        # os.remove(".readthedocs.yml")
+        Path("mkdocs.yml").unlink()
+        Path("readthedocs.yml").unlink(missing_ok=True)
 
 
 def rename_gitignore() -> None:
     """Rename the gitignore file to .gitignore."""
-    os.rename("gitignore", ".gitignore")
+    Path("gitignore").rename(".gitignore")
 
 
 def process_cli(include_cli: str) -> None:
@@ -40,7 +39,7 @@ def process_cli(include_cli: str) -> None:
     if include_cli == "no":
         logger.info("Not including cli")
         shutil.rmtree("src/{{cookiecutter.package_name}}/cli/")
-        os.remove("tests/test_cli.py")
+        Path("tests/test_cli.py").unlink()
 
 
 def process_docker(include_docker: str) -> None:
@@ -53,27 +52,11 @@ def process_docker(include_docker: str) -> None:
     if include_docker == "no":
         logger.info("Not including docker")
         shutil.rmtree("docker/")
-        os.remove("Dockerfile")
-        os.remove(".dockerignore")
-        os.remove(".github/workflows/build_docker.yaml")
+        Path("Dockerfile").unlink()
+        Path(".dockerignore").unlink()
+        Path(".github/workflows/build_docker.yaml").unlink()
     # optional dockerfile with poetry - not supported yet
-    os.remove("Dockerfile_poetry")
-
-
-def _process_docker(include_docker: str) -> None:
-    """Process the docker files.
-
-    Args:
-        include_docker (str): whether to include docker files or not ('yes' or 'no')
-    """
-    logger.debug("Processing docker")
-    if include_docker == "no":
-        logger.info("Not including docker")
-        shutil.rmtree("docker/")
-        os.remove("Dockerfile")
-        os.remove(".dockerignore")
-    # optional dockerfile with poetry - not supported yet
-    os.remove("Dockerfile_poetry")
+    Path("Dockerfile_poetry").unlink()
 
 
 if __name__ == "__main__":

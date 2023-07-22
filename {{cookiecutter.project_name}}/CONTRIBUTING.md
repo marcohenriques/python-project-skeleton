@@ -8,7 +8,7 @@
     * MacOS: `$ xcode-select --install`
     * Linux: [https://www.gnu.org/software/make](https://www.gnu.org/software/make)
 * [Pyenv](https://github.com/pyenv/pyenv)
-* [Poetry](https://poetry.eustace.io/docs/#installation) (version ~1.2.0)
+* [Poetry](https://poetry.eustace.io/docs/#installation) (version ~{{cookiecutter.poetry_version}})
 
 To confirm these system dependencies are configured correctly:
 
@@ -22,6 +22,16 @@ sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-
 ```
 
 ### Installation
+
+Before installing the project, make sure there's no python virtual environment active, as poetry will try to use it
+to build the virtual environment. You can run:
+
+```bash
+deactivate
+```
+
+to deactivate the virtual environment.
+
 
 Install project dependencies into a virtual environment:
 
@@ -52,13 +62,13 @@ Read full coverage report:
 make read-coverage
 ```
 
-Run formatters (_black_ and _isort_):
+Run formatters (_black_ and _ruff_):
 
 ```make
 make format
 ```
 
-Run code static analysis (_flake8_,  _mypy_ and _safety_):
+Run code static analysis (_ruff_,  _mypy_ and _safety_):
 
 ```make
 make check
@@ -239,9 +249,6 @@ project `settings.json`:
     "python.terminal.activateEnvironment": true,
     // Linters
     "python.linting.enabled": true,
-    "python.linting.flake8Enabled": true,
-    "python.linting.flake8Path": "${workspaceFolder}/.venv/bin/flake8",
-    "python.linting.flake8Args": [],
     "python.linting.mypyEnabled": true,
     "python.linting.mypyPath": "${workspaceFolder}/.venv/bin/mypy",
     "python.linting.mypyArgs": [],
@@ -249,8 +256,6 @@ project `settings.json`:
     "python.formatting.provider": "black",
     "python.formatting.blackPath": "${workspaceFolder}/.venv/bin/black",
     "python.formatting.blackArgs": [],
-    "python.sortImports.path": "${workspaceFolder}/.venv/bin/isort",
-    "python.sortImports.args": [],
     // Tests
     "python.testing.pytestEnabled": true,
     "python.testing.pytestPath": "${workspaceFolder}/.venv/bin/pytest",

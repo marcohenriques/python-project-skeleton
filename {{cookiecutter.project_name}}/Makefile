@@ -3,6 +3,14 @@
 
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
+# Define macro to print which target is running
+define INFO
+    @echo "$(ECHO_COLOUR)##### Running $1 target #####$(NC)"
+endef
+
+# Store the macro call in a variable
+PRINT_INFO = $(call INFO,$@)
+
 .PHONY: help
 help:
 	@ printf "\nusage : make <commands> \n\nthe following commands are available : \n\n"
@@ -75,10 +83,8 @@ $(VIRTUAL_ENV_NAME): .python-version  ## Create python environment
 
 .python-version:  # Setup .python-version (local pyenv python version) file
 	@ echo "$(ECHO_COLOUR)Initializing pyenv$(NC)"
-	$(eval PYENV_LATEST_VERSION=$(shell pyenv install --list | grep " $(PYTHON_VERSION)\.[0-9]*$$" | tail -1))
-	@ echo "$(ECHO_COLOUR)Installing python version $(PYENV_LATEST_VERSION)...$(NC)"
-	pyenv install -s $(PYENV_LATEST_VERSION)
-	pyenv local $(PYENV_LATEST_VERSION)
+	pyenv install -s $(PYTHON_VERSION)
+	pyenv local $(PYTHON_VERSION)
 
 requirements.txt: poetry.lock  ## Generate requirements.txt file from poetry
 	@ echo "$(ECHO_COLOUR)Generating requirements.txt$(NC)"
@@ -93,12 +99,18 @@ requirements-dev.txt: poetry.lock  ## Generate requirements.txt file from poetry
 
 # CHECKS ######################################################################
 
-.PHONY: format
-format:  ## Run formatters
-	@ echo "$(ECHO_COLOUR)##### Running isort #####$(NC)"
-	poetry run isort $(PACKAGES)
-	@ echo "$(ECHO_COLOUR)##### Running black #####$(NC)"
+.PHONY: black
+format-black:
+	$(PRINT_INFO)
 	poetry run black $(PACKAGES)
+
+.PHONY: ruff
+format-ruff:
+	$(PRINT_INFO)
+	poetry run ruff --fix-only $(PACKAGES)
+
+.PHONY: format
+format: format-black format-ruff  ## Run formatters (black, ruff)
 
 .PHONY: check-packages
 check-packages:  ## Run package check
@@ -107,21 +119,25 @@ check-packages:  ## Run package check
 	poetry run pip check
 	poetry export -f requirements.txt --without-hashes | poetry run safety check --full-report --stdin
 
-mypy:
-	@ echo "$(ECHO_COLOUR)##### Running mypy #####$(NC)"
+lint-black:
+	$(PRINT_INFO)
+	poetry run black --check $(PACKAGES)
+
+lint-mypy:
+	$(PRINT_INFO)
 	poetry run mypy --install-types --non-interactive $(PACKAGES)
 
-ruff:
-	@ echo "$(ECHO_COLOUR)##### Running ruff #####$(NC)"
+lint-ruff:
+	$(PRINT_INFO)
 	poetry run ruff --fix $(PACKAGES)
 
-shellcheck:
-	@ echo "$(ECHO_COLOUR)##### Running shellcheck #####$(NC)"
+lint-shellcheck:
+	$(PRINT_INFO)
 	@ $(eval sh_files := $(shell find . -not -path '*/.*' -regex '.*\.sh$$'))
 	$(if $(sh_files),poetry run shellcheck $(sh_files), @ echo "No shell files found")
 
 .PHONY: lint
-lint: mypy ruff shellcheck  ## Run linters (mypy, ruff, shellcheck)
+lint: lint-black lint-mypy lint-ruff lint-shellcheck  ## Run linters (black, mypy, ruff, shellcheck)
 
 .PHONY: check
 check: check-packages lint  ## Run linters, and static code analysis
@@ -197,21 +213,21 @@ $(DIST_FILES): $(MODULES) pyproject.toml
 
 # CLEANUP #####################################################################
 
-.PHONY: clean
-clean: .clean-build .clean-docs .clean-test .clean-install ## Delete all generated and temporary files
-
-.PHONY: clean-all
-clean-all: clean ## Delete virtual environment and all generated and temporary files
+.PHONY: uninstall
+uninstall: clean ## Delete virtual environment and all generated and temporary files
 	rm -rf $(VIRTUAL_ENV_NAME)
+
+.PHONY: clean
+clean: .clean-build .clean-docs .clean-cache .clean-install ## Delete all generated and temporary files
 
 .PHONY: .clean-install
 .clean-install:
 	find $(PACKAGES) -name '__pycache__' -delete
 	rm -rf *.egg-info
 
-.PHONY: .clean-test
-.clean-test:
-	rm -rf .cache .pytest .coverage htmlcov
+.PHONY: .clean-cache
+.clean-cache:
+	rm -rf .cache .ruff_cache .mypy_cache .pytest .coverage htmlcov
 
 .PHONY: .clean-docs
 .clean-docs:
@@ -252,4 +268,14 @@ build-docker: requirements.txt  ## Build docker image
 .PHONY: run-docker
 run-docker:  ## Run docker container for built image
 	docker run -it --rm --platform linux/amd64 --name=$(DOCKER_IMAGE_NAME)_local $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)
+
+.PHONY: build-docker-dev
+build-docker-dev: requirements.txt requirements-dev.txt  ## Build docker dev image
+	docker build -f Dockerfile -t $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG) --target development . --platform linux/amd64
+	@ rm requirements.txt
+	@ rm requirements-dev.txt
+
+.PHONY: run-docker-dev
+run-docker-dev:  ## Run docker container for built dev image
+	docker run -it --rm --platform linux/amd64 --name=$(DOCKER_IMAGE_NAME)_debug -v $(ROOT_DIR):/code $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG) bash
 {% endif -%}

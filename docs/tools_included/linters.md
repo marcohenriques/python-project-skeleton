@@ -1,18 +1,12 @@
 # Linters
 
-### <a href="https://flake8.pycqa.org/en/latest/" target="_blank"><code>flake8</code></a>
+### <a href="https://beta.ruff.rs/docs/" target="_blank"><code>ruff</code></a>
 
 Linter for our python code.
 
-The project also installs a `flake8` plugin:
-<a href="https://wemake-python-styleguide.readthedocs.io/en/latest/" target="_blank"><code>wemake-python-styleguide</code></a>
-(one of the *strictest and most opinionated Python linter ever*), which in turn also includes some other plugins.
-You can check all the violations [here](https://wemake-python-styleguide.readthedocs.io/en/latest/pages/usage/violations/index.html).
+This comes bundled with several plugins enabled. You can check them and respective configs on `pyproject.toml`.
 
-If you want to add extra plugins or application-specific plugins, you can check
-[*Awesome Flake8 Extensions*](https://github.com/DmytroLitvinov/awesome-flake8-extensions)
-
-Check configs on `setup.cfg`.
+For extra documentation on how to [add](https://beta.ruff.rs/docs/rules/) and/or [configure](https://beta.ruff.rs/docs/settings/) plugins, please see the ruff documentation.
 
 ### <a href="http://mypy-lang.org/" target="_blank"><code>mypy</code></a>
 

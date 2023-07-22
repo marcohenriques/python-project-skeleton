@@ -8,9 +8,3 @@ By default the project is configured to use a line length of `100`.
 We use `black` to format our code.  
 
 Check configs on `pyproject.toml`.
-
-### <a href="https://pycqa.github.io/isort/" target="_blank"><code>isort</code></a>
-
-Used to sort our imports.
-
-Check configs on `pyproject.toml`.

@@ -2,10 +2,7 @@ name: CICD
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - master
   workflow_dispatch:
     inputs:
       run-test:
@@ -16,14 +13,16 @@ on:
 
 {% raw %}jobs:
   run-ci-tests:
-    uses: ./.github/workflows/ci_tests.yaml
+    uses: ./.github/workflows/ci.yaml
     if: github.event_name != 'workflow_dispatch' || inputs.run-test{% endraw %}
 {% if cookiecutter.include_docker == "yes" %}
   {% raw %}build-docker-dev:
     uses: ./.github/workflows/build_docker.yaml
     needs:
       - run-ci-tests
-    if: contains(fromJson('["success", "skipped"]'), needs.run-ci-tests.result) && always()
+    if: |
+      contains(fromJson('["success", "skipped"]'), needs.run-ci-tests.result)
+      && always()
     with:
       image-name:  {% endraw %}{{cookiecutter.project_name.lower()}}{% raw %}
       image-tag: ${{ github.sha }}
