@@ -2,6 +2,20 @@
 
 <!--next-version-placeholder-->
 
+## 0.3.0 (2023-07-22)
+
+### Feat
+
+- move to ruff
+
+### Fix
+
+- **cicd**: docker
+
+### Refactor
+
+- cicd and configs (#5)
+
 ## 0.2.0 (2022-12-24)
 
 ### Feat
