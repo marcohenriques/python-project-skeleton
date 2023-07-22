@@ -362,8 +362,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#ruff" class="md-nav__link">
-    ruff
+  <a href="#flake8" class="md-nav__link">
+    flake8
   </a>
   
 </li>
@@ -565,8 +565,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#ruff" class="md-nav__link">
-    ruff
+  <a href="#flake8" class="md-nav__link">
+    flake8
   </a>
   
 </li>
@@ -601,10 +601,15 @@
 
 
 <h1 id="linters">Linters<a class="headerlink" href="#linters" title="Permanent link">&para;</a></h1>
-<h3 id="ruff"><a href="https://beta.ruff.rs/docs/" target="_blank"><code>ruff</code></a><a class="headerlink" href="#ruff" title="Permanent link">&para;</a></h3>
+<h3 id="flake8"><a href="https://flake8.pycqa.org/en/latest/" target="_blank"><code>flake8</code></a><a class="headerlink" href="#flake8" title="Permanent link">&para;</a></h3>
 <p>Linter for our python code.</p>
-<p>This comes bundled with several plugins enabled. You can check them and respective configs on <code>pyproject.toml</code>.</p>
-<p>For extra documentation on how to <a href="https://beta.ruff.rs/docs/rules/">add</a> and/or <a href="https://beta.ruff.rs/docs/settings/">configure</a> plugins, please see the ruff documentation.</p>
+<p>The project also installs a <code>flake8</code> plugin:
+<a href="https://wemake-python-styleguide.readthedocs.io/en/latest/" target="_blank"><code>wemake-python-styleguide</code></a>
+(one of the <em>strictest and most opinionated Python linter ever</em>), which in turn also includes some other plugins.
+You can check all the violations <a href="https://wemake-python-styleguide.readthedocs.io/en/latest/pages/usage/violations/index.html">here</a>.</p>
+<p>If you want to add extra plugins or application-specific plugins, you can check
+<a href="https://github.com/DmytroLitvinov/awesome-flake8-extensions"><em>Awesome Flake8 Extensions</em></a></p>
+<p>Check configs on <code>setup.cfg</code>.</p>
 <h3 id="mypy"><a href="http://mypy-lang.org/" target="_blank"><code>mypy</code></a><a class="headerlink" href="#mypy" title="Permanent link">&para;</a></h3>
 <p>Used for static type checking in Python. The configurations are kinda strict, to enforce type annotations.</p>
 <p>Check configs on <code>pyproject.toml</code>.</p>
