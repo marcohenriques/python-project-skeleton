@@ -49,7 +49,6 @@ TOOLS_FIRST_INSTALLED := $(VIRTUAL_ENV_NAME)/.tools_first_installed
 .PHONY: install
 install: $(DEPENDENCIES) $(TOOLS_FIRST_INSTALLED) .cache  ## Install project dependencies and tools
 
-
 install-docs: $(TOOLS_FIRST_INSTALLED)_docs
 $(TOOLS_FIRST_INSTALLED)_docs:
 	poetry install --with docs --no-root
@@ -60,7 +59,7 @@ $(DEPENDENCIES): $(VIRTUAL_ENV_NAME)
 	@ touch $@
 
 $(TOOLS_FIRST_INSTALLED): .git
-	@ poetry run pre-commit install -t pre-commit -t pre-push -t commit-msg
+	@ poetry run pre-commit install
 	@ poetry run git config commit.template .gitmessage
 	@ touch $@ # This will create a file named `.tools_first_installed` inside venv folder
 
@@ -76,10 +75,8 @@ $(VIRTUAL_ENV_NAME): .python-version  ## Create python environment
 
 .python-version:  # Setup .python-version (local pyenv python version) file
 	@ echo "$(ECHO_COLOUR)Initializing pyenv$(NC)"
-	$(eval PYENV_LATEST_VERSION=$(shell pyenv install --list | grep " $(PYTHON_VERSION)\.[0-9]*$$" | tail -1))
-	@ echo "$(ECHO_COLOUR)Installing python version $(PYENV_LATEST_VERSION)...$(NC)"
-	pyenv install -s $(PYENV_LATEST_VERSION)
-	pyenv local $(PYENV_LATEST_VERSION)
+	pyenv install -s $(PYTHON_VERSION)
+	pyenv local $(PYTHON_VERSION)
 
 requirements.txt: poetry.lock  ## Generate requirements.txt file from poetry
 	@ echo "$(ECHO_COLOUR)Generating requirements.txt$(NC)"
@@ -94,31 +91,41 @@ requirements-dev.txt: poetry.lock  ## Generate requirements.txt file from poetry
 
 # CHECKS ######################################################################
 
-.PHONY: format
-format:  ## Run formatters
+format-ruff:
 	$(PRINT_INFO)
-	poetry run black $(PACKAGES)
+	poetry run ruff format --config ${ROOT_DIR}/pyproject.toml $(PACKAGES)
+	poetry run ruff check --config ${ROOT_DIR}/pyproject.toml --fix-only $(PACKAGES)
+	poetry run ruff format --config ${ROOT_DIR}/pyproject.toml $(PACKAGES)  # need to run again for trailing comma edge case
+
+.PHONY: format
+format: format-ruff  ## Run formatters (ruff)
 
 .PHONY: check-packages
 check-packages:  ## Run package check
-	$(PRINT_INFO)
+	@ echo "$(ECHO_COLOUR)Checking packages$(NC)"
 	poetry check
 	poetry run pip check
 	poetry export -f requirements.txt --without-hashes | poetry run safety check --full-report --stdin
 
-mypy:
+lint-mypy:
 	$(PRINT_INFO)
-	poetry run mypy --install-types --non-interactive $(PACKAGES)
+	poetry run mypy --config-file ${ROOT_DIR}/pyproject.toml $(PACKAGES)
 
-ruff:
+lint-ruff:
 	$(PRINT_INFO)
-	poetry run ruff --fix $(PACKAGES)
+	poetry run ruff check --config ${ROOT_DIR}/pyproject.toml --no-fix $(PACKAGES)
+	poetry run ruff format --config ${ROOT_DIR}/pyproject.toml --check $(PACKAGES)
+
+lint-shellcheck:
+	$(PRINT_INFO)
+	@ $(eval sh_files := $(shell find . -not -path '*/.*' -regex '.*\.sh$$'))
+	$(if $(sh_files),poetry run shellcheck $(sh_files), @ echo "No shell files found")
 
 .PHONY: lint
-lint: mypy ruff shellcheck  ## Run linters (mypy, ruff, shellcheck)
+lint: lint-mypy lint-ruff lint-shellcheck  ## Run linters (mypy, ruff, shellcheck)
 
 .PHONY: check
-check: check-packages lint  ## Run linters, and static code analysis
+check: check-packages lint  ## Run linters and packages check
 
 .PHONY: bump
 bump:  ## Bumps version number based on commit history

@@ -11,15 +11,21 @@ A `settings.json` file will be generated:
 {
   "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python3",
   "python.terminal.activateEnvironment": true,
-  // Linters
-  "python.linting.enabled": true,
-  "python.linting.mypyEnabled": true,
-  "python.linting.mypyPath": "${workspaceFolder}/.venv/bin/mypy",
-  "python.linting.mypyArgs": [],
-  // Formatters
-  "python.formatting.provider": "black",
-  "python.formatting.blackPath": "${workspaceFolder}/.venv/bin/black",
-  "python.formatting.blackArgs": [],
+  // Linters/formatters
+  "ruff.path": [
+    "${workspaceFolder}/.venv/bin/ruff"
+  ],
+  "ruff.lint.args": [
+    "--config=${workspaceFolder}/pyproject.toml"
+  ],
+  "ruff.format.args": [
+    "--config=${workspaceFolder}/pyproject.toml"
+  ],
+  "mypy-type-checker.args": [
+    "--config-file=${workspaceFolder}/pyproject.toml"
+  ],
+  "sqlfluff.config": "${workspaceFolder}/pyproject.toml",
+  "sqlfluff.executablePath": "${workspaceFolder}/.venv/bin/sqlfluff",
   // Tests
   "python.testing.pytestEnabled": true,
   "python.testing.pytestPath": "${workspaceFolder}/.venv/bin/pytest",
@@ -29,6 +35,11 @@ A `settings.json` file will be generated:
     120
   ],
   "[python]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true
+    },
     "editor.rulers": [
       {
         "column": 80,

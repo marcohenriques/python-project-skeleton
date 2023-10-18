@@ -1,32 +1,21 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
-exclude: "CHANGELOG.md"
+
+default_install_hook_types: [pre-commit, pre-push, commit-msg]
+exclude: |
+  (?x)^(
+    scripts/|
+    notebooks/
+  )
 default_stages: [commit]
 
-ci:
-  autofix_commit_msg: "chore(pre-commit.ci): auto fixes"
-  autoupdate_commit_msg: "chore(pre-commit.ci): pre-commit autoupdate"
-
 repos:
-  - repo: https://github.com/commitizen-tools/commitizen
-    rev: v2.35.0
-    hooks:
-      - id: commitizen
-        stages: [commit-msg]
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
       - id: trailing-whitespace
-        exclude: |
-          (?x)^(
-            notebooks/
-          )
         args: [--markdown-linebreak-ext=md]
       - id: end-of-file-fixer
-        exclude: |
-          (?x)^(
-            notebooks/
-          )
       - id: check-yaml
       - id: check-symlinks
       - id: check-toml
@@ -34,84 +23,32 @@ repos:
         args: ['--maxkb=1000']
   - repo: local
     hooks:
-      - id: black
-        name: black
+      - id: ruff-formatter
+        name: ruff-formatter
         language: system
-        entry: poetry run black
+        entry: poetry run ruff format
+        args: [--config, ./pyproject.toml]
         types: [python]
-        exclude: |
-          (?x)^(
-            scripts/|
-            notebooks/
-          )
       - id: check-packages
         name: check-packages
         language: system
         entry: make
         pass_filenames: false
         args: [check-packages]
-      - id: ruff
-        name: ruff
+      - id: ruff-lint
+        name: ruff-lint
         language: system
-        entry: poetry run ruff --fix
+        entry: poetry run ruff check
+        args: [--config, ./pyproject.toml, --fix]
         types: [python]
-        exclude: |
-          (?x)^(
-            scripts/|
-            notebooks/
-          )
       - id: mypy
         name: mypy
         language: system
         entry: poetry run mypy
-        args: [--install-types, --non-interactive]
+        args: [--config-file, ./pyproject.toml]
         types: [python]
-        exclude: |
-          (?x)^(
-            scripts/|
-            notebooks/
-          )
       - id: shellcheck
         name: shellcheck
         entry: poetry run shellcheck
         language: python
         types: [shell]
-{% if cookiecutter.include_notebooks == "yes" %}
-      - id: nbqa-black
-        name: black on notebooks
-        description: "black formatting for jupyter notebooks"
-        language: system
-        entry: poetry run nbqa black
-        args: [--nbqa-mutate]
-        types: [file]
-        files: \.(ipynb)$
-      - id: nbqa-ruff
-        name: ruff on notebooks
-        description: "ruff checking for jupyter notebooks"
-        language: system
-        entry: poetry run nbqa ruff --fix
-        types: [file]
-        files: \.(ipynb)$
-      - id: nbqa-mypy
-        name: mypy on notebooks
-        description: "mypy checking for jupyter notebooks"
-        language: system
-        entry: poetry run nbqa mypy
-        types: [file]
-        files: \.(ipynb)$
-{% endif %}
-      # - id: pytest
-      #   name: pytest
-      #   types: [python]
-      #   entry: poetry run pytest
-      #   language: system
-      #   pass_filenames: false
-      #   always_run: true
-
-      # - id: pytest-cov
-      #   name: pytest
-      #   stages: [push]
-      #   language: system
-      #   entry: poetry run pytest --cov --cov-fail-under=100
-      #   types: [python]
-      #   pass_filenames: false

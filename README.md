@@ -17,22 +17,24 @@ A cookiecutter template for python projects.
 
 ### Features included
 
-- GitHub actions CICD to run formatters, linter, and tests. Also support to build and push docker images
+- GitHub actions CICD to run formatters, linters, and tests. Also support to build and push docker images
 - Dockerfile to ship python apps
 - Documentation with <a href="https://www.mkdocs.org/" target="_blank"><code>mkdocs</code></a> using the beautiful
 <a href="https://squidfunk.github.io/mkdocs-material/getting-started/" target="_blank"><code>material</code></a> theme
 - Testing using <a href="https://docs.pytest.org/" target="_blank"><code>pytest</code></a> and several plugins
-- Code formatters using <a href="https://black.readthedocs.io/en/stable/" target="_blank"><code>black</code></a>
+- Code formatters using <a href="https://beta.ruff.rs/docs/" target="_blank"><code>ruff</code></a> and
+<a href="https://sqlfluff.com/" target="_blank"><code>sqlfluff</code></a> (SQL)
 - Linters using <a href="https://beta.ruff.rs/docs/" target="_blank"><code>ruff</code></a>
 (check configuration file for enabled plugins),
-<a href="http://mypy-lang.org/" target="_blank"><code>mypy</code></a> and
-<a href="https://github.com/shellcheck-py/shellcheck-py" target="_blank"><code>shellcheck</code></a>
+<a href="http://mypy-lang.org/" target="_blank"><code>mypy</code></a>,
+<a href="https://github.com/shellcheck-py/shellcheck-py" target="_blank"><code>shellcheck</code></a> and
+<a href="https://sqlfluff.com/" target="_blank"><code>sqlfluff</code></a>
 - Python dependencies vulnerabilities scanner using <a href="https://github.com/pyupio/safety" target="_blank"><code>safety</code></a>
 - <a href="https://pre-commit.com/" target="_blank"><code>pre-commit</code></a> hooks for some validations
 - `Makefile` to automate some development tasks
 - <a href="https://python-poetry.org/" target="_blank"><code>poetry</code></a> to manage your python dependencies
 - Python package pre-configured with:
-    - logging module to be easier to manage your loggers per environment
+    - logging using loguru
     - setting module using <a href="https://pydantic-docs.helpmanual.io/" target="_blank"><code>pydantic</code></a> to help manage your project settings
     - (optional) CLI example using <a href="https://typer.tiangolo.com/" target="_blank"><code>typer</code></a>
 

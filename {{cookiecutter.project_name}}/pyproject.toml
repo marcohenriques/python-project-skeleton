@@ -29,19 +29,19 @@ include = [{ path = "src/configs" }, { path = "tests", format = "sdist" }]
 
 [tool.poetry.dependencies]
 python = "^{{cookiecutter.python_version}}"
-pyyaml = "^6.0"
+loguru = "^0.7.0"
 pydantic-settings = "^2.0.2"
 {%- if cookiecutter.include_cli|lower == 'yes' %}
-typer = { extras = ["all"], version = "^0.7.0" }
+typer = "^0.12.0"
 {%- endif %}
 
 [tool.poetry.group.dev.dependencies]
-black = "^22.6.0"
-ruff = "~0.0.242"
+ruff = "^0.3.0"
 mypy = "^1.1.0"
-safety = "^2.0.0"
+safety = "^3.1.0"
 pre-commit = "^3.0.0"
-shellcheck-py = "^0.9.0.2"
+shellcheck-py = "^0.10.0.1"
+sqlfluff = "^2.3.4"
 
 [tool.poetry.group.tests]
 optional = false
@@ -56,15 +56,17 @@ xdoctest = "^1.0.1"
 [tool.poetry.group.docs]
 optional = true
 [tool.poetry.group.docs.dependencies]
-mkdocs = "^1.3.0"
-mkdocs-material = "^8.3.9"
-mkdocstrings = { extras = ["python"], version = "^0.19.0" }
+mkdocs = "^1.5.3"
+mkdocs-material = "^9.5.15"
+mkdocstrings = { extras = ["python"], version = "^0.24.1" }
+mkdocs-gen-files = "^0.5.0"
+mkdocs-literate-nav = "^0.6.1"
+mkdocs-section-index = "^0.3.8"
 {% endif %}{% if cookiecutter.include_notebooks == "yes" %}
 [tool.poetry.group.jupyter]
 optional = true
 [tool.poetry.group.jupyter.dependencies]
 jupyter = "^1.0.0"
-nbqa = "^1.3.1"
 jupyter-contrib-nbextensions = "^0.5.1"
 {% endif %}
 
@@ -80,69 +82,78 @@ upload_to_repository = false                                                    
 upload_to_release = false                                                        # upload to github release
 
 
-### FORMATTERS
+### LINTERS / FORMATTERS
 
-[tool.black]
-line-length = 100
-ipynb = false
-
-
-### LINTERS
-
+# ruff
 [tool.ruff]
-cache-dir = ".cache/.ruff_cache"
+cache-dir = ".cache/ruff"
 src = ["src", "tests"]
-target-version = "{{ 'py' ~ cookiecutter.python_version | replace('.', '') }}"           # Always generate Python {{cookiecutter.python_version}}-compatible code.
+target-version = "py311"  # Always generate Python 3.11-compatible code.
 line-length = 100
-ignore-init-module-imports = true
-extend-exclude = ["tests"]
 show-fixes = true
 force-exclude = true
-format = "grouped"                # github
+output-format = "grouped"
+
+[tool.ruff.lint]
+ignore-init-module-imports = true
 select = [
-    # all rules: https://beta.ruff.rs/docs/rules/
+    # all rules: https://docs.astral.sh/ruff/rules/
     "ANN2", # flake8-annotations
+    "ARG",  # flake8-unused-arguments
     "B",    # flake8-bugbear
     "C4",   # flake8-comprehensions
     "COM",  # flake8-commas
     "D",    # pydocstyle
     "E",    # pycodestyle
     "ERA",  # eradicate
-    "F",    # Pyflakes
+    "EXE",  # flake8-executable
+    "F",    # pyflakes
+    "FA",   # flake8-future-annotations
     "I",    # isort
     "N",    # pep8-naming
+    "PD",   # pandas-vet
+    "PERF", # Perflint
+    "PL",   # pylint
     "PT",   # flake8-pytest-style
     "PTH",  # flake8-use-pathlib
-    "Q",    # flake8-quotes
-    "RUF",  # Ruff-specific rules
+    "RUF",  # ruff-specific rules
     "S",    # flake8-bandit
     "SIM",  # flake8-simplify
+    "SLF",  # flake8-self
+    "TCH",  # flake8-type-checking
     "TID",  # flake8-tidy-imports
     "UP",   # pyupgrade
     "W",    # pycodestyle
-    "PL",   # pylint
 ]
 ignore = [
-    "E501",  # Line length regulated by black
+    "E501",  # line length regulated by formatter
+    "PD901", # df is a bad variable name. Be kinder to your future self.
     "PT011", # pytest.raises({exception}) is too broad, set the match parameter or use a more specific exception
 
-    "D105", # Missing docstring in magic method
     # "D100", # Missing docstring in public module
-    # "D103", # Missing docstring in public function
-    # "D102", # Missing docstring in public method
-    # "D104", # Missing docstring in public package
     # "D101", # Missing docstring in public class
+    # "D102", # Missing docstring in public method
+    # "D103", # Missing docstring in public function
+    # "D104", # Missing docstring in public package
+    "D105", # Missing docstring in magic method
+    "D107", # Missing docstring in __init__
+
+    # # conflicts with formatter
+    "COM812", # Trailing comma missing
+    # "COM819", # Trailing comma prohibited
+    # "D206",   # Docstring should be indented with spaces, not tabs
+    # "W191",   # Indentation contains tabs
 ]
 unfixable = [
     "ERA001", # commented-out-code
 ]
 
-[tool.ruff.flake8-annotations]
+[tool.ruff.lint.flake8-annotations]
 allow-star-arg-any = true
 suppress-dummy-args = true
 suppress-none-returning = true
 
-[tool.ruff.flake8-bugbear]
+[tool.ruff.lint.flake8-bugbear]
 extend-immutable-calls = [
     "fastapi.Body",
     "fastapi.Cookie",
@@ -157,34 +168,34 @@ extend-immutable-calls = [
     "typer.Option",
 ]
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 combine-as-imports = true
 lines-after-imports = 2
 
-[tool.ruff.flake8-tidy-imports]
+[tool.ruff.lint.flake8-tidy-imports]
 ban-relative-imports = "all"
 
-[tool.ruff.pep8-naming]
+[tool.ruff.lint.pep8-naming]
 classmethod-decorators = ["classmethod", "pydantic.validator"]
 
-[tool.ruff.pycodestyle]
+[tool.ruff.lint.pycodestyle]
 ignore-overlong-task-comments = true
 max-doc-length = 100
 
-[tool.ruff.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "google"
 
-[tool.ruff.pylint]
+[tool.ruff.lint.pylint]
 max-args = 5
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["E402", "TID252"]
 "tests/*" = ["D103", "S101", "PLR2004"]
 
-
+# mypy
 [tool.mypy]
 plugins = ["pydantic.mypy"]
-cache_dir = ".cache/mypy/"
+cache_dir = ".cache/mypy"
 strict = true
 
 [[tool.mypy.overrides]]
@@ -192,6 +203,39 @@ module = "tests.*"
 disallow_untyped_defs = false
 disallow_incomplete_defs = false
 disallow_untyped_decorators = false
+
+# sqlfluff
+[tool.sqlfluff.core]
+# dialect = snowflake
+templater = "python"
+max_line_length = 120
+exclude_rules = "aliasing.forbid, structure.column_order, jinja.padding"
+
+[tool.sqlfluff.templater.python.context]
+SOME_VAR_NAME = "some_var_value"
+
+[tool.sqlfluff.rules.aliasing.table]
+aliasing = "explicit"
+[tool.sqlfluff.rules.aliasing.column]
+aliasing = "explicit"
+[tool.sqlfluff.rules.aliasing.length]
+min_alias_length = 3
+
+[tool.sqlfluff.rules.capitalisation.keywords]
+capitalisation_policy = "upper"
+[tool.sqlfluff.rules.capitalisation.functions]
+extended_capitalisation_policy = "upper"
+[tool.sqlfluff.rules.capitalisation.literals]
+extended_capitalisation_policy = "upper"
+[tool.sqlfluff.rules.capitalisation.types]
+extended_capitalisation_policy = "upper"
+
+[tool.sqlfluff.rules.layout.long_lines]
+ignore_comment_lines = true
+ignore_comment_clauses = true
+
+[tool.sqlfluff.rules.references.keywords]
+ignore_words = "location, language, name"
 
 
 ### TESTS
@@ -202,13 +246,14 @@ addopts = [
     "--strict-markers",
     "-vv",
     "-r sxX",
+    "--cov=src",
     "--cov-report=html",
     "--cov-report=term-missing:skip-covered",
     "--no-cov-on-fail",
     "--xdoc",
 ]
 console_output_style = "count"
-cache_dir = ".cache"
+cache_dir = ".cache/pytest"
 env = ["D:ENV=local"]
 
 
