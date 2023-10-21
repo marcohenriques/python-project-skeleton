@@ -26,7 +26,6 @@ def setup_logging(
         default_level (int): Default logging level in case no config file found.
             Defaults to DEFAULT_LOGGING_LEVEL.
     """
-    logging_config_path = logging_config_path
     if logging_config_path is not None and logging_config_path.exists():
         with logging_config_path.open() as config_file:
             try:

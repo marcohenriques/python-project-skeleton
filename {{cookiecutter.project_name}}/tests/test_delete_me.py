@@ -8,7 +8,7 @@ from {{cookiecutter.package_name}} import delete_me
 
 
 @pytest.mark.parametrize(
-    "value_feet,expected_value_meter",
+    ("value_feet", "expected_value_meter"),
     [
         (42, 12.800975312404754),
     ],

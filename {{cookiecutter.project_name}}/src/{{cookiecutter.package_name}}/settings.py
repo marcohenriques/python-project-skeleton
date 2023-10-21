@@ -3,10 +3,10 @@ from pathlib import Path
 from typing import Optional
 
 from pydantic import DirectoryPath, FilePath, field_validator
-from pydantic_core.core_schema import FieldValidationInfo
+from pydantic_core.core_schema import ValidationInfo
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from python_package.constants import Environment
+from {{cookiecutter.package_name}}.constants import Environment
 
 
 class AppSettings(BaseSettings):
@@ -36,13 +36,13 @@ class AppSettings(BaseSettings):
     def default_logging_config_path(
         cls,
         logging_config_path: Optional[FilePath],
-        info: FieldValidationInfo,
+        info: ValidationInfo,
     ) -> Optional[FilePath]:
         """Get the default logging config path if not provided.
 
         Args:
             logging_config_path (Optional[FilePath]): LOGGING_CONFIG_PATH value
-            info (FieldValidationInfo): pydantic validation object (let you access other values)
+            info (ValidationInfo): pydantic validation object (let you access other values)
 
         Returns:
             Optional[FilePath]: the default logging config path
