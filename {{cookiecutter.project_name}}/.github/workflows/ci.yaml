@@ -5,7 +5,6 @@ on:
   pull_request:
     branches:
       - main
-      - master
 
 # cancel in progress workflow:
 # https://docs.github.com/en/actions/using-jobs/using-concurrency#example-using-a-fallback-value

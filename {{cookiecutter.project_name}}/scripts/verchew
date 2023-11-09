@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 #
 # Script adapted from:
 # Source: https://github.com/jacebrowning/verchew
@@ -8,7 +7,6 @@
 #
 # Modified to read configuration file from script directory by default
 
-from __future__ import unicode_literals
 
 import argparse
 import logging
@@ -22,13 +20,14 @@ from subprocess import PIPE, STDOUT, Popen
 PY2 = sys.version_info[0] == 2
 
 if PY2:
-    import ConfigParser as configparser
     from urllib import urlretrieve
+
+    import ConfigParser as configparser
 else:
     import configparser
     from urllib.request import urlretrieve
 
-__version__ = "3.3"
+__version__ = "3.4.2"
 
 SCRIPT_URL = "https://raw.githubusercontent.com/jacebrowning/verchew/main/verchew/script.py"
 WRAPPER_URL = "https://raw.githubusercontent.com/jacebrowning/verchew/main/verchew/wrapper.sh"
@@ -104,16 +103,10 @@ def main():
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(
-        description="System dependency version checker.",
-    )
+    parser = argparse.ArgumentParser(description="System dependency version checker.")
 
     version = "%(prog)s v" + __version__
-    parser.add_argument(
-        "--version",
-        action="version",
-        version=version,
-    )
+    parser.add_argument("--version", action="version", version=version)
     parser.add_argument(
         "-r",
         "--root",
@@ -185,7 +178,7 @@ def vendor_script(url, path):
 
 
 def find_config(root=None, filenames=None, generate=False):
-    root = root or os.path.dirname(os.path.abspath(__file__))
+    root = root or os.getcwd()
     filenames = filenames or CONFIG_FILENAMES
 
     path = None
@@ -201,7 +194,7 @@ def find_config(root=None, filenames=None, generate=False):
         path = generate_config(root, filenames)
         return path
 
-    msg = "No config file found in: {0}".format(root)
+    msg = f"No config file found in: {root}"
     raise RuntimeError(msg)
 
 
@@ -249,7 +242,7 @@ def check_dependencies(config):
     success = []
 
     for name, settings in config.items():
-        show("Checking for {0}...".format(name), head=True)
+        show(f"Checking for {name}...", head=True)
         output = get_version(settings["cli"], settings.get("cli_version_arg"))
 
         for pattern in settings["patterns"]:
@@ -268,7 +261,7 @@ def check_dependencies(config):
                     else:
                         actual = output.split("\n", maxsplit=1)[0].strip(".")
                     expected = settings["version"] or "<anything>"
-                    print("{0}: {1}, EXPECTED: {2}".format(name, actual, expected))
+                    print(f"{name}: {actual}, EXPECTED: {expected}")
                 show(_("x") + " EXPECTED: {0}".format(settings["version"] or "<anything>"))
                 success.append(_("x"))
             if settings.get("message"):
@@ -290,23 +283,41 @@ def get_version(program, argument=None):
     show("$ {0}".format(" ".join(args)))
     output = call(args)
     lines = output.splitlines()
-    show(lines[0] if lines else "<nothing>")
+
+    if lines:
+        for line in lines:
+            if any(char.isdigit() for char in line):
+                show(line)
+                break
+        else:
+            show(lines[0])
+    else:
+        show("<nothing>")
 
     return output
 
 
 def match_version(pattern, output):
-    if "not found" in output.split("\n")[0]:
+    lines = output.splitlines()
+    if not lines:
+        return False
+    if "not found" in lines[0]:
+        return False
+    if re.match(r"No .+ executable found", " ".join(lines)):
         return False
 
     regex = pattern.replace(".", r"\.") + r"(\b|/)"
 
-    log.debug("Matching %s: %s", regex, output)
-    match = re.match(regex, output)
-    if match is None:
-        match = re.match(r".*[^\d.]" + regex, output)
+    for line in lines:
+        log.debug("Matching %s: %s", regex, line)
+        match = re.match(regex, line)
+        if match is None:
+            log.debug("Matching %s: %s", regex, line)
+            match = re.match(r".*[^\d.]" + regex, line)
+        if match:
+            return True
 
-    return bool(match)
+    return False
 
 
 def call(args):
@@ -314,7 +325,7 @@ def call(args):
         process = Popen(args, stdout=PIPE, stderr=STDOUT)
     except OSError:
         log.debug("Command not found: %s", args[0])
-        output = "sh: command not found: {0}".format(args[0])
+        output = f"sh: command not found: {args[0]}"
     else:
         raw = process.communicate()[0]
         output = raw.decode("utf-8").strip()

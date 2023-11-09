@@ -67,7 +67,7 @@ $(DEPENDENCIES): $(VIRTUAL_ENV_NAME)
 	@ touch $@
 
 $(TOOLS_FIRST_INSTALLED): .git
-	@ poetry run pre-commit install -t pre-commit -t pre-push -t commit-msg
+	@ poetry run pre-commit install
 	@ poetry run git config commit.template .gitmessage
 	@ touch $@ # This will create a file named `.tools_first_installed` inside venv folder
 
@@ -89,28 +89,26 @@ $(VIRTUAL_ENV_NAME): .python-version  ## Create python environment
 requirements.txt: poetry.lock  ## Generate requirements.txt file from poetry
 	@ echo "$(ECHO_COLOUR)Generating requirements.txt$(NC)"
 	@ poetry export -f requirements.txt --without-hashes -o requirements.txt
-	@ poetry run ${ROOT_DIR}/scripts/req_fixer requirements.txt
 
 requirements-dev.txt: poetry.lock  ## Generate requirements.txt file from poetry
 	@ echo "$(ECHO_COLOUR)Generating requirements.txt$(NC)"
 	@ poetry export -f requirements.txt --without-hashes -o requirements-dev.txt --with dev,tests
-	@ poetry run ${ROOT_DIR}/scripts/req_fixer requirements-dev.txt
 
 
 # CHECKS ######################################################################
 
-.PHONY: black
-format-black:
-	$(PRINT_INFO)
-	poetry run black $(PACKAGES)
-
-.PHONY: ruff
 format-ruff:
 	$(PRINT_INFO)
-	poetry run ruff --fix-only $(PACKAGES)
+	poetry run ruff format --config ${ROOT_DIR}/pyproject.toml $(PACKAGES)
+	poetry run ruff check --config ${ROOT_DIR}/pyproject.toml --fix-only $(PACKAGES)
+	poetry run ruff format --config ${ROOT_DIR}/pyproject.toml $(PACKAGES)  # need to run again for trailing comma edge case
+
+format-sqlfluff:
+	$(PRINT_INFO)
+	poetry run sqlfluff fix --force --config ${ROOT_DIR}/pyproject.toml $(PACKAGES)
 
 .PHONY: format
-format: format-black format-ruff  ## Run formatters (black, ruff)
+format: format-ruff format-sqlfluff  ## Run formatters (ruff, sqlfluff)
 
 .PHONY: check-packages
 check-packages:  ## Run package check
@@ -119,28 +117,29 @@ check-packages:  ## Run package check
 	poetry run pip check
 	poetry export -f requirements.txt --without-hashes | poetry run safety check --full-report --stdin
 
-lint-black:
-	$(PRINT_INFO)
-	poetry run black --check $(PACKAGES)
-
 lint-mypy:
 	$(PRINT_INFO)
-	poetry run mypy --install-types --non-interactive $(PACKAGES)
+	poetry run mypy --config-file ${ROOT_DIR}/pyproject.toml --install-types --non-interactive $(PACKAGES)
 
 lint-ruff:
 	$(PRINT_INFO)
-	poetry run ruff --fix $(PACKAGES)
+	poetry run ruff check --config ${ROOT_DIR}/pyproject.toml --no-fix $(PACKAGES)
+	poetry run ruff format --config ${ROOT_DIR}/pyproject.toml --check $(PACKAGES)
 
 lint-shellcheck:
 	$(PRINT_INFO)
 	@ $(eval sh_files := $(shell find . -not -path '*/.*' -regex '.*\.sh$$'))
 	$(if $(sh_files),poetry run shellcheck $(sh_files), @ echo "No shell files found")
 
+lint-sqlfluff:
+	$(PRINT_INFO)
+	poetry run sqlfluff lint --config ${ROOT_DIR}/pyproject.toml $(PACKAGES)
+
 .PHONY: lint
-lint: lint-black lint-mypy lint-ruff lint-shellcheck  ## Run linters (black, mypy, ruff, shellcheck)
+lint: lint-mypy lint-ruff lint-shellcheck lint-sqlfluff  ## Run linters (mypy, ruff, shellcheck, sqlfluff)
 
 .PHONY: check
-check: check-packages lint  ## Run linters, and static code analysis
+check: check-packages lint  ## Run linters and packages check
 
 .PHONY: pre-commit
 pre-commit:  ## Run pre-commit on all files
@@ -260,22 +259,22 @@ jupyter: install-jupyter notebooks ## Launch an Jupyter notebook session
 DOCKER_IMAGE_NAME ?= {{cookiecutter.project_name.lower()}}
 DOCKER_IMAGE_TAG ?= latest
 
+DOCKER_RUN_FLAGS = \
+	--network host \
+	--ipc host \
+	--platform linux/amd64 \
+	$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)
+
 .PHONY: build-docker
 build-docker: requirements.txt  ## Build docker image
-	docker build -f Dockerfile -t $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG) --target production . --platform linux/amd64
+	docker build -f Dockerfile -t $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG) . --platform linux/amd64
 	@ rm requirements.txt
+
+.PHONY: run-docker-debug
+run-docker-debug:  ## Run bash session inside built docker image (use for debug)
+	docker run -it --rm --name=$(DOCKER_IMAGE_NAME)_local_debug --entrypoint /bin/bash $(DOCKER_RUN_FLAGS)
 
 .PHONY: run-docker
 run-docker:  ## Run docker container for built image
-	docker run -it --rm --platform linux/amd64 --name=$(DOCKER_IMAGE_NAME)_local $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)
-
-.PHONY: build-docker-dev
-build-docker-dev: requirements.txt requirements-dev.txt  ## Build docker dev image
-	docker build -f Dockerfile -t $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG) --target development . --platform linux/amd64
-	@ rm requirements.txt
-	@ rm requirements-dev.txt
-
-.PHONY: run-docker-dev
-run-docker-dev:  ## Run docker container for built dev image
-	docker run -it --rm --platform linux/amd64 --name=$(DOCKER_IMAGE_NAME)_debug -v $(ROOT_DIR):/code $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG) bash
+	docker run -it --rm --name=$(DOCKER_IMAGE_NAME)_local $(DOCKER_RUN_FLAGS) $(INPUTS)
 {% endif -%}

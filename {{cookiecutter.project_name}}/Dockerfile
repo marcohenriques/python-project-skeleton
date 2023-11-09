@@ -39,32 +39,11 @@ RUN pip install -U pip \
 # We customize how our code is loaded with the custom entrypoint:
 COPY ./docker/entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
+
+COPY src src
+
+# Running as non-root user:
+USER app
+
 ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]
-
-
-# # 'production' stage uses the clean 'python-base' stage and copyies
-# # in only our runtime deps that were installed in the 'builder-base'
-FROM python-base as production
-
-COPY . .
-
-# Running as non-root user:
-USER app
-
-CMD ["python"]
-
-
-# 'development' stage installs all dev deps and can be used to develop code.
-# For example using docker-compose to mount local volume under /code
-FROM python-base as development
-
-COPY requirements-dev.txt /
-RUN pip install -r /requirements-dev.txt
-
-# Instead of copying the whole project, we could mount a volume to current directory:
-# COPY . .
-
-# Running as non-root user:
-USER app
-
 CMD ["python"]

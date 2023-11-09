@@ -72,8 +72,8 @@ Tasks to run linters, formatters and python dependencies vulnerabilities scanner
 make format
 ```
 
-Runs all formatters: `black` and `ruff`(fix-only) on your **src** and *tests* directory.  
-You can also run each check individually: `make format-black` or `make format-ruff`.
+Runs all formatters: `sqlfluff` (SQL) and `ruff`(fix-only) on your **src** and *tests* directory.  
+You can also run each check individually: `make format-sqlfluff` or `make format-ruff`.
 
 
 ### check-packages
@@ -93,7 +93,7 @@ Runs checks on packages:
 make -k lint
 ```
 
-Runs `black` (check only), `mypy` and `ruff` on your **src** and *tests* directory, and `shellcheck` on shell files.  
+Runs `sqlfluff`, `mypy` and `ruff` on your **src** and *tests* directory, and `shellcheck` on shell files.  
 You can also run each check individually: `make lint-mypy`, `make lint-ruff` or `make lint-shellcheck`.
 
 ### check
