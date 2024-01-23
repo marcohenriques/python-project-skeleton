@@ -1,26 +1,23 @@
-ci/cd:
-  - .github/**
+i/cd:
+- any:
+  - changed-files:
+    - any-glob-to-any-file: ['.github/**']
+  - head-branch: ['^cicd']
 
 code:
-  - src/**
+- changed-files:
+  - any-glob-to-any-file: src/**
 
 infrastructure:
-  - infrastructure/**
-  - infra/**
-  - terraform/**
+- changed-files:
+  - any-glob-to-any-file: ['infrastructure/**', 'infra/**', 'terraform/**']
 
 documentation:
-  - README.md
-  - docs/**
-  - ./*.md
+- changed-files:
+  - any-glob-to-any-file: ['docs/**', '.*.md']
 
-orchestration:
-  - airflow/**
+feature:
+- head-branch: ['^feat']
 
-transformations:
-  - dbt/**
-
-data-quality:
-  - soda/**
-  - great-expectations/**
-  - great-expectations-documentation/**
+bug:
+- head-branch: ['^fix']

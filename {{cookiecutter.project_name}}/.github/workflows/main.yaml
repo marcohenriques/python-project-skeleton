@@ -18,6 +18,9 @@ on:
 {% if cookiecutter.include_docker == "yes" %}
   {% raw %}build-docker-dev:
     uses: ./.github/workflows/build_docker.yaml
+    permissions:
+      id-token: write
+      contents: read
     needs:
       - run-ci-tests
     if: |
@@ -31,6 +34,9 @@ on:
 
   build-docker-prod:
     uses: ./.github/workflows/build_docker.yaml
+    permissions:
+      id-token: write
+      contents: read
     if: |
       (github.event_name == 'push' && github.ref == 'refs/heads/main')
       && contains(fromJson('["success", "skipped"]'), needs.run-ci-tests.result)

@@ -119,7 +119,7 @@ check-packages:  ## Run package check
 
 lint-mypy:
 	$(PRINT_INFO)
-	poetry run mypy --config-file ${ROOT_DIR}/pyproject.toml --install-types --non-interactive $(PACKAGES)
+	poetry run mypy --config-file ${ROOT_DIR}/pyproject.toml $(PACKAGES)
 
 lint-ruff:
 	$(PRINT_INFO)
