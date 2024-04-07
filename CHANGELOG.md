@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## 0.4.0 (2024-04-07)
+
+### Refactor
+
+- reorganize project (#6)
+
 ## 0.3.0 (2023-07-22)
 
 ### Feat

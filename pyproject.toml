@@ -4,7 +4,7 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry]
 name = "python-project-skeleton"
-version = "0.3.0"
+version = "0.4.0"
 description = "Cookiecutter template for Python projects"
 authors = ["Marco Henriques <marco.martins.henriques@gmail.com>"]
 maintainers = ["Marco Henriques <marco.martins.henriques@gmail.com>"]
@@ -49,7 +49,7 @@ mike = "^1.1.2"
 ####################
 
 [tool.commitizen]
-version = "0.3.0"
+version = "0.4.0"
 version_files = [
     "pyproject.toml:version",
 ]
