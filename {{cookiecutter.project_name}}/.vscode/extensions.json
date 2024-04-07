@@ -1,6 +1,10 @@
 {
-  "recommendations": [
+  "recommendations": [{% if cookiecutter.include_docker == "yes" %}
+    "exiasr.hadolint",
+    {%- endif %}
     "ms-python.python",
     "charliermarsh.ruff",
+    "EditorConfig.EditorConfig",
+    "ms-python.mypy-type-checker",
   ]
 }

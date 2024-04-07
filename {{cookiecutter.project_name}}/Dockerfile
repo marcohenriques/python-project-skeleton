@@ -1,70 +1,67 @@
-# Uses multi-stage builds requiring Docker 17.05 or higher
-# See https://docs.docker.com/develop/develop-images/multistage-build/
+# Settings --------------------------------------------------------------------
+ARG PYTHON_VERSION={{ cookiecutter.python_version }}
+ARG BASE_IMAGE_TYPE=slim
+ARG VENV_PATH="/opt/venv"
 
-# Creating a python base with shared environment variables
-FROM python:{{ cookiecutter.python_version }}-slim as python-base
+# STAGE: Compile --------------------------------------------------------------
+FROM python:${PYTHON_VERSION} AS compile-image
 
-# Needed for fixing permissions of files created by Docker
-ARG UID=9999
-ARG GID=9999
+ARG VENV_PATH
 
-SHELL ["/bin/bash", "-eo", "pipefail", "-c"]
+RUN apt-get update \
+    && python -m venv "${VENV_PATH}"
 
-ENV PYTHONUNBUFFERED=1 \
+ENV PATH="${VENV_PATH}/bin:$PATH" \
+    PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_DEFAULT_TIMEOUT=100
 
-WORKDIR /code
-
-# Add our app code to python path:
-ENV PYTHONPATH="/code/src"
-
-RUN apt-get update && apt-get upgrade -y \
-    && apt-get install --no-install-recommends -y \
-    procps \
-    build-essential \
-    gcc \
-    tini \
-    # Create custom user and group to run the app as:
-    && groupadd -g "${GID}" -r app \
-    && useradd -d /code -g app -l -r -u "${UID}" app \
-    && chown app:app -R /code
-
 COPY requirements.txt /
 RUN pip install -U pip \
     && pip install -r /requirements.txt
 
+# STAGE: Build ----------------------------------------------------------------
+FROM python:${PYTHON_VERSION}-${BASE_IMAGE_TYPE} AS build-image
+
+ARG VENV_PATH
+ARG UID=1000
+ARG GID=1000
+ARG APP_NAME="{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}"
+
+# get installed python packages
+COPY --from=compile-image "${VENV_PATH}" "${VENV_PATH}"
+
+WORKDIR /app
+
+# Make sure we use the virtualenv:
+ENV PATH="${VENV_PATH}/bin:$PATH" \
+    PYTHONPATH="/app/src"
+
+
+RUN apt-get update && apt-get upgrade -y \
+    && apt-get install --no-install-recommends -y \
+    tini=0.19.0-1 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    # Create custom user and group to run the app
+    && groupadd --gid "${GID}" --system "${APP_NAME}" \
+    && useradd --home-dir /app --gid "${APP_NAME}" --no-log-init --system --uid "${UID}" "${APP_NAME}" \
+    && chown "${APP_NAME}":"${APP_NAME}" -R /app
+
+
 # We customize how our code is loaded with the custom entrypoint:
 COPY ./docker/entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
+
+COPY src src
+
+# STAGE: Production -----------------------------------------------------------
+FROM build-image AS production
+
+# Running as non-root user:
+USER ${APP_NAME}
+
 ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]
-
-
-# # 'production' stage uses the clean 'python-base' stage and copyies
-# # in only our runtime deps that were installed in the 'builder-base'
-FROM python-base as production
-
-COPY . .
-
-# Running as non-root user:
-USER app
-
-CMD ["python"]
-
-
-# 'development' stage installs all dev deps and can be used to develop code.
-# For example using docker-compose to mount local volume under /code
-FROM python-base as development
-
-COPY requirements-dev.txt /
-RUN pip install -r /requirements-dev.txt
-
-# Instead of copying the whole project, we could mount a volume to current directory:
-# COPY . .
-
-# Running as non-root user:
-USER app
-
 CMD ["python"]

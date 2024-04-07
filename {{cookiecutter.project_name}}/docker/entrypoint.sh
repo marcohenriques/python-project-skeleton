@@ -6,4 +6,5 @@ set -o pipefail
 
 readonly cmd="$*"
 
+echo "Running: '$cmd'"
 exec $cmd

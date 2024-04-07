@@ -2,7 +2,7 @@ name: CICD
 on:
   push:
     branches:
-      - master
+      - main
   workflow_dispatch:
     inputs:
       run-test:
@@ -18,6 +18,9 @@ on:
 {% if cookiecutter.include_docker == "yes" %}
   {% raw %}build-docker-dev:
     uses: ./.github/workflows/build_docker.yaml
+    permissions:
+      id-token: write
+      contents: read
     needs:
       - run-ci-tests
     if: |
@@ -26,13 +29,16 @@ on:
     with:
       image-name:  {% endraw %}{{cookiecutter.project_name.lower()}}{% raw %}
       image-tag: ${{ github.sha }}
-      push-image: ${{ (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')) }}
+      push-image: ${{ (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')) }}
       push-latest-tag: true
 
   build-docker-prod:
     uses: ./.github/workflows/build_docker.yaml
+    permissions:
+      id-token: write
+      contents: read
     if: |
-      (github.event_name == 'push' && github.ref == 'refs/heads/master')
+      (github.event_name == 'push' && github.ref == 'refs/heads/main')
       && contains(fromJson('["success", "skipped"]'), needs.run-ci-tests.result)
       && always()
     needs:

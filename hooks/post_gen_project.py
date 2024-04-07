@@ -20,6 +20,7 @@ def process_docs(include_docs: str) -> None:
     if include_docs == "no":
         logger.info("Not including docs")
         shutil.rmtree("docs/")
+        Path("scripts/gen_ref_pages").unlink()
         Path("mkdocs.yml").unlink()
         Path("readthedocs.yml").unlink(missing_ok=True)
 

@@ -18,6 +18,9 @@ theme:
     - 404.html
   feature:
     - navigation.tabs
+    - content.code.copy
+    - content.action.edit
+    - content.action.view
   palette:
     - scheme: default
       media: "(prefers-color-scheme: light)"
@@ -49,7 +52,7 @@ markdown_extensions:
       anchor_linenums: true
   - pymdownx.inlinehilite
   - pymdownx.snippets:
-      base_path: docs
+      check_paths: true
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tabbed:
@@ -58,9 +61,17 @@ markdown_extensions:
 
 plugins:
   - search
+  - autorefs
   - mkdocstrings
+  - gen-files:
+      scripts:
+      - scripts/gen_ref_pages.py
+  - literate-nav:
+      nav_file: SUMMARY.md
+  - section-index
 
 
 nav:
   - {{cookiecutter.project_name}}: index.md
   - Contributing: contributing.md
+  - Code Reference: reference/
