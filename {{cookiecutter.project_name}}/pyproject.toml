@@ -1,86 +1,43 @@
 [build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry]
+[project]
 name = "{{cookiecutter.project_name}}"
-version = "0.0.1"
+version = "0.1.0"
 description = "{{cookiecutter.project_short_description}}"
-authors = ["{{cookiecutter.author_name}} <{{cookiecutter.author_email}}>"]
-maintainers = ["{{ cookiecutter.author_name }} <{{ cookiecutter.author_email }}>"]
-homepage = "https://github.com/{{ cookiecutter.github_username_or_org_name }}/{{ cookiecutter.project_name }}"
-repository = "https://github.com/{{ cookiecutter.github_username_or_org_name }}/{{ cookiecutter.project_name }}"
-{%- if cookiecutter.include_docs|lower == 'yes' %}
-documentation = "https://{{ cookiecutter.github_username_or_org_name }}.github.io/{{ cookiecutter.project_name }}"
-{%- endif %}
 readme = "README.md"
-keywords = []
 license = ""
-packages = [{ include = "{{cookiecutter.package_name}}", from = "src" }]
-include = [{ path = "src/configs" }, { path = "tests", format = "sdist" }]
+keywords = []
+authors = [
+  {name = "{{ cookiecutter.author_name }}", email = "{{ cookiecutter.author_email }}"},
+]
+maintainers = [
+  {name = "{{ cookiecutter.author_name }}", email = "{{ cookiecutter.author_email }}"}
+]
+requires-python = ">={{cookiecutter.python_version}}"
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/{{ cookiecutter.github_username_or_org_name }}/{{ cookiecutter.project_name }}"
+Documentation = "https://{{ cookiecutter.github_username_or_org_name }}.github.io/{{ cookiecutter.project_name }}"
+Repository = "https://github.com/{{ cookiecutter.github_username_or_org_name }}/{{ cookiecutter.project_name }}"
+"Bug Tracker" = "https://github.com/{{ cookiecutter.github_username_or_org_name }}/{{ cookiecutter.project_name }}/issues"
+Changelog = "https://github.com/{{ cookiecutter.github_username_or_org_name }}/{{ cookiecutter.project_name }}/blob/master/CHANGELOG.md"
+
+[project.optional-dependencies]
+
+[tool.uv]
+dev-dependencies = []
 {% if cookiecutter.include_cli|lower == 'yes' %}
-[tool.poetry.scripts]
-{{cookiecutter.project_name}} = "{{cookiecutter.package_name}}.cli.main:app"
+[project.scripts]
+{{cookiecutter.project_name}} = "{{cookiecutter.package_name}}.cli:app"
 {% endif %}
 
-####################
-### DEPENDENCIES ###
-####################
-
-[tool.poetry.dependencies]
-python = "^{{cookiecutter.python_version}}"
-loguru = "^0.7.0"
-pydantic-settings = "^2.0.2"
-{%- if cookiecutter.include_cli|lower == 'yes' %}
-typer = "^0.12.0"
-{%- endif %}
-
-[tool.poetry.group.dev.dependencies]
-ruff = "^0.3.0"
-mypy = "^1.1.0"
-safety = "^3.1.0"
-pre-commit = "^3.0.0"
-shellcheck-py = "^0.10.0.1"
-sqlfluff = "^2.3.4"
-
-[tool.poetry.group.tests]
-optional = false
-[tool.poetry.group.tests.dependencies]
-pytest = "^7.1.2"
-pytest-cov = "^4.0.0"
-pytest-clarity = "^1.0.1"
-pytest-randomly = "^3.12.0"
-pytest-env = "^0.8.1"
-xdoctest = "^1.0.1"
-{% if cookiecutter.include_docs == "yes" %}
-[tool.poetry.group.docs]
-optional = true
-[tool.poetry.group.docs.dependencies]
-mkdocs = "^1.5.3"
-mkdocs-material = "^9.5.15"
-mkdocstrings = { extras = ["python"], version = "^0.24.1" }
-mkdocs-gen-files = "^0.5.0"
-mkdocs-literate-nav = "^0.6.1"
-mkdocs-section-index = "^0.3.8"
-{% endif %}{% if cookiecutter.include_notebooks == "yes" %}
-[tool.poetry.group.jupyter]
-optional = true
-[tool.poetry.group.jupyter.dependencies]
-jupyter = "^1.0.0"
-jupyter-contrib-nbextensions = "^0.5.1"
-{% endif %}
 
 ####################
 ### TOOLS CONFIG ###
 ####################
-
-[tool.semantic_release]
-branch = "main"
-version_toml = "pyproject.toml:tool.poetry.version"
-version_variable = "src/{{ cookiecutter.package_name }}/__init__.py:__version__"
-upload_to_repository = false                                                     # set to true if you want to upload to pypi
-upload_to_release = false                                                        # upload to github release
-
 
 ### LINTERS / FORMATTERS
 
@@ -88,14 +45,13 @@ upload_to_release = false                                                       
 [tool.ruff]
 cache-dir = ".cache/ruff"
 src = ["src", "tests"]
-target-version = "py311"  # Always generate Python 3.11-compatible code.
+target-version = "py{{ cookiecutter.python_version.replace('.', '') }}"  # Always generate Python "{{ cookiecutter.python_version }}-compatible code.
 line-length = 100
 show-fixes = true
 force-exclude = true
 output-format = "grouped"
 
 [tool.ruff.lint]
-ignore-init-module-imports = true
 select = [
     # all rules: https://docs.astral.sh/ruff/rules/
     "ANN2", # flake8-annotations

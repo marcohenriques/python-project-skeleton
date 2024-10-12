@@ -1,4 +1,4 @@
-"""Main CLI definition."""
+"""{{cookiecutter.package_name}} CLI definition."""
 
 from typing import Optional
 
@@ -13,7 +13,7 @@ app = typer.Typer(
     no_args_is_help=True,
     short_help="{{cookiecutter.package_name}} CLI",
     help="{{cookiecutter.project_short_description}}",
-    pretty_exceptions_show_locals=False,  # can be set to true for debugging
+    pretty_exceptions_show_locals=False,  # set to true for debugging
 )
 
 
@@ -35,7 +35,7 @@ def version_callback(used_flag: bool) -> None:
 
 @app.callback()
 def app_callback(
-    version: Optional[bool] = typer.Option(  # noqa: UP007, ARG001
+    version: Optional[bool] = typer.Option(  # noqa: UP007
         None,
         "--version",
         "-v",

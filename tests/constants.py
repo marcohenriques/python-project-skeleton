@@ -1,4 +1,7 @@
+"""Constants for testing purposes."""
+
 from types import MappingProxyType
+
 
 DEFAULT_ARGS = MappingProxyType(
     {
@@ -9,5 +12,5 @@ DEFAULT_ARGS = MappingProxyType(
         "author_email": "john.doe@domain.com",
         "github_username_or_org_name": "my_org",
         "python_version": "3.11",
-    }
+    },
 )

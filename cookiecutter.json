@@ -10,11 +10,6 @@
     "3.11",
     "3.10"
   ],
-  "poetry_version": [
-    "1.8",
-    "1.7",
-    "1.6"
-  ],
   "include_docker": [
     "yes",
     "no"

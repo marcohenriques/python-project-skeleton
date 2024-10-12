@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 
-@pytest.fixture()
+@pytest.fixture
 def content_file(tmp_path: Path) -> Path:
     directory = tmp_path / "my_folder"
     directory.mkdir()

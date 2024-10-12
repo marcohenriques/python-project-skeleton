@@ -24,12 +24,12 @@ make install
 
 This will should be the first command to prepare your environment. It will set up several things:
 
-1. create a `.python-version` file, that will tell `pyenv` which python version to use. Behind the scenes, it will look
+1. create a `.python-version` file, that will tell `uv` which python version to use. Behind the scenes, it will look
 at the python version you select during project generation (which is stored in the variable `PYTHON_VERSION` on your
-Makefile), and will search for the latest version available and use it (make sure to have `pyenv` up to date)
+Makefile), and will search for the latest version available and use it
 
-2. `poetry` will use this version and create your virtual environment on the project root (`.venv` folder), and then
-install the project `core`, `dev` and `test` dependencies
+2. `uv` will use this version and create your virtual environment on the project root (`.venv` folder), and then
+install the project dependencies
 
 3. if there's no git initialization in the project, it will perform a `git init`, if there is, it will be skipped
 
@@ -59,7 +59,7 @@ Install the dependencies to build documentation. This target is only available i
 make requirements.txt
 ```
 
-This will update/generate the project `requirements.txt`, based on the installed dependencies from poetry.
+This will update/generate the project `requirements.txt`, based on the installed dependencies from uv.
 
 
 ## Checks

@@ -10,6 +10,7 @@ edit_uri: ""
 
 theme:
   name: material
+  custom_dir: docs/theme
   favicon: images/favicon.svg
   logo: images/logo.svg
   icon:
@@ -73,9 +74,8 @@ nav:
     - pre-commit: tools_included/pre-commit.md
     - Tests: tools_included/tests.md
     - Documentation: tools_included/documentation.md
-    - Logging: tools_included/logging.md
     - Makefile: tools_included/makefile.md
-    - Poetry: tools_included/poetry.md
+    - uv: tools_included/uv.md
     - Docker: tools_included/docker.md
     - Github Actions: tools_included/github_actions.md
     - IDE Settings: tools_included/ide_settings.md

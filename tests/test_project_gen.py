@@ -1,5 +1,8 @@
-from project_inputs import DEFAULT_ARGS
-from pytest_cookies.plugin import Cookies
+"""Test project generation."""
+
+from pytest_cookies.plugin import Cookies  # type: ignore
+
+from tests.constants import DEFAULT_ARGS
 
 
 def test_bake_project(cookies: Cookies) -> None:
