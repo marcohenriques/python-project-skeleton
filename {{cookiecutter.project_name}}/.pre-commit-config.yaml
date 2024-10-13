@@ -11,7 +11,7 @@ default_stages: [commit]
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v5.0.0
     hooks:
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
@@ -26,7 +26,7 @@ repos:
       - id: ruff-formatter
         name: ruff-formatter
         language: system
-        entry: poetry run ruff format
+        entry: uv run ruff format
         args: [--config, ./pyproject.toml]
         types: [python]
       - id: check-packages
@@ -38,17 +38,17 @@ repos:
       - id: ruff-lint
         name: ruff-lint
         language: system
-        entry: poetry run ruff check
+        entry: uv run ruff check
         args: [--config, ./pyproject.toml, --fix]
         types: [python]
       - id: mypy
         name: mypy
         language: system
-        entry: poetry run mypy
+        entry: uv run mypy
         args: [--config-file, ./pyproject.toml]
         types: [python]
       - id: shellcheck
         name: shellcheck
-        entry: poetry run shellcheck
+        entry: uv run shellcheck
         language: python
         types: [shell]

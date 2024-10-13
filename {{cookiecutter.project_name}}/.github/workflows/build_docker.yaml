@@ -37,19 +37,6 @@ jobs:
       - name: Checkout Git repository
         uses: actions/checkout@v4
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install and configure Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: {{cookiecutter.poetry_version}}.0
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-          installer-parallel: true
-
       - name: Build image
         env:
           DOCKER_IMAGE_NAME: ${IMAGE_NAME}
@@ -59,7 +46,7 @@ jobs:
 
       # More repo options: https://github.com/docker/login-action
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         if: inputs.push-image == 'true'
         with:
           registry: ghcr.io

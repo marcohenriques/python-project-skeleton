@@ -77,7 +77,7 @@ A `settings.json` file will be generated:
 ```
 
 This is can be useful as it will automatically set up linters, formatters and tests to give you feedback inline. It'll
-also set up your python interpreter to use the environment created by `poetry`, and automatically activate this
+also set up your python interpreter to use the environment created by `uv`, and automatically activate this
 environment when you open a new shell.
 
 If you already have your setup and don't want to use these settings, feel free to modify/delete them.

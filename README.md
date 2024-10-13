@@ -32,10 +32,10 @@ A cookiecutter template for python projects.
 - Python dependencies vulnerabilities scanner using <a href="https://github.com/pyupio/safety" target="_blank"><code>safety</code></a>
 - <a href="https://pre-commit.com/" target="_blank"><code>pre-commit</code></a> hooks for some validations
 - `Makefile` to automate some development tasks
-- <a href="https://python-poetry.org/" target="_blank"><code>poetry</code></a> to manage your python dependencies
+- <a href="https://docs.astral.sh/uv/" target="_blank"><code>uv</code></a> to manage your python versions and dependencies
 - Python package pre-configured with:
-    - logging using loguru
-    - setting module using <a href="https://pydantic-docs.helpmanual.io/" target="_blank"><code>pydantic</code></a> to help manage your project settings
+    - logging using <a href="https://loguru.readthedocs.io/en/stable/" target="_blank"><code>loguru</code></a>
+    - <a href="https://pydantic-docs.helpmanual.io/" target="_blank"><code>pydantic</code></a> to help manage your project settings
     - (optional) CLI example using <a href="https://typer.tiangolo.com/" target="_blank"><code>typer</code></a>
 
 ## Requirements

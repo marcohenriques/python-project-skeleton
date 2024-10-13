@@ -2,12 +2,63 @@
 
 import logging
 import shutil
+import subprocess
 from pathlib import Path
 
 
 LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT)
 logger = logging.getLogger("post_gen_project")
+
+
+PROJECT_DEPENDENCIES = [
+    "loguru",
+    "pydantic",
+    "pydantic-settings",
+]
+
+if "{{cookiecutter.include_cli}}" == "yes":  # type: ignore # noqa: PLR0133
+    PROJECT_DEPENDENCIES.append("typer")
+
+
+DEV_DEPENDENCIES = [
+    # format and lint
+    "ruff",
+    "mypy",
+    "safety>=2,<3",
+    "pre-commit",
+    "shellcheck-py",
+    "sqlfluff",
+    "deptry",
+    # tests
+    "pytest",
+    "pytest-cov",
+    "pytest-clarity",
+    "pytest-randomly",
+    "pytest-env",
+    "xdoctest",
+]
+
+
+DOCS_DEPENDENCIES = [
+    "mike",
+    "mkdocs-gen-files",
+    "mkdocs-literate-nav",
+    "mkdocs-material",
+    "mkdocs-section-index",
+    "mkdocs",
+    "mkdocstrings[python]",
+]
+
+if "{{cookiecutter.include_docs}}" == "yes":  # type: ignore # noqa: PLR0133
+    DEV_DEPENDENCIES.extend(DOCS_DEPENDENCIES)
+
+JUPYTER_DEPENDENCIES = [
+    "jupyterlab",
+]
+
+if "{{cookiecutter.include_notebooks}}" == "yes":  # type: ignore # noqa: PLR0133
+    DEV_DEPENDENCIES.extend(JUPYTER_DEPENDENCIES)
 
 
 def process_docs(include_docs: str) -> None:
@@ -20,14 +71,8 @@ def process_docs(include_docs: str) -> None:
     if include_docs == "no":
         logger.info("Not including docs")
         shutil.rmtree("docs/")
-        Path("scripts/gen_ref_pages").unlink()
         Path("mkdocs.yml").unlink()
         Path("readthedocs.yml").unlink(missing_ok=True)
-
-
-def rename_gitignore() -> None:
-    """Rename the gitignore file to .gitignore."""
-    Path("gitignore").rename(".gitignore")
 
 
 def process_cli(include_cli: str) -> None:
@@ -56,12 +101,45 @@ def process_docker(include_docker: str) -> None:
         Path("Dockerfile").unlink()
         Path(".dockerignore").unlink()
         Path(".github/workflows/build_docker.yaml").unlink()
-    # optional dockerfile with poetry - not supported yet
-    Path("Dockerfile_poetry").unlink()
+
+
+def install_dependencies() -> None:
+    """Install the dependencies."""
+    logger.debug("Installing dependencies")
+    # setup python version to use
+    subprocess.run(  # noqa: S603
+        [  # noqa: S607
+            "make",
+            "uv.lock",
+            "install",
+        ],
+        check=False,
+    )
+    # project dependencies
+    subprocess.run(  # noqa: S603
+        [  # noqa: S607
+            "uv",
+            "add",
+            "--no-sync",
+            *PROJECT_DEPENDENCIES,
+        ],
+        check=False,
+    )
+    # dev dependencies
+    subprocess.run(  # noqa: S603
+        [  # noqa: S607
+            "uv",
+            "add",
+            "--no-sync",
+            "--dev",
+            *DEV_DEPENDENCIES,
+        ],
+        check=False,
+    )
 
 
 if __name__ == "__main__":
     process_docs("{{cookiecutter.include_docs}}")
-    rename_gitignore()
     process_cli("{{cookiecutter.include_cli}}")
     process_docker("{{cookiecutter.include_docker}}")
+    install_dependencies()

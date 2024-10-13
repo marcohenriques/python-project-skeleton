@@ -1,11 +1,25 @@
-# HELP ########################################################################
+# COMMON ######################################################################
 .DEFAULT_GOAL := help
 
+# Project settings
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+PROJECT := python-project-skeleton
+PYTHON_VERSION=3.13
+
+PACKAGE := hooks
+DEV_PACKAGES := $(PACKAGE) tests
+MODULES := $(wildcard $(PACKAGE)/**/*.py)
+
+# Virtual environment paths
+VIRTUAL_ENV_NAME ?= .venv
+
+# Style makefile outputs
+ECHO_COLOUR=\033[0;34m
+NC=\033[0m # No Color
 
 # Define macro to print which target is running
 define INFO
-    @echo "$(ECHO_COLOUR)##### Running$(NC) $1 $(ECHO_COLOUR)target #####$(NC)"
+    @echo "$(ECHO_COLOUR)##### Running $1 target #####$(NC)"
 endef
 
 # Store the macro call in a variable
@@ -16,120 +30,86 @@ help:
 	@ printf "\nusage : make <commands> \n\nthe following commands are available : \n\n"
 	@ grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sed -e "s/^Makefile://" | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-
-# APP ########################################################################
-
-# Project settings
-PROJECT := python-project-skeleton
-PACKAGE := hooks
-PYTHON_VERSION=3.10
-
-# Style makefile outputs
-ECHO_COLOUR=\033[0;34m
-NC=\033[0m # No Color
-
-# Project paths
-PACKAGES := $(PACKAGE) tests
-MODULES := $(wildcard $(PACKAGE)/**/*.py)
-
-# Virtual environment paths
-VIRTUAL_ENV_NAME ?= .venv
-
-# SYSTEM DEPENDENCIES #########################################################
-
 .PHONY: doctor
 doctor:  ## Confirm system dependencies are available
-	${ROOT_DIR}/scripts/verchew --exit-code --root="${CURDIR}/scripts"
+	@ uvx verchew --exit-code --root="${CURDIR}/scripts"
+
 
 # PROJECT DEPENDENCIES ########################################################
 
-DEPENDENCIES := $(VIRTUAL_ENV_NAME)/.poetry-$(shell ${ROOT_DIR}/scripts/checksum pyproject.toml poetry.lock)
-TOOLS_FIRST_INSTALLED := $(VIRTUAL_ENV_NAME)/.tools_first_installed
-
 .PHONY: install
-install: $(DEPENDENCIES) $(TOOLS_FIRST_INSTALLED) .cache  ## Install project dependencies and tools
+install: .cache uv.lock install-git-hooks  ## Install project dependencies and tools
+	@ uv python pin $(PYTHON_VERSION)
+	@ uv sync --frozen
 
-install-docs: $(TOOLS_FIRST_INSTALLED)_docs
-$(TOOLS_FIRST_INSTALLED)_docs:
-	poetry install --with docs --no-root
-	@ touch $@
+install-git-hooks: .git .git/hooks/pre-commit .git/hooks/pre-push .git/hooks/commit-msg
 
-$(DEPENDENCIES): $(VIRTUAL_ENV_NAME)
-	poetry install
-	@ touch $@
-
-$(TOOLS_FIRST_INSTALLED): .git
-	@ poetry run pre-commit install
-	@ poetry run git config commit.template .gitmessage
-	@ touch $@ # This will create a file named `.tools_first_installed` inside venv folder
+.git/hooks/pre-commit .git/hooks/pre-push .git/hooks/commit-msg:
+	@ uv run pre-commit install
 
 .git:
-	git init
+	@ git init
 
 .cache:
 	@ mkdir -p .cache
 
-$(VIRTUAL_ENV_NAME): .python-version  ## Create python environment
-	$(MAKE) doctor
-	poetry env use -- $(shell pyenv which python)
+uv.lock:
+	@ uv lock
 
-.python-version:  # Setup .python-version (local pyenv python version) file
-	@ echo "$(ECHO_COLOUR)Initializing pyenv$(NC)"
-	pyenv install -s $(PYTHON_VERSION)
-	pyenv local $(PYTHON_VERSION)
+requirements.txt: uv.lock  ## Generate requirements.txt
+	@ echo "$(ECHO_COLOUR)Generating $@$(NC)"
+	@ uv export --frozen --no-dev --no-emit-project --all-extras --no-hashes -o $@
 
-requirements.txt: poetry.lock  ## Generate requirements.txt file from poetry
-	@ echo "$(ECHO_COLOUR)Generating requirements.txt$(NC)"
-	@ poetry export -f requirements.txt --without-hashes -o requirements.txt
-	@ poetry run ${ROOT_DIR}/scripts/req_fixer requirements.txt
-
-requirements-dev.txt: poetry.lock  ## Generate requirements.txt file from poetry
-	@ echo "$(ECHO_COLOUR)Generating requirements-dev.txt$(NC)"
-	@ poetry export -f requirements.txt --without-hashes -o requirements-dev.txt --with dev,tests
-	@ poetry run ${ROOT_DIR}/scripts/req_fixer requirements-dev.txt
+requirements-dev.txt: uv.lock  ## Generate requirements.txt
+	@ echo "$(ECHO_COLOUR)Generating $@$(NC)"
+	@ uv export --frozen --only-dev --no-emit-project --no-hashes -o $@
 
 
 # CHECKS ######################################################################
 
 format-ruff:
 	$(PRINT_INFO)
-	poetry run ruff format --config ${ROOT_DIR}/pyproject.toml $(PACKAGES)
-	poetry run ruff check --config ${ROOT_DIR}/pyproject.toml --fix-only $(PACKAGES)
-	poetry run ruff format --config ${ROOT_DIR}/pyproject.toml $(PACKAGES)  # need to run again for trailing comma edge case
+	uv run ruff format --config ${ROOT_DIR}/pyproject.toml $(DEV_PACKAGES)
+	uv run ruff check --config ${ROOT_DIR}/pyproject.toml --fix-only $(DEV_PACKAGES)
+
+format-sqlfluff:
+	$(PRINT_INFO)
+	uv run sqlfluff fix --config ${ROOT_DIR}/pyproject.toml $(DEV_PACKAGES)
 
 .PHONY: format
-format: format-ruff  ## Run formatters (ruff)
+format: format-ruff format-sqlfluff  ## Run formatters (ruff, sqlfluff)
 
 .PHONY: check-packages
 check-packages:  ## Run package check
 	@ echo "$(ECHO_COLOUR)Checking packages$(NC)"
-	poetry check
-	poetry run pip check
-	poetry export -f requirements.txt --without-hashes | poetry run safety check --full-report --stdin
+	uv lock --locked -q
+	uv export --frozen --no-dev --no-emit-project --no-hashes | uv run safety check --full-report --stdin
+	uv run deptry $(PACKAGE)
 
 lint-mypy:
 	$(PRINT_INFO)
-	poetry run mypy --config-file ${ROOT_DIR}/pyproject.toml $(PACKAGES)
+	uv run mypy --config-file ${ROOT_DIR}/pyproject.toml $(DEV_PACKAGES)
 
 lint-ruff:
 	$(PRINT_INFO)
-	poetry run ruff check --config ${ROOT_DIR}/pyproject.toml --no-fix $(PACKAGES)
-	poetry run ruff format --config ${ROOT_DIR}/pyproject.toml --check $(PACKAGES)
+	uv run ruff check --config ${ROOT_DIR}/pyproject.toml --no-fix $(DEV_PACKAGES)
+	uv run ruff format --config ${ROOT_DIR}/pyproject.toml --check $(DEV_PACKAGES)
 
 lint-shellcheck:
 	$(PRINT_INFO)
 	@ $(eval sh_files := $(shell find . -not -path '*/.*' -regex '.*\.sh$$'))
-	$(if $(sh_files),poetry run shellcheck $(sh_files), @ echo "No shell files found")
+	$(if $(sh_files),uv run shellcheck $(sh_files), @ echo "No shell files found")
+
+lint-sqlfluff:
+	$(PRINT_INFO)
+	uv run sqlfluff lint --config ${ROOT_DIR}/pyproject.toml $(DEV_PACKAGES)
 
 .PHONY: lint
-lint: lint-mypy lint-ruff lint-shellcheck  ## Run linters (mypy, ruff, shellcheck)
+lint: lint-mypy lint-ruff lint-shellcheck lint-sqlfluff  ## Run linters (mypy, ruff, shellcheck, sqlfluff)
 
-.PHONY: check
-check: check-packages lint  ## Run linters and packages check
-
-.PHONY: bump
-bump:  ## Bumps version number based on commit history
-	poetry run cz bump -ch
+.PHONY: pre-commit
+pre-commit:  ## Run pre-commit on all files
+	uv run pre-commit run --all-files
 
 
 # TESTS #######################################################################
@@ -137,7 +117,7 @@ bump:  ## Bumps version number based on commit history
 RANDOM_SEED ?= $(shell date +%s)
 FAILURES := .cache/v/cache/lastfailed
 
-PYTEST_OPTIONS := -v --cov=$(PACKAGE) --randomly-seed=$(RANDOM_SEED)
+PYTEST_OPTIONS := --randomly-seed=$(RANDOM_SEED)
 
 ifdef EXTRA_ARG
 PYTEST_OPTIONS += $(EXTRA_ARG)
@@ -153,13 +133,13 @@ test: test-all ## Run unit and integration tests
 
 .PHONY: test-all
 test-all:
-	@ if test -e $(FAILURES); then poetry run pytest $(PYTEST_RERUN_OPTIONS); fi
+	@ if test -e $(FAILURES); then uv run pytest $(PYTEST_RERUN_OPTIONS); fi
 	@ rm -rf $(FAILURES)
-	poetry run pytest $(PYTEST_OPTIONS)
+	uv run pytest $(PYTEST_OPTIONS)
 
 .PHONY: read-coverage
 read-coverage:  ## Open last coverage report in html page
-	${ROOT_DIR}/scripts/open htmlcov/index.html
+	open htmlcov/index.html
 
 
 # DOCUMENTATION ###############################################################
@@ -167,40 +147,53 @@ read-coverage:  ## Open last coverage report in html page
 MKDOCS_INDEX := site/index.html
 
 .PHONY: build-docs
-build-docs: install-docs $(MKDOCS_INDEX) ## Generate mkdocs documentation locally
-$(MKDOCS_INDEX): mkdocs.yml docs/*.md
-	poetry run mkdocs build --clean --strict
+build-docs: $(MKDOCS_INDEX)  ## Generate mkdocs documentation locally
+$(MKDOCS_INDEX): mkdocs.yml docs/*.md src/**/*.py
+	uv run mkdocs build --clean --strict
 
 .PHONY: docs
-docs: build-docs ## Serve the documentation (localhost:8000)
-	eval "sleep 3; scripts/open http://127.0.0.1:8000" & poetry run mkdocs serve
+docs: build-docs  ## Serve the documentation (localhost:8000)
+	eval "sleep 3; open http://127.0.0.1:8000" & uv run mkdocs serve
 
 .PHONY: mike-docs
 mike-docs: build-docs ## Serve the documentation using mike (localhost:8000)
-	eval "sleep 3; scripts/open http://127.0.0.1:8000" & poetry run mike serve -a 127.0.0.1:8000
+	eval "sleep 3; scripts/open http://127.0.0.1:8000" & uv run mike serve -a 127.0.0.1:8000
 
 .PHONY: deploy-docs
 deploy-docs:  ## Deploys the documentation to github pages
-	poetry run mike deploy -u -p $(shell poetry run cz version -p) latest
+	uv run mike deploy -u -p $(shell uv run cz version -p) latest
+	# mike deploy --update-aliases -p 0.4 latest
+	# mike set-default -b $PAGES_BRANCH -p latest
+
+
+# BUILD #######################################################################
+
+DIST_FILES := dist/*.tar.gz dist/*.whl
+
+.PHONY: dist
+dist: install $(DIST_FILES)  ## Builds the package, as a tarball and a wheel
+$(DIST_FILES): $(MODULES) pyproject.toml
+	rm -f $(DIST_FILES)
+	uv build
 
 
 # CLEANUP #####################################################################
 
-.PHONY: clean
-clean: .clean-build .clean-docs .clean-test .clean-install ## Delete all generated and temporary files
-
-.PHONY: clean-all
-clean-all: clean ## Delete virtual environment and all generated and temporary files
+.PHONY: uninstall
+uninstall: clean  ## Delete virtual environment and all generated and temporary files
 	rm -rf $(VIRTUAL_ENV_NAME)
+
+.PHONY: clean
+clean: .clean-build .clean-docs .clean-cache .clean-install  ## Delete all generated and temporary files
 
 .PHONY: .clean-install
 .clean-install:
-	find $(PACKAGES) -name '__pycache__' -delete
+	find $(DEV_PACKAGES) -name '__pycache__' -delete
 	rm -rf *.egg-info
 
-.PHONY: .clean-test
-.clean-test:
-	rm -rf .cache .pytest .coverage htmlcov
+.PHONY: .clean-cache
+.clean-cache:
+	rm -rf .cache .ruff_cache .mypy_cache .pytest .coverage htmlcov
 
 .PHONY: .clean-docs
 .clean-docs:
@@ -213,8 +206,9 @@ clean-all: clean ## Delete virtual environment and all generated and temporary f
 
 # OTHER TASKS #################################################################
 
-.PHONY: all
-all: install
-
 .PHONY: ci
-ci: format check test build-docs ## Run all tasks that determine CI status
+ci: format check-packages lint test build-docs ## Run all tasks that determine CI status
+
+.PHONY: bump
+bump:  ## Bumps version number based on commit history
+	uv run cz bump -ch
