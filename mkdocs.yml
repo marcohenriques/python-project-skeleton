@@ -50,7 +50,7 @@ markdown_extensions:
       anchor_linenums: true
   - pymdownx.inlinehilite
   - pymdownx.snippets:
-      base_path: docs
+      check_paths: true
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tabbed:
