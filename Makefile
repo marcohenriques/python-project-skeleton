@@ -161,9 +161,8 @@ mike-docs: build-docs ## Serve the documentation using mike (localhost:8000)
 
 .PHONY: deploy-docs
 deploy-docs:  ## Deploys the documentation to github pages
-	uv run mike deploy -u -p $(shell uv run cz version -p) latest
-	# mike deploy --update-aliases -p 0.4 latest
-	# mike set-default -b $PAGES_BRANCH -p latest
+	uv run mike deploy -u -p $$(uv run cz version -p  | awk -F '.' '{ print $$1 "." $$2 }') latest
+	uv run mike set-default -p latest
 
 
 # BUILD #######################################################################
