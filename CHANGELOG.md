@@ -1,6 +1,8 @@
-# Changelog
+## 0.5.0 (2024-10-13)
 
-<!--next-version-placeholder-->
+### Feat
+
+- move to `uv` instead of poetry and pyenv
 
 ## 0.4.0 (2024-04-07)
 
@@ -28,6 +30,31 @@
 
 - use poetry version 1.3
 
-## v0.1.0 (2022-10-25)
+## 0.1.0 (2022-12-23)
 
-First version of template
+### Feat
+
+- update github_actions versions
+- make poetry use active python
+- update CONTRIBUTING.md
+- add and deprecate some configs
+- add docker support
+- **poetry**: prepare to new poetry 1.2 release
+- add pydantic settings
+
+### Fix
+
+- docs makefile
+- use target `production` in make build-docker
+- docker template generation
+- configs
+
+### Refactor
+
+- update some project settings
+- remove some examples code
+- change some stuff
+- change some names
+- deprecate a lot of stuff
+- use src project structure
+- add typer as cli and remove some defaults BREAKING CHANGE:
