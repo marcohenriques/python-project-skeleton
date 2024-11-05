@@ -10,5 +10,7 @@
     "EditorConfig.EditorConfig",
     "znck.grammarly",
     "mhutchie.git-graph",
+    "DavidAnson.vscode-markdownlint",
+    "yzhang.markdown-all-in-one",
   ]
 }

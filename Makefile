@@ -58,11 +58,14 @@ uv.lock:
 
 requirements.txt: uv.lock  ## Generate requirements.txt
 	@ echo "$(ECHO_COLOUR)Generating $@$(NC)"
-	@ uv export --frozen --no-dev --no-emit-project --all-extras --no-hashes -o $@
+	@ uv export --frozen --no-group dev --no-emit-project --all-extras --no-hashes -o $@
 
 requirements-dev.txt: uv.lock  ## Generate requirements.txt
 	@ echo "$(ECHO_COLOUR)Generating $@$(NC)"
 	@ uv export --frozen --only-dev --no-emit-project --no-hashes -o $@
+
+.PHONY: reinstall
+reinstall: uninstall install  ## Reinstall project (uninstall + install)
 
 
 # CHECKS ######################################################################
@@ -83,7 +86,7 @@ format: format-ruff format-sqlfluff  ## Run formatters (ruff, sqlfluff)
 check-packages:  ## Run package check
 	@ echo "$(ECHO_COLOUR)Checking packages$(NC)"
 	uv lock --locked -q
-	uv export --frozen --no-dev --no-emit-project --no-hashes | uv run safety check --full-report --stdin
+	uv export --frozen --no-group dev --no-emit-project --no-hashes | uv run safety check --full-report --stdin
 	uv run deptry $(PACKAGE)
 
 lint-mypy:

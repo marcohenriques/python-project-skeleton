@@ -20,7 +20,6 @@ PROJECT_DEPENDENCIES = [
 if "{{cookiecutter.include_cli}}" == "yes":  # type: ignore # noqa: PLR0133
     PROJECT_DEPENDENCIES.append("typer")
 
-
 DEV_DEPENDENCIES = [
     # format and lint
     "ruff",
@@ -39,7 +38,6 @@ DEV_DEPENDENCIES = [
     "xdoctest",
 ]
 
-
 DOCS_DEPENDENCIES = [
     "mike",
     "mkdocs-gen-files",
@@ -50,15 +48,9 @@ DOCS_DEPENDENCIES = [
     "mkdocstrings[python]",
 ]
 
-if "{{cookiecutter.include_docs}}" == "yes":  # type: ignore # noqa: PLR0133
-    DEV_DEPENDENCIES.extend(DOCS_DEPENDENCIES)
-
 JUPYTER_DEPENDENCIES = [
     "jupyterlab",
 ]
-
-if "{{cookiecutter.include_notebooks}}" == "yes":  # type: ignore # noqa: PLR0133
-    DEV_DEPENDENCIES.extend(JUPYTER_DEPENDENCIES)
 
 
 def process_docs(include_docs: str) -> None:
@@ -131,11 +123,38 @@ def install_dependencies() -> None:
             "uv",
             "add",
             "--no-sync",
-            "--dev",
+            "--group",
+            "dev",
             *DEV_DEPENDENCIES,
         ],
         check=False,
     )
+    # docs dependencies
+    if "{{cookiecutter.include_docs}}" == "yes":  # type: ignore # noqa: PLR0133
+        subprocess.run(  # noqa: S603
+            [  # noqa: S607
+                "uv",
+                "add",
+                "--no-sync",
+                "--group",
+                "docs",
+                *DOCS_DEPENDENCIES,
+            ],
+            check=False,
+        )
+    # jupyter dependencies
+    if "{{cookiecutter.include_notebooks}}" == "yes":  # type: ignore # noqa: PLR0133
+        subprocess.run(  # noqa: S603
+            [  # noqa: S607
+                "uv",
+                "add",
+                "--no-sync",
+                "--group",
+                "jupyter",
+                *JUPYTER_DEPENDENCIES,
+            ],
+            check=False,
+        )
 
 
 if __name__ == "__main__":

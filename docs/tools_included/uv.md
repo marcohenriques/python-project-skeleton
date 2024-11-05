@@ -38,7 +38,7 @@ This will find a suitable version constraint and install the package and sub-dep
 If you add to add a dependency the dev dependencies (let's say `pytest`), run:
 
 ```bash
-uv add pytest --dev
+uv add --group dev pytest
 ```
 
 You can also specify a version constraint:
@@ -68,7 +68,7 @@ uv remove django
 If it's a dev dependency run:
 
 ```bash
-uv remove pytest --dev
+uv remove --group dev pytest
 ```
 
 ### Show package details

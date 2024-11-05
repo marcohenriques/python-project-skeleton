@@ -1,4 +1,5 @@
 # Contributing
+
 - [Contributing](#contributing)
   - [Setup](#setup)
     - [Requirements](#requirements)
@@ -6,6 +7,10 @@
   - [Development Tasks](#development-tasks)
     - [Manual](#manual)
     - [Continuous Integration](#continuous-integration)
+    - [Useful commands](#useful-commands)
+      - [uv add/remove](#uv-addremove)
+      - [uv run](#uv-run)
+      - [uv tree](#uv-tree)
   - [Version control and commit message](#version-control-and-commit-message)
   - [Environment variables](#environment-variables)
 
@@ -13,10 +18,10 @@
 
 ### Requirements
 
-* Make:
-    * MacOS: `$ xcode-select --install`
-    * Linux: [https://www.gnu.org/software/make](https://www.gnu.org/software/make)
-* [uv](https://docs.astral.sh/uv/getting-started/installation/) (version ~0.4.18)
+- Make:
+  - MacOS: `$ xcode-select --install`
+  - Linux: [https://www.gnu.org/software/make](https://www.gnu.org/software/make)
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) (version ~0.4.18)
 
 To confirm these system dependencies are configured correctly:
 
@@ -25,6 +30,7 @@ make doctor
 ```
 
 In Linux, make sure you have all required Python dependencies installed:
+
 ```shell
 sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev liblzma-dev tk-dev
 ```
@@ -39,10 +45,18 @@ make install
 
 Additional, the first time it runs, it will also:
 
-* initialize git
-* install _pre-commit_ in git hooks (this will run the hooks when you commit/push your changes)
-* setup a default git message template for commits
-* install development dependencies and the python version selected (if not yet installed)
+- initialize git
+- install _pre-commit_ in git hooks (this will run the hooks when you commit/push your changes)
+- setup a default git message template for commits
+- install development dependencies and the python version selected (if not yet installed)
+
+You can also run:
+
+```make
+make reinstall
+```
+
+to delete the virtual environment and temporary files and reinstall it again.
 
 ## Development Tasks
 
@@ -104,6 +118,7 @@ Open jupyter notebooks on notebooks directory:
 ```make
 make jupyter
 ```
+
 (the first time it runs it will register a local ipython kernel with the name of the project)
 
 {% endif -%}
@@ -113,6 +128,46 @@ Run formatters, linters, tests{% if cookiecutter.include_docs == "yes" -%}, buil
 
 ```make
 make -k ci
+```
+
+### Useful commands
+
+#### uv add/remove
+
+To add/remove a dependency from your project dependencies you can run:
+
+```bash
+uv add django
+uv remove django
+```
+
+If the dependency belongs to a group (eg. `dev`) you can use:
+
+```bash
+uv add --group dev pytest
+uv remove --group dev pytest
+```
+
+#### uv run
+
+Run a command/you application using your virtual environment:
+
+```bash
+uv run <my_command>
+```
+
+you can also run it using a environment file:
+
+```bash
+uv run <my_command> --env-file <my_env_file>
+```
+
+#### uv tree
+
+Show package details:
+
+```bash
+uv tree
 ```
 
 ## Version control and commit message

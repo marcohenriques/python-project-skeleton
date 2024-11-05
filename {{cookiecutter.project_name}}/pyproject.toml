@@ -25,15 +25,15 @@ Repository = "https://github.com/{{ cookiecutter.github_username_or_org_name }}/
 "Bug Tracker" = "https://github.com/{{ cookiecutter.github_username_or_org_name }}/{{ cookiecutter.project_name }}/issues"
 Changelog = "https://github.com/{{ cookiecutter.github_username_or_org_name }}/{{ cookiecutter.project_name }}/blob/master/CHANGELOG.md"
 
-[project.optional-dependencies]
-
 [tool.uv]
-dev-dependencies = []
+default-groups = ["dev"]
+
+[dependency-groups]
+dev = []
 {% if cookiecutter.include_cli|lower == 'yes' %}
 [project.scripts]
 {{cookiecutter.project_name}} = "{{cookiecutter.package_name}}.cli:app"
 {% endif %}
-
 
 ####################
 ### TOOLS CONFIG ###

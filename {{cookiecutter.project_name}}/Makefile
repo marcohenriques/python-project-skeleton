@@ -58,11 +58,14 @@ uv.lock:
 
 requirements.txt: uv.lock  ## Generate requirements.txt
 	@ echo "$(ECHO_COLOUR)Generating $@$(NC)"
-	@ uv export --frozen --no-dev --no-emit-project --all-extras --no-hashes -o $@
+	@ uv export --frozen --no-group dev --no-emit-project --all-extras --no-hashes -o $@
 
 requirements-dev.txt: uv.lock  ## Generate requirements.txt
 	@ echo "$(ECHO_COLOUR)Generating $@$(NC)"
 	@ uv export --frozen --only-dev --no-emit-project --no-hashes -o $@
+
+.PHONY: reinstall
+reinstall: uninstall install  ## Reinstall project (uninstall + install)
 
 
 # CHECKS ######################################################################
@@ -83,7 +86,7 @@ format: format-ruff format-sqlfluff  ## Run formatters (ruff, sqlfluff)
 check-packages:  ## Run package check
 	@ echo "$(ECHO_COLOUR)Checking packages$(NC)"
 	uv lock --locked -q
-	uv export --frozen --no-dev --no-emit-project --no-hashes | uv run safety check --full-report --stdin
+	uv export --frozen --no-group dev --no-emit-project --no-hashes | uv run safety check --full-report --stdin
 	uv run deptry $(PACKAGE)
 
 lint-mypy:
@@ -149,11 +152,11 @@ MKDOCS_INDEX := site/index.html
 .PHONY: build-docs
 build-docs: $(MKDOCS_INDEX)  ## Generate mkdocs documentation locally
 $(MKDOCS_INDEX): mkdocs.yml docs/*.md src/**/*.py
-	uv run mkdocs build --clean --strict
+	uv run --group docs mkdocs build --clean --strict
 
 .PHONY: docs
 docs: build-docs  ## Serve the documentation (localhost:8000)
-	eval "sleep 3; open http://127.0.0.1:8000" & uv run mkdocs serve
+	eval "sleep 3; open http://127.0.0.1:8000" & uv run --group docs mkdocs serve
 {% endif %}
 
 # BUILD #######################################################################
@@ -204,11 +207,11 @@ notebooks:
 
 $(VIRTUAL_ENV_NAME)/share/jupyter/kernels/$(PROJECT):
 	@ echo "$(ECHO_COLOUR)Creating ipython kernel$(NC)"
-	@ uv run python -m ipykernel install --sys-prefix --name $(PROJECT)
+	@ uv run --group jupyter python -m ipykernel install --sys-prefix --name $(PROJECT)
 
 .PHONY: jupyter
 jupyter: notebooks $(VIRTUAL_ENV_NAME)/share/jupyter/kernels/$(PROJECT)  ## Launch an Jupyter notebook session
-	uv run jupyter notebook --notebook-dir=notebooks
+	uv run --group jupyter jupyter-lab --notebook-dir=notebooks
 {% endif -%}
 {% if cookiecutter.include_docker == "yes" %}
 

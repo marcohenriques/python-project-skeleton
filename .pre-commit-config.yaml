@@ -2,7 +2,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 default_install_hook_types: [pre-commit, pre-push, commit-msg]
 exclude: "CHANGELOG.md"
-default_stages: [commit]
+default_stages: [pre-commit]
 
 ci:
   autofix_commit_msg: "chore(pre-commit.ci): auto fixes"

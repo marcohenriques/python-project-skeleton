@@ -27,7 +27,7 @@ on:
       contains(fromJson('["success", "skipped"]'), needs.run-ci-tests.result)
       && always()
     with:
-      image-name:  {% endraw %}{{cookiecutter.project_name.lower()}}{% raw %}
+      image-name: {% endraw %}{{cookiecutter.project_name.lower()}}{% raw %}
       image-tag: ${{ github.sha }}
       push-image: ${{ (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')) }}
       push-latest-tag: true
@@ -44,7 +44,7 @@ on:
     needs:
       - run-ci-tests
     with:
-      image-name:  {% endraw %}{{cookiecutter.project_name.lower()}}{% raw %}
+      image-name: {% endraw %}{{cookiecutter.project_name.lower()}}{% raw %}
       image-tag: ${{ github.sha }}
       push-image: true
       push-latest-tag: true{% endraw %}

@@ -24,7 +24,9 @@ Changelog = "https://github.com/marcohenriques/python-project-skeleton/blob/main
 
 [tool.uv]
 package = false
-dev-dependencies = [
+
+[dependency-groups]
+dev = [
     "commitizen>=3.29.1",
     "mike>=2.1.3",
     "mkdocs>=1.6.1",

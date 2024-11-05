@@ -6,6 +6,7 @@
   "author_email": "john.doe@domain.com",
   "github_username_or_org_name": "",
   "python_version": [
+    "3.13",
     "3.12",
     "3.11",
     "3.10"
