@@ -38,7 +38,7 @@ doctor:  ## Confirm system dependencies are available
 # PROJECT DEPENDENCIES ########################################################
 
 .PHONY: install
-install: .cache install-git-hooks  ## Install project dependencies and tools
+install: .cache uv.lock install-git-hooks  ## Install project dependencies and tools
 	@ uv python pin $(PYTHON_VERSION)
 	@ uv sync --frozen
 
@@ -132,7 +132,7 @@ endif
 PYTEST_RERUN_OPTIONS := -v --randomly-seed=last
 
 .PHONY: test
-test: test-all ## Run unit and integration tests
+test: test-all  ## Run unit and integration tests
 
 .PHONY: test-all
 test-all:
@@ -200,7 +200,7 @@ clean: .clean-build .clean-docs .clean-cache .clean-install  ## Delete all gener
 # OTHER TASKS #################################################################
 
 .PHONY: ci
-ci: format check-packages lint test {%- if cookiecutter.include_docs == "yes" %} build-docs{% endif %} ## Run all tasks that determine CI status
+ci: format check-packages lint test {%- if cookiecutter.include_docs == "yes" %} build-docs{% endif %}  ## Run all tasks that determine CI status
 {% if cookiecutter.include_notebooks == "yes" -%}
 notebooks:
 	mkdir -p notebooks

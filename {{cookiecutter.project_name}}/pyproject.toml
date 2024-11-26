@@ -163,6 +163,7 @@ disallow_untyped_decorators = false
 # sqlfluff
 [tool.sqlfluff.core]
 # dialect = snowflake
+processes = 0
 templater = "python"
 max_line_length = 120
 exclude_rules = "aliasing.forbid, structure.column_order, jinja.padding"
