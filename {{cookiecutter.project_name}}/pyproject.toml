@@ -7,14 +7,9 @@ name = "{{cookiecutter.project_name}}"
 version = "0.1.0"
 description = "{{cookiecutter.project_short_description}}"
 readme = "README.md"
-license = ""
 keywords = []
-authors = [
-  {name = "{{ cookiecutter.author_name }}", email = "{{ cookiecutter.author_email }}"},
-]
-maintainers = [
-  {name = "{{ cookiecutter.author_name }}", email = "{{ cookiecutter.author_email }}"}
-]
+authors = [{name = "{{ cookiecutter.author_name }}", email = "{{ cookiecutter.author_email }}"}]
+maintainers = [{name = "{{ cookiecutter.author_name }}", email = "{{ cookiecutter.author_email }}"}]
 requires-python = ">={{cookiecutter.python_version}}"
 dependencies = []
 
@@ -23,7 +18,7 @@ Homepage = "https://github.com/{{ cookiecutter.github_username_or_org_name }}/{{
 Documentation = "https://{{ cookiecutter.github_username_or_org_name }}.github.io/{{ cookiecutter.project_name }}"
 Repository = "https://github.com/{{ cookiecutter.github_username_or_org_name }}/{{ cookiecutter.project_name }}"
 "Bug Tracker" = "https://github.com/{{ cookiecutter.github_username_or_org_name }}/{{ cookiecutter.project_name }}/issues"
-Changelog = "https://github.com/{{ cookiecutter.github_username_or_org_name }}/{{ cookiecutter.project_name }}/blob/master/CHANGELOG.md"
+Changelog = "https://github.com/{{ cookiecutter.github_username_or_org_name }}/{{ cookiecutter.project_name }}/blob/main/CHANGELOG.md"
 
 [tool.uv]
 default-groups = ["dev"]
@@ -204,7 +199,7 @@ addopts = [
     "-vv",
     "-r sxX",
     "--cov=src",
-    "--cov-report=html",
+    "--cov-report=html:.cache/htmlcov",
     "--cov-report=term-missing:skip-covered",
     "--no-cov-on-fail",
     "--xdoc",

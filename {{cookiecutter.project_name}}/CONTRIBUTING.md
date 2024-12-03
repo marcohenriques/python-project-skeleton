@@ -179,4 +179,9 @@ Follow the pre-installed [git message template](./.gitmessage). The commit messa
 ## Environment variables
 
 The project comes with a `.env.template` file where you can find the relevant environment variables used in the project.
-You should copy this file to `.env` and fill in/change the values.
+You should copy this file to `.env` and fill in/change the values. Alternatively, you can instead have a file by
+environment (`.env.dev`, `.env.prod`, etc). You can execute the following command to export the environment variables:
+
+```bash
+export $(grep -v '^#' .env | xargs)
+```

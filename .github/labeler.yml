@@ -5,7 +5,7 @@ ci/cd:
 
 code:
 - changed-files:
-  - any-glob-to-any-file: ['src/**']
+  - any-glob-to-any-file: ['hooks/**', '{{cookiecutter.project_name}}/**']
 
 infrastructure:
 - changed-files:

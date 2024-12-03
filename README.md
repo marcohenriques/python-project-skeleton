@@ -30,27 +30,28 @@ A cookiecutter template for python projects.
 <a href="https://github.com/shellcheck-py/shellcheck-py" target="_blank"><code>shellcheck</code></a> and
 <a href="https://sqlfluff.com/" target="_blank"><code>sqlfluff</code></a>
 - Python dependencies vulnerabilities scanner using <a href="https://github.com/pyupio/safety" target="_blank"><code>safety</code></a>
+- Check for issues with dependencies with <a href="https://deptry.com/" target="_blank"><code>deptry</code></a>
 - <a href="https://pre-commit.com/" target="_blank"><code>pre-commit</code></a> hooks for some validations
 - `Makefile` to automate some development tasks
 - <a href="https://docs.astral.sh/uv/" target="_blank"><code>uv</code></a> to manage your python versions and dependencies
 - Python package pre-configured with:
-    - logging using <a href="https://loguru.readthedocs.io/en/stable/" target="_blank"><code>loguru</code></a>
-    - <a href="https://pydantic-docs.helpmanual.io/" target="_blank"><code>pydantic</code></a> to help manage your project settings
-    - (optional) CLI example using <a href="https://typer.tiangolo.com/" target="_blank"><code>typer</code></a>
+  - logging using <a href="https://loguru.readthedocs.io/en/stable/" target="_blank"><code>loguru</code></a>
+  - <a href="https://pydantic-docs.helpmanual.io/" target="_blank"><code>pydantic</code></a> to help manage your project settings
+  - (optional) CLI example using <a href="https://typer.tiangolo.com/" target="_blank"><code>typer</code></a>
 
 ## Requirements
 
-You'll need to have <a href="https://cookiecutter.readthedocs.io/en/2.0.2/installation.html" target="_blank">cookiecutter</a> installed.
+You'll need to have <a href="https://cookiecutter.readthedocs.io/en/2.0.2/installation.html" target="_blank">cookiecutter</a> and <a href="https://docs.astral.sh/uv/" target="_blank">uv</a> installed.
 
 ## Installation
 
-Run the following command to create a new project, on your current directory:
+Run the following command to create a new project on your current directory:
 
 ```bash
 cookiecutter gh:marcohenriques/python-project-skeleton
 ```
 
-If you want to use a different version of the template, use the following command:
+If you want to use a different version of the template use the following command:
 
 ```bash
 cookiecutter gh:marcohenriques/python-project-skeleton -c <VERSION>

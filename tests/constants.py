@@ -12,5 +12,9 @@ DEFAULT_ARGS = MappingProxyType(
         "author_email": "john.doe@domain.com",
         "github_username_or_org_name": "my_org",
         "python_version": "3.11",
+        "include_docker": "yes",
+        "include_notebooks": "yes",
+        "include_docs": "yes",
+        "include_cli": "yes",
     },
 )

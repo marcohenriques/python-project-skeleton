@@ -39,6 +39,7 @@ doctor:  ## Confirm system dependencies are available
 
 .PHONY: install
 install: .cache uv.lock install-git-hooks  ## Install project dependencies and tools
+	@ uv lock
 	@ uv python pin $(PYTHON_VERSION)
 	@ uv sync --frozen
 
@@ -142,7 +143,7 @@ test-all:
 
 .PHONY: read-coverage
 read-coverage:  ## Open last coverage report in html page
-	open htmlcov/index.html
+	open .cache/htmlcov/index.html
 
 
 # DOCUMENTATION ###############################################################

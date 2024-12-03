@@ -2,7 +2,6 @@
 
 The project includes a `Makefile` to help automate some tasks. These tasks can be grouped into sections.
 
-
 ## System Dependencies
 
 To check if you have all the required tools:
@@ -10,7 +9,6 @@ To check if you have all the required tools:
 ```make
 make doctor
 ```
-
 
 ## Project Dependencies
 
@@ -61,7 +59,6 @@ make requirements.txt
 
 This will update/generate the project `requirements.txt`, based on the installed dependencies from uv.
 
-
 ## Checks
 
 Tasks to run linters, formatters and python dependencies vulnerabilities scanner
@@ -75,7 +72,6 @@ make format
 Runs all formatters: `sqlfluff` (SQL) and `ruff`(fix-only) on your **src** and *tests* directory.  
 You can also run each check individually: `make format-sqlfluff` or `make format-ruff`.
 
-
 ### check-packages
 
 ```make
@@ -83,6 +79,7 @@ make check-packages
 ```
 
 Runs checks on packages:
+
 - Checks the validity of the `pyproject.toml` file
 - Verify installed packages have compatible dependencies
 - Run `safety check` to find vulnerabilities in Python dependencies
@@ -112,7 +109,6 @@ make pre-commit
 
 Runs the pre-commit checks on all files.
 
-
 ## Tests
 
 Tasks related to testing.
@@ -133,7 +129,6 @@ make read-coverage
 ```
 
 Opens the coverage report for the last pytest run.
-
 
 ## Documentation
 
@@ -156,7 +151,6 @@ make docs
 
 Build docs and serve them.
 
-
 ## Build
 
 Tasks related to builds.
@@ -168,7 +162,6 @@ make dist
 ```
 
 Builds the package, as a tarball and a wheel.
-
 
 ## Cleanup
 
@@ -190,7 +183,6 @@ make clean-all
 
 Delete the virtual environment and all generated and temporary files.
 
-
 ## Docker
 
 Tasks related to docker. This section is only available if selected in the project setup (`include_docker`).
@@ -210,7 +202,6 @@ make run-docker
 ```
 
 Run the docker container for the built image.
-
 
 ## Other Tasks
 

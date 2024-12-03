@@ -76,7 +76,7 @@ def process_cli(include_cli: str) -> None:
     logger.debug("Processing cli")
     if include_cli == "no":
         logger.info("Not including cli")
-        shutil.rmtree("src/{{cookiecutter.package_name}}/cli/")
+        Path("src/{{cookiecutter.package_name}}/cli.py").unlink()
         Path("tests/test_cli.py").unlink()
 
 
@@ -99,15 +99,28 @@ def install_dependencies() -> None:
     """Install the dependencies."""
     logger.debug("Installing dependencies")
     # setup python version to use
+    logger.debug("Setting up python version")
     subprocess.run(  # noqa: S603
         [  # noqa: S607
-            "make",
-            "uv.lock",
-            "install",
+            "uv",
+            "lock",
         ],
-        check=False,
+        capture_output=True,
+        check=True,
     )
+    subprocess.run(  # noqa: S603
+        [  # noqa: S607
+            "uv",
+            "python",
+            "pin",
+            "{{cookiecutter.python_version}}",
+        ],
+        capture_output=True,
+        check=True,
+    )
+
     # project dependencies
+    logger.debug("Adding base project dependencies")
     subprocess.run(  # noqa: S603
         [  # noqa: S607
             "uv",
@@ -115,9 +128,11 @@ def install_dependencies() -> None:
             "--no-sync",
             *PROJECT_DEPENDENCIES,
         ],
-        check=False,
+        capture_output=True,
+        check=True,
     )
     # dev dependencies
+    logger.debug("Adding dev dependencies")
     subprocess.run(  # noqa: S603
         [  # noqa: S607
             "uv",
@@ -127,10 +142,12 @@ def install_dependencies() -> None:
             "dev",
             *DEV_DEPENDENCIES,
         ],
-        check=False,
+        capture_output=True,
+        check=True,
     )
     # docs dependencies
     if "{{cookiecutter.include_docs}}" == "yes":  # type: ignore # noqa: PLR0133
+        logger.debug("Adding docs dependencies")
         subprocess.run(  # noqa: S603
             [  # noqa: S607
                 "uv",
@@ -140,10 +157,12 @@ def install_dependencies() -> None:
                 "docs",
                 *DOCS_DEPENDENCIES,
             ],
-            check=False,
+            capture_output=True,
+            check=True,
         )
     # jupyter dependencies
     if "{{cookiecutter.include_notebooks}}" == "yes":  # type: ignore # noqa: PLR0133
+        logger.debug("Adding jupyter dependencies")
         subprocess.run(  # noqa: S603
             [  # noqa: S607
                 "uv",
@@ -153,7 +172,8 @@ def install_dependencies() -> None:
                 "jupyter",
                 *JUPYTER_DEPENDENCIES,
             ],
-            check=False,
+            capture_output=True,
+            check=True,
         )
 
 

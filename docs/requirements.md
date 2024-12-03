@@ -2,7 +2,7 @@
 
 ## Rendering project
 
-To use this template the only requirement is [cookiecutter](https://github.com/cookiecutter/cookiecutter).
+To use this template the only requirement is [cookiecutter](https://github.com/cookiecutter/cookiecutter) and [uv](https://docs.astral.sh/uv/getting-started/installation/).
 
 ## Generated project
 
@@ -10,6 +10,7 @@ To use this template the only requirement is [cookiecutter](https://github.com/c
 - [uv](https://docs.astral.sh/uv/getting-started/installation/) (version ~0.4.18)
 
 In Linux, make sure you have all required Python dependencies installed:
+
 ```shell
 sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev liblzma-dev tk-dev
 ```
@@ -24,7 +25,7 @@ make doctor
 
 After running this, you should see something similar to:
 
-```
+```text
 Checking for Make...
 
 $ make --version

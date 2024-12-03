@@ -39,7 +39,8 @@ doctor:  ## Confirm system dependencies are available
 
 .PHONY: install
 install: .cache uv.lock install-git-hooks  ## Install project dependencies and tools
-	@ uv python pin $(PYTHON_VERSION)
+	@ uv lock
+	@ uv python pin -q $(PYTHON_VERSION)
 	@ uv sync --frozen
 
 install-git-hooks: .git .git/hooks/pre-commit .git/hooks/pre-push .git/hooks/commit-msg
@@ -48,7 +49,7 @@ install-git-hooks: .git .git/hooks/pre-commit .git/hooks/pre-push .git/hooks/com
 	@ uv run pre-commit install
 
 .git:
-	@ git init
+	@ git init -b main
 
 .cache:
 	@ mkdir -p .cache
@@ -142,7 +143,7 @@ test-all:
 
 .PHONY: read-coverage
 read-coverage:  ## Open last coverage report in html page
-	open htmlcov/index.html
+	open .cache/htmlcov/index.html
 {% if cookiecutter.include_docs == "yes" %}
 
 # DOCUMENTATION ###############################################################

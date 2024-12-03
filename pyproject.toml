@@ -227,7 +227,7 @@ addopts = [
     "-vv",
     "-r sxX",
     # "--cov=src",
-    "--cov-report=html",
+    "--cov-report=html:.cache/htmlcov",
     "--cov-report=term-missing:skip-covered",
     "--no-cov-on-fail",
     # "--xdoc",

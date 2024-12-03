@@ -19,7 +19,8 @@ Install the required dependencies from `uv.lock` file:
 uv sync --frozen
 ```
 
-In case there's no `uv.lock` file or you just to update all dependencies acording to the specifications in you `pyproject.toml` file, run:
+In case there's no `uv.lock` file or you want to update your `uv.lock` file with the latest dependencies
+modifications in `pyproject.toml`, run:
 
 ```bash
 uv sync
@@ -54,7 +55,19 @@ In this case, uv uv install the exact specified `django` version.
 To update all your dependencies, to the latest allowed versions (according to constraints), run:
 
 ```bash
-uv sync
+uv sync --upgrade
+```
+
+or a single one:
+
+```bash
+uv sync --upgrade-package <package>
+```
+
+or to specific version:
+
+```bash
+uv sync uv lock --upgrade-package <package>==<version>
 ```
 
 ### Remove dependencies
@@ -88,3 +101,8 @@ uv run <my_command>
 ```
 
 This will execute `<my_command>` from your virtual environment, and return to the environment where you were running.
+You can also run your command and pass the environment variables from a `.env` file:
+
+```bash
+uv run --env-file <my_dotenv> <my_command>
+```

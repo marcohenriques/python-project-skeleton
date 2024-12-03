@@ -4,6 +4,7 @@
     {%- endif %}
     "ms-python.python",
     "charliermarsh.ruff",
+    "dorzey.vscode-sqlfluff",
     "ms-python.mypy-type-checker",
     "fill-labs.dependi",
     "Codeium.codeium",
