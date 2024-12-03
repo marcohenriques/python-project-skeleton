@@ -152,7 +152,7 @@ MKDOCS_INDEX := site/index.html
 
 .PHONY: build-docs
 build-docs: $(MKDOCS_INDEX)  ## Generate mkdocs documentation locally
-$(MKDOCS_INDEX): mkdocs.yml docs/*.md src/**/*.py
+$(MKDOCS_INDEX): mkdocs.yml docs/*.md
 	uv run mkdocs build --clean --strict
 
 .PHONY: docs
