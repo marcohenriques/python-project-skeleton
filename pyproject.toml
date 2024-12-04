@@ -1,6 +1,6 @@
 [project]
 name = "python-project-skeleton"
-version = "0.5.0"
+version = "0.6.0"
 description = "Cookiecutter template for Python projects"
 readme = "README.md"
 keywords = []
@@ -59,7 +59,7 @@ dev = [
 ####################
 
 [tool.commitizen]
-version = "0.5.0"
+version = "0.6.0"
 version_files = [
     "pyproject.toml:version",
 ]

@@ -1,3 +1,17 @@
+## 0.6.0 (2024-12-04)
+
+### Feat
+
+- use `uv` latest features
+
+### Fix
+
+- build docs (#8)
+
+### Refactor
+
+- add some improvements
+
 ## 0.5.0 (2024-10-13)
 
 ### Feat
