@@ -3,6 +3,12 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - "docs/**"
+      - "**.md"
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       run-test:
@@ -11,12 +17,12 @@ on:
         type: boolean
         default: true
 
-{% raw %}jobs:
+jobs:
   run-ci-tests:
     uses: ./.github/workflows/ci.yaml
-    if: github.event_name != 'workflow_dispatch' || inputs.run-test{% endraw %}
+    if: github.event_name != 'workflow_dispatch' || inputs.run-test
 {% if cookiecutter.include_docker == "yes" %}
-  {% raw %}build-docker-dev:
+  build-docker-dev:
     uses: ./.github/workflows/build_docker.yaml
     permissions:
       id-token: write
@@ -27,9 +33,9 @@ on:
       contains(fromJson('["success", "skipped"]'), needs.run-ci-tests.result)
       && always()
     with:
-      image-name: {% endraw %}{{cookiecutter.project_name.lower()}}{% raw %}
-      image-tag: ${{ github.sha }}
-      push-image: ${{ (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')) }}
+      image-name: {{cookiecutter.project_name.lower()}}
+      image-tag: {% raw %}${{ github.sha }}
+      push-image: ${{ (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')) }}{% endraw %}
       push-latest-tag: true
 
   build-docker-prod:
@@ -44,8 +50,8 @@ on:
     needs:
       - run-ci-tests
     with:
-      image-name: {% endraw %}{{cookiecutter.project_name.lower()}}{% raw %}
-      image-tag: ${{ github.sha }}
+      image-name: {{cookiecutter.project_name.lower()}}
+      image-tag: {% raw %}${{ github.sha }}{% endraw %}
       push-image: true
-      push-latest-tag: true{% endraw %}
+      push-latest-tag: true
 {% endif -%}
